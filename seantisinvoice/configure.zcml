@@ -7,7 +7,7 @@
     handler=".run.handle_teardown"/>
     
   <route 
-   path="invoices"
+   path=""
    name="invoices"
    view=".views.invoices"
    view_renderer="templates/invoices.pt"
