@@ -1,0 +1,21 @@
+<configure xmlns="http://namespaces.repoze.org/bfg">
+
+  <!-- this must be included for the view declarations to work -->
+  <include package="repoze.bfg.includes" />
+
+  <subscriber for="repoze.bfg.interfaces.INewRequest"
+    handler=".run.handle_teardown"/>
+
+  <route 
+    path="add_customer"
+    name="add_customer"
+    view=".views.add_customer"
+    view_renderer="templates/add_customer.pt"
+    />
+
+  <static
+    name="static"
+    path="templates/static"
+    />
+
+</configure>
