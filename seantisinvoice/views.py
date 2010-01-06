@@ -8,4 +8,10 @@ def add_customer(request):
     
     return render_template_to_response('templates/add_customer.pt',
                                        request=request)
+                                       
+def invoices(request):
+    dbsession = DBSession()
+
+    return render_template_to_response('templates/invoices.pt',
+                                       request=request)
     

@@ -5,6 +5,13 @@
 
   <subscriber for="repoze.bfg.interfaces.INewRequest"
     handler=".run.handle_teardown"/>
+    
+  <route 
+   path="invoices"
+   name="invoices"
+   view=".views.invoices"
+   view_renderer="templates/invoices.pt"
+   />
 
   <route 
     path="add_customer"
