@@ -71,7 +71,7 @@
                     </tr>
                     <tr class="odd">
                         <td><a href="#">Hindukusch</a></td>
-                        <td>Nice Project</td>
+                        <td>Peter Scholl Latour</td>
                         <td align="right">3'000</td>
                         <td align="right">21.11.2010</td>
                         <td align="right"><a href="#"><img src="${request.application_url}/static/images/pdf_icon.png" alt="Download as PDF" /></a></td>
@@ -112,7 +112,7 @@
 			<li>
 				<h2>Reports</h2>
 				<ul>
-					<li><a href="#">Invoices sent this Month</a></li>
+					<li><a href="#">Invoices sent this month</a></li>
 					<li><a href="#">Invoices due</a></li>
 				</ul>
 			</li>
@@ -131,7 +131,7 @@
 <!-- end page -->
 <!-- start footer -->
 <div id="footer">
-	<p id="legal">2010 by <a href="http://www.seantis.ch">seantis gmbh</a> :: <a href="http://bfg.repoze.org">repoze.bfg powered</a> :: template by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.</p>
+	<p id="legal">2010 by <a href="http://www.seantis.ch">seantis gmbh</a> :: <a href="http://bfg.repoze.org">repoze.bfg powered</a></p>
 </div>
 <!-- end footer -->
 </body>
