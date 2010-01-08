@@ -16,13 +16,13 @@
 <div id="wrapper">
     <!-- start header -->
     <div id="logo">
-    	<h1><a href="#">seantis::invoice </a></h1>
+    	<h1><a href="${request.application_url}">seantis::invoice </a></h1>
     	<h2> &raquo;&nbsp;&nbsp;&nbsp;invoceing with zero pain!</h2>
     </div>
     <div id="header">
     	<div id="menu">
     		<ul>
-    			<li class="current_page_item"><a href="#">Invoices</a></li>
+    			<li class="current_page_item"><a href="${request.application_url}">Invoices</a></li>
     			<li><a href="${request.application_url}/customers">Customers</a></li>
     			<li><a href="#">Company Profile</a></li>
     		</ul>

@@ -8,7 +8,7 @@
   <route 
     path=""
     name="invoices"
-    view=".invoices.view_invoices"
+    view=".invoice.view_invoices"
     view_renderer="templates/invoices.pt"
     />
     
