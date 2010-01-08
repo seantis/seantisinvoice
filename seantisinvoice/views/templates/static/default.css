@@ -434,14 +434,33 @@ html>body #footer {
     margin-left: 210px;
 }
     
+
+/* styling for the widget containers */
+
 .widget-container {
     background: #ededed;
 }
 
 .remove {
-    margin-left: 470px;
+    margin-left: 460px !important;
     color: red;
     cursor: pointer;
+}
+
+.handle {
+    cursor: pointer;
+    color: #fff;
+    background: #666 !important;
+    padding: 7px !important;
+}
+
+.adderlink {
+    margin-left: 460px !important;
+    color: #0A5688;
+    cursor: pointer;
+    font-weight: bold;
+    display: block;
+    font-size: 15px;
 }
 
 #action-submit, #action-cancel {

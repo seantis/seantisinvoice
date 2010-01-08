@@ -156,7 +156,7 @@ def view_invoices(request):
         title = u'Recurring Invoices'
     elif 'recurring' in request.params and request.params['recurring'] == '0':
         invoices = session.query(Invoice).filter(Invoice.recurring_term == None)
-        title = u'Non-Invoices'
+        title = u'Non-recurring Invoices'
     elif 'due' in request.params and request.params['due'] == '1':
         today = datetime.date.today()
         # FIXME: how can I use the due_date methode here??
