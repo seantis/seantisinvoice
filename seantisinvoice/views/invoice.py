@@ -31,6 +31,7 @@ class InvoiceSchema(schemaish.Structure):
     recurring_term = schemaish.Integer()
     payment_term = schemaish.Integer(validator=validator.Required())
     currency = schemaish.String(validator=validator.Required())
+    tax = schemaish.Float()
     item_list = schemaish.Sequence(invoice_item_schema)
     
 invoice_schema = InvoiceSchema()
@@ -48,6 +49,7 @@ class InvoiceController(object):
         defaults = {
             'currency' : 'CHF',
             'payment_term' : '30',
+            'tax' : '7.6',
         }
         
         if "invoice" in self.request.matchdict:

@@ -54,12 +54,12 @@
             <tr>
                 <td>IBAN: CH63.....................</td>
                 <td>Rechungsdatum:</td>
-                <td>${invoice.date}</td>
+                <td>${invoice.date.strftime('%d.%m.%Y')}</td>
             </tr>
             <tr>
                 <td></td>
                 <td>Zahlbar bis:</td>
-                <td>${invoice.due_date()}</td>
+                <td>${invoice.due_date().strftime('%d.%m.%Y')}</td>
             </tr>
         </blockTable>
         
