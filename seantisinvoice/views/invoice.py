@@ -53,6 +53,7 @@ class InvoiceController(object):
         defaults = {
             'currency' : 'CHF',
             'payment_term' : '30',
+            # Todo: should come from company.tax setting!
             'tax' : '7.6',
         }
         
