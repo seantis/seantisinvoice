@@ -12,20 +12,11 @@ from repoze.bfg.chameleon_zpt import get_template
 from seantisinvoice.models import DBSession
 from seantisinvoice.models import Customer
 
-name_field = schemaish.String(
-       description=('Company name'),
-       validator=validator.Required(),
-       )
-       
-address1_field = schemaish.String(
-       description=('Address 1'),
-       validator=validator.Required(),
-       )
-       
-city_field = schemaish.String(
-       description=('City'),
-       validator=validator.Required(),
-       )
+class CustomerSchema(schemaish.Structure):
+
+    name = schemaish.String(validator=validator.Required())
+    address1 = schemaish.String(validator=validator.Required())
+    city = schemaish.String(validator=validator.Required())
 
 class CustomerController(object):
     
@@ -33,10 +24,7 @@ class CustomerController(object):
         self.request = request
         
     def form_fields(self):
-        fields = [ ('name', name_field),
-                   ('address1', address1_field),
-                   ('city', city_field) ]
-        return fields
+        return CustomerSchema().attrs
         
     def form_defaults(self):
         
