@@ -71,10 +71,10 @@
                 <td>Beschreibung</td>
                 <td>Kosten</td>
             </tr>
-            <tr>
-                <td>Version 1.01</td>
-                <td>Gemaess Offerte</td>
-                <td>37'300</td>
+            <tr tal:repeat="item invoice.items">
+                <td>${item.service_description}</td>
+                <td>service Title</td>
+                <td>${item.service_amount}</td>
             </tr>
             <tr>
                 <td></td>
