@@ -39,6 +39,12 @@
     name="edit_customer"
     />
     
+  <route
+    path="/invoices/:invoice/invoice_pdf"
+    name="invoice_pdf"
+    view=".invoice_export.view_invoice_pdf"
+    />
+    
   <!-- Forms -->
   
   <formish:form

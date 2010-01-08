@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE document SYSTEM "http://www.reportlab.com/docs/rml.dtd">
+<document filename="template.pdf"
+          xmlns:tal="http://xml.zope.org/namespaces/tal">
+
+    <template pageSize="(21cm, 29cm)" author="www.flightlog.ch" title="Rechnung :: ${invoice.invoice_number}">
+        <pageTemplate id="main">
+            <frame id="main" x1="2cm" y1="2cm" width="25cm" height="17cm" />
+            <pageGraphics>
+                <place x="0.5cm" y="0.5cm" width="10cm" height="1cm">
+                    <para style="footer">seantis gmbh :: Unter der Egg 5 :: CH-6004 Luzern :: +41 41 511 22 50</para>
+                </place>
+            </pageGraphics>
+                   
+        </pageTemplate>
+    </template>
+    
+    <stylesheet>
+        <paraStyle name="tableHeader" fontName="Helvetica" fontSize="6" alignment="center" />
+        <paraStyle name="tableHeaderSmall" fontName="Helvetica" fontSize="4" alignment="center" />
+        <paraStyle name="footer" fontName="Helvetica" fontSize="8" />
+    </stylesheet>
+
+    <story>
+        <blockTable>
+            <tr>
+                <td>${invoice.project_description}</td>
+            </tr>
+        </blockTable>
+    </story>
+
+</document>
