@@ -12,6 +12,16 @@
     view_renderer="templates/invoices.pt"
     />
     
+  <route
+    path="/add_invoice"
+    name="add_invoice"
+    />
+    
+  <route
+    path="/invoices/:invoice"
+    name="edit_invoice"
+    />
+    
   <route 
     path="/customers"
     name="customers"
@@ -30,6 +40,44 @@
     />
     
   <!-- Forms -->
+  
+  <formish:form
+    name=""
+    route_name="add_invoice"
+    renderer="templates/invoice.pt"
+    controller=".invoice.InvoiceController">
+
+    <formish:action
+      name="add"
+      title="Add invoice"
+      />
+
+    <formish:action
+      name="cancel"
+      title="Cancel"
+      validate="false"
+      />
+
+  </formish:form>
+  
+  <formish:form
+    name=""
+    route_name="edit_invoice"
+    renderer="templates/invoice.pt"
+    controller=".invoice.InvoiceController">
+
+    <formish:action
+      name="submit"
+      title="Save"
+      />
+
+    <formish:action
+      name="cancel"
+      title="Cancel"
+      validate="false"
+      />
+
+  </formish:form>
     
   <formish:form
     name=""

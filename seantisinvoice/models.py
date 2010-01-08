@@ -54,7 +54,7 @@ class Invoice(Base):
     currency = Column(Unicode)
     project_description = Column(Unicode)
     
-    customer = relation(Customer, backref=backref('invoices', order_by=date))
+    customer = relation(Customer, lazy=False, backref=backref('invoices', order_by=date))
     contact = relation(CustomerContact)
 
 class InvoiceItem(Base):

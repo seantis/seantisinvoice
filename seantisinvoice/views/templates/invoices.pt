@@ -13,6 +13,8 @@
         <div class="notice">This is a new status message: There is an NOTICE</div>
         <div class="success">This is a new status message: There is an SUCCESS</div>
         
+        <a href="${request.application_url}/add_invoice">Add new invoice</a>
+        
         <table>
             <thead>
                 <tr>
@@ -24,33 +26,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="odd">
-                    <td><a href="#">Beautiful new sofa</a></td>
-                    <td>Muster AG</td>
-                    <td align="right">20'000</td>
-                    <td align="right">20.01.2001</td>
-                    <td align="right"><a href="#"><img src="${request.application_url}/static/images/pdf_icon.png" alt="Download as PDF" /></a></td>
-                </tr>
-                <tr class="even">
-                    <td><a href="#">Money Waster</a></td>
-                    <td>UBS AG</td>
-                    <td align="right">20'000'000</td>
-                    <td align="right">21.11.2010</td>
-                    <td align="right"><a href="#"><img src="${request.application_url}/static/images/pdf_icon.png" alt="Download as PDF" /></a></td>
-                </tr>
-                <tr class="odd">
-                    <td><a href="#">Hindukusch</a></td>
-                    <td>Peter Scholl Latour</td>
-                    <td align="right">3'000</td>
-                    <td align="right">21.11.2010</td>
-                    <td align="right"><a href="#"><img src="${request.application_url}/static/images/pdf_icon.png" alt="Download as PDF" /></a></td>
-                </tr>
-                <tr class="even">
-                    <td><a href="#">ZULU</a></td>
-                    <td>UUZ</td>
-                    <td align="right">5'410</td>
-                    <td align="right">21.11.2010</td>
-                    <td align="right"><a href="#"><img src="${request.application_url}/static/images/pdf_icon.png" alt="Download as PDF" /></a></td>
+                <tr tal:repeat="invoice invoices" class="odd">
+                    <td><a href="${request.application_url}/invoices/${invoice.id}">Beautiful new sofa</a></td>
+                    <td><a href="${request.application_url}/customers/${invoice.customer.id}">${invoice.customer.name}</a></td>
+                    <td>Hindukusch</td>
+                    <td>${invoice.date}</td>
                 </tr>
             </tbody>
         </table>
