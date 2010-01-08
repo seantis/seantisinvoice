@@ -9,8 +9,6 @@
 	        
 	    <h1>Customers</h1>
         
-        <a href="${request.application_url}/add_customer">Add new customer</a>
-        
         <table>
             <thead>
                 <tr>
@@ -27,6 +25,10 @@
                 </tr>
             </tbody>
         </table>
+        
+        <div class="controls">
+            <a href="${request.application_url}/add_customer"><button class="button-striking">Add customer</button></a>
+        </div>
         
     </div>
 	</div>

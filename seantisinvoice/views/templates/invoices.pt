@@ -13,8 +13,6 @@
         <div class="notice">This is a new status message: There is an NOTICE</div>
         <div class="success">This is a new status message: There is an SUCCESS</div>
         
-        <a href="${request.application_url}/add_invoice">Add new invoice</a>
-        
         <table>
             <thead>
                 <tr>
@@ -29,15 +27,16 @@
                 <tr tal:repeat="invoice invoices" class="odd">
                     <td><a href="${request.application_url}/invoices/${invoice.id}">Beautiful new sofa</a></td>
                     <td><a href="${request.application_url}/customers/${invoice.customer.id}">${invoice.customer.name}</a></td>
-                    <td>Hindukusch</td>
-                    <td>${invoice.date}</td>
+                    <td align="right">20'000</td>
+                    <td align="right">${invoice.date}</td>
+                    <td align="right"><a href="#"><img src="${request.application_url}/static/images/pdf_icon.png" alt="Download as PDF" /></a></td>
                 </tr>
             </tbody>
         </table>
         
         <div class="controls">
             <button class="medium-button">Cancel</button>
-            <button class="button-striking">Add new invoice</button>
+             <a href="${request.application_url}/add_invoice"><button class="button-striking">Add invoice</button></a>
         </div>
         
     </div>
