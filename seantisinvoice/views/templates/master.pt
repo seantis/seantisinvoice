@@ -69,14 +69,14 @@
 			<li>
 				<h2>Reports</h2>
 				<ul>
-					<li><a href="${request.application_url}/reports?due=1">Invoices due</a></li>
+					<li><a href="${request.application_url}/?due=1">Invoices due</a></li>
 				</ul>
 			</li>
 			<li>
 				<h2>Type of Invoices</h2>
 				<ul>
-					<li><a href="${request.application_url}/reports?recurring=0">Non-recurring invoices</a></li>
-					<li><a href="${request.application_url}/reports?recurring=1">Recurring invoices</a></li>
+					<li><a href="${request.application_url}/?recurring=0">Non-recurring invoices</a></li>
+					<li><a href="${request.application_url}/?recurring=1">Recurring invoices</a></li>
 				</ul>
 			</li>
 		</ul>

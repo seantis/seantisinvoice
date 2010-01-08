@@ -7,11 +7,15 @@
 
 	<div id="main_content">
 	        
-	    <h1>Invoices</h1>
+	    <h1>${title}</h1>
+        
+        <!--
         
         <div class="error">This is a new status message: There is an ERROR</div>
         <div class="notice">This is a new status message: There is an NOTICE</div>
         <div class="success">This is a new status message: There is an SUCCESS</div>
+        
+        -->
         
         <table>
             <thead>

@@ -149,12 +149,6 @@ class InvoiceController(object):
 
 def view_invoices(request):
     session = DBSession()
-    invoices = session.query(Invoice).all()
-    main = get_template('templates/master.pt')
-    return dict(request=request, main=main, invoices=invoices)
-    
-def view_reports(request):
-    session = DBSession()
     if 'recurring' in request.params and request.params['recurring'] == '1':
         invoices = session.query(Invoice).filter(Invoice.recurring_term != None)
         title = u'Recurring Invoices'

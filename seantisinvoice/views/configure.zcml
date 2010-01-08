@@ -12,13 +12,6 @@
     view_renderer="templates/invoices.pt"
     />
     
-  <route 
-    path="reports"
-    name="reports"
-    view=".invoice.view_reports"
-    view_renderer="templates/reports.pt"
-    />
-    
   <route
     path="/add_invoice"
     name="add_invoice"
