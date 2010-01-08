@@ -71,7 +71,7 @@ class Invoice(Base):
         items = self.items
         sub_total = 0
         for item in items:
-            sub_total + item.amount
+            sub_total += item.total()
         return sub_total
         
     def tax_amount(self):
@@ -90,7 +90,12 @@ class InvoiceItem(Base):
     hours = Column(Float)
     service_description = Column(Unicode)
     
-    invoice = relation(Invoice, lazy=False, backref=backref('items', order_by=id, cascade="delete"))
+    invoice = relation(Invoice, backref=backref('items', order_by=id, cascade="delete", lazy=False))
+    
+    def total(self):
+        if self.hours:
+            return self.hours * 140.0
+        return self.amount
     
 class Company(Base):
     __tablename__ = 'company'
