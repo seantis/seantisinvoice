@@ -98,6 +98,7 @@ class CustomerController(object):
                 contact_id = contact_data['contact_id']
                 contact = contact_map[contact_id]
                 del contact_map[contact_id]
+                # FIXME: what happens to exiting invoices that loose their contact now?
             else:
                 contact = CustomerContact()
                 contact.customer = customer
