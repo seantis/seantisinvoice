@@ -14,10 +14,14 @@ from seantisinvoice.models import DBSession
 from seantisinvoice.models import Customer, Invoice
 
 class InvoiceSchema(schemaish.Structure):
-
-    invoice_number = schemaish.Integer(validator=validator.Required())
-    date = schemaish.Date(validator=validator.Required())
+    
     customer_id = schemaish.String(validator=validator.Required())
+    project_description = schemaish.String(validator=validator.Required())
+    date = schemaish.Date(validator=validator.Required())
+    invoice_number = schemaish.Integer(validator=validator.Required())
+    payment_term = schemaish.Integer(validator=validator.Required())
+    recurring_term = schemaish.Integer(validator=validator.Required())
+    currency = schemaish.String(validator=validator.Required())
     
 schema = InvoiceSchema()
 
