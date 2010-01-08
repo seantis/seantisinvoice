@@ -28,7 +28,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr tal:repeat="invoice invoices" class="odd">
+                <tr tal:repeat="invoice invoices" tal:attributes="class python:str(repeat['invoice'].odd() and 'even' or 'odd')">
                     <td><a href="${request.application_url}/invoices/${invoice.id}">${invoice.project_description}</a></td>
                     <td><a href="${request.application_url}/customers/${invoice.contact.customer.id}">${invoice.contact.customer.name}</a></td>
                     <td align="right">${'%.02f' % invoice.grand_total()}</td>
@@ -39,7 +39,6 @@
         </table>
         
         <div class="controls">
-            <button class="medium-button">Cancel</button>
              <a href="${request.application_url}/add_invoice"><button class="button-striking">Add invoice</button></a>
         </div>
         

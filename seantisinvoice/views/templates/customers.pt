@@ -18,7 +18,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr tal:repeat="customer customers" class="odd">
+                <tr tal:repeat="customer customers" tal:attributes="class python:str(repeat['customer'].odd() and 'even' or 'odd')">
                     <td><a href="${request.application_url}/customers/${customer.id}">${customer.name}</a></td>
                     <td>${customer.address1}</td>
                     <td>${customer.city}</td>

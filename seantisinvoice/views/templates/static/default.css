@@ -463,7 +463,7 @@ html>body #footer {
     font-size: 15px;
 }
 
-#action-submit, #action-cancel {
+#action-submit, #action-cancel, #action-add {
     margin: 1em 0.5em;
     font-weight: bold;
     padding: 4px;
@@ -473,7 +473,7 @@ html>body #footer {
     font-size: 11px;
 }
 
-#action-submit {
+#action-submit, #action-add {
     border-color: #0A5688;
     background: #0A5688;
     color: #fff !important;
