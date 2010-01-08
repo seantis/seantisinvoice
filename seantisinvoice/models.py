@@ -115,7 +115,7 @@ class InvoiceItem(Base):
     service_description = Column(Unicode)
     service_title = Column(Unicode)
     
-    invoice = relation(Invoice, backref=backref('items', order_by=id, cascade="delete", lazy=False))
+    invoice = relation(Invoice, backref=backref('items', order_by=item_number, cascade="delete", lazy=False))
     
     def total(self):
         if self.hours:
