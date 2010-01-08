@@ -8,6 +8,8 @@
     <div metal:fill-slot="main_content">
 
 	    <div id="main_content">
+	        
+	        <h1>Edit Company Information</h1>
     
             <span tal:replace="structure request.form()"/>
         
