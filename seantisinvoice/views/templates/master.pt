@@ -7,7 +7,8 @@
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
     <title>seantis::invoice</title>
     
-    <link type="text/css" media="screen" rel="stylesheet" href="${request.application_url}/static/default.css" />
+    <link type="text/css" media="screen" rel="stylesheet" href="${request.application_url}/static/formish.css" />
+    <link type="text/css" media="screen" rel="stylesheet" href="${request.application_url}/static/default.css" />    
 
 </head>
 

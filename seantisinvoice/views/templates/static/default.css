@@ -410,3 +410,14 @@ html>body #footer {
 	font-weight: normal;
 	color: #1B75A9;
 }
+
+/* Overwrite formish styles */
+
+.formish-form .inputs input {
+    width: 320px;
+}
+
+.formish-form label {
+    text-align: right;
+    padding-top: 5px;
+}

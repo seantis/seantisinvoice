@@ -16,7 +16,12 @@ class CustomerSchema(schemaish.Structure):
 
     name = schemaish.String(validator=validator.Required())
     address1 = schemaish.String(validator=validator.Required())
+    address2 = schemaish.String()
+    address3 = schemaish.String()
     city = schemaish.String(validator=validator.Required())
+    postal_code = schemaish.String()
+    country = schemaish.String()
+    
 
 class CustomerController(object):
     
