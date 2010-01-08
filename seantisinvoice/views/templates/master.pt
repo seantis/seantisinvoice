@@ -36,7 +36,7 @@
     <!-- start header -->
     <div id="logo">
     	<h1><a href="${request.application_url}">seantis::invoice </a></h1>
-    	<h2> &raquo;&nbsp;&nbsp;&nbsp;invoceing with zero pain!</h2>
+    	<h2> &raquo;&nbsp;&nbsp;&nbsp;invocing with zero pain!</h2>
     </div>
     <div id="header">
     	<div id="menu">
