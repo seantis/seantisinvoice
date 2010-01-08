@@ -138,6 +138,12 @@
       name="submit"
       title="Save"
       />
+      
+    <formish:action
+      name="cancel"
+      title="Cancel"
+      validate="false"
+      />
 
   </formish:form>
   

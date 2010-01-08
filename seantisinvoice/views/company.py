@@ -60,3 +60,5 @@ class CompanyController(object):
         self._apply_data(company, converted)
         return HTTPFound(location=route_url('company', self.request))
         
+    def handle_cancel(self):
+        return HTTPFound(location=route_url('invoices', self.request))    
