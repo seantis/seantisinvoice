@@ -19,6 +19,18 @@ class CompanySchema(schemaish.Structure):
     address1 = schemaish.String(validator=validator.Required())
     address2 = schemaish.String()
     address3 = schemaish.String()
+    postal_code = schemaish.String(validator=validator.Required())
+    city = schemaish.String(validator=validator.Required())
+    country = schemaish.String()
+    e_mail = schemaish.String(validator=validator.Required())
+    phone = schemaish.String(validator=validator.Required())
+    # logo = schemaish.String()
+    tax = schemaish.String(validator=validator.Required())
+    vat_number = schemaish.String()
+    iban = schemaish.String()
+    swift = schemaish.String()
+    bank_address= schemaish.String()
+    invoice_start_number = schemaish.String()
     
 company_schema = CompanySchema()
 
