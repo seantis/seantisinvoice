@@ -91,7 +91,7 @@
 
 <!-- start footer -->
 <div id="footer">
-	<p id="legal">2010 by <a href="http://www.seantis.ch">seantis gmbh</a> :: <a href="http://bfg.repoze.org">repoze.bfg powered</a></p>
+	<p id="legal">2010 by <a target="_blank" href="http://www.seantis.ch">seantis gmbh</a> :: <a target="_blank" href="http://bfg.repoze.org">repoze.bfg powered</a></p>
 </div>
 <!-- end footer -->
 
