@@ -121,6 +121,18 @@ class InvoiceItem(Base):
         if self.hours:
             return self.hours * 140.0
         return self.amount
+        
+        
+# Nice to have: possible to edit it on the invoice form?        
+class Payment(Base):
+    __tablename__ = 'payment'
+    id = Column(Integer, primary_key=True)
+    invoice_id = Column(Integer, ForeignKey('invoice.id'))
+    date = Column(Date)
+    amount = Column(Float)
+    note = Column(Unicode)
+
+    invoice = relation(Invoice, lazy=False)
 
 def initialize_sql(db_string, echo=False):
     engine = create_engine(db_string, echo=echo)
