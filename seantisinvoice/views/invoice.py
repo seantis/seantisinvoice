@@ -1,3 +1,5 @@
+import datetime
+
 from webob.exc import HTTPFound
 
 import formish
@@ -156,8 +158,16 @@ def view_reports(request):
     if 'recurring' in request.params and request.params['recurring'] == '1':
         invoices = session.query(Invoice).filter(Invoice.recurring_term != None)
         title = u'Recurring Invoices'
-    else:
+    elif 'recurring' in request.params and request.params['recurring'] == '0':
         invoices = session.query(Invoice).filter(Invoice.recurring_term == None)
-        title = u'Non-Recurring Invoices'
+        title = u'Non-Invoices'
+    elif 'due' in request.params and request.params['due'] == '1':
+        today = datetime.date.today()
+        # FIXME: how can I use the due_date methode here??
+        invoices = session.query(Invoice).filter(Invoice.date <= today)
+        title = u'Invoices due'
+    else:
+        invoices = session.query(Invoice).all()
+        title = u'All Invoices'
     main = get_template('templates/master.pt')
     return dict(request=request, main=main, invoices=invoices, title=title)
