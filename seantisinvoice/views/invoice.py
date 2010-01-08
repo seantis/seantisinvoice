@@ -19,8 +19,8 @@ class InvoiceSchema(schemaish.Structure):
     project_description = schemaish.String(validator=validator.Required())
     date = schemaish.Date(validator=validator.Required())
     invoice_number = schemaish.Integer(validator=validator.Required())
-    payment_term = schemaish.Integer(validator=validator.Required())
     recurring_term = schemaish.Integer(validator=validator.Required())
+    payment_term = schemaish.Integer(validator=validator.Required())
     currency = schemaish.String(validator=validator.Required())
     
 schema = InvoiceSchema()
@@ -35,7 +35,11 @@ class InvoiceController(object):
         
     def form_defaults(self):
         
-        defaults = {}
+        defaults = {
+            'currency' : 'CHF',
+            'payment_term' : '30',
+        }
+        
         if "invoice" in self.request.matchdict:
             invoice_id = self.request.matchdict['invoice']
             try:
