@@ -70,6 +70,7 @@ class InvoiceController(object):
             for field_name in field_names:
                 if field_name in form_fields:
                     defaults[field_name] = getattr(invoice, field_name)
+            defaults['payment_term'] = (invoice.due_date - invoice.date).days
                     
             # Default values for the item subforms
             defaults['item_list'] = []
@@ -108,6 +109,7 @@ class InvoiceController(object):
         for field_name in field_names:
             if field_name in converted.keys():
                 setattr(invoice, field_name, converted[field_name])
+        invoice.due_date = invoice.date + datetime.timedelta(days=converted['payment_term'])
                 
         # Apply data of the items subforms
         session = DBSession()
@@ -160,8 +162,8 @@ def view_invoices(request):
         title = u'Non-recurring Invoices'
     elif 'due' in request.params and request.params['due'] == '1':
         today = datetime.date.today()
-        # FIXME: how can I use the due_date methode here??
-        invoices = session.query(Invoice).filter(Invoice.date <= today)
+        invoices = session.query(Invoice).filter(Invoice.due_date <= today)
+        # TODO: only open invoices
         title = u'Invoices due'
     else:
         invoices = session.query(Invoice).all()

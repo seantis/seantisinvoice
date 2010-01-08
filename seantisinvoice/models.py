@@ -72,7 +72,7 @@ class Invoice(Base):
     customer_contact_id = Column(Integer, ForeignKey('customer_contact.id'))
     invoice_number = Column(Integer, unique=True)
     date = Column(Date)
-    payment_term = Column(Integer)
+    due_date = Column(Date)
     recurring_term = Column(Integer)
     currency = Column(Unicode)
     project_description = Column(Unicode)
@@ -86,9 +86,6 @@ class Invoice(Base):
         # ToDo: add a counter starting with company invoice_start_number but no clue how we handle it when you
         # get new payment slips form your bank you have a new start number!
         pass
-    
-    def due_date(self):
-        return self.date + timedelta(days=self.payment_term)
         
     def sub_total(self):
         items = self.items

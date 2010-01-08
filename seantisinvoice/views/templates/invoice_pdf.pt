@@ -59,7 +59,7 @@
             <tr>
                 <td></td>
                 <td>Zahlbar bis:</td>
-                <td>${invoice.due_date().strftime('%d.%m.%Y')}</td>
+                <td>${invoice.due_date.strftime('%d.%m.%Y')}</td>
             </tr>
         </blockTable>
         
