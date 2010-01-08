@@ -24,9 +24,72 @@
     <story>
         <blockTable>
             <tr>
-                <td>${invoice.project_description}</td>
+                <td>seantis gmbh</td>
+                <td>${invoice.contact.customer.name}</td>
+            </tr>
+            <tr>
+                <td>Unter der Egg 5</td>
+                <td>${invoice.contact.title} ${invoice.contact.first_name} ${invoice.contact.last_name}</td>
+            </tr>
+            <tr>
+                <td>CH-6004 Luzern</td>
+                <td>${invoice.contact.customer.address1}</td>
+            </tr>
+            <tr>
+                <td>+41 41 511 22 50</td>
+                <td>${invoice.contact.customer.postal_code} ${invoice.contact.customer.city}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
             </tr>
         </blockTable>
+        
+        <blockTable>
+            <tr>
+                <td>MWST-Nr.: 696010</td>
+                <td>Rechnungsnummer: ${invoice.invoice_number}</td>
+            </tr>
+            <tr>
+                <td>IBAN: CH63.....................</td>
+                <td>Rechungsdatum: due_date</td>
+            </tr>
+        </blockTable>
+        
+        <h3>Rechnung :: ${invoice.project_description}</h3>
+        
+        <blockTable>
+            <tr>
+                <td>Service</td>
+                <td>Beschreibung</td>
+                <td>Kosten</td>
+            </tr>
+            <tr>
+                <td>Version 1.01</td>
+                <td>Gemaess Offerte</td>
+                <td>37'300</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>ST: 37'800</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>MWST (7.6%)</td>
+                <td>3'221</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td>Einmalige Kosten (${invoice.currency})</td>
+                <td>40'654</td>
+            </tr>
+        </blockTable>
+        
+        <para>Für das entgegengebrachte Vertrauen danken wir bestens und stehen Ihnen bei Fragen jederzeit gerne zur Verfügung.</para>
+        
+        <para>SWIFT: 3255666565665656565 / UBS AG, Postfach, CH-6002 Luzern</para>
+        
     </story>
 
 </document>
