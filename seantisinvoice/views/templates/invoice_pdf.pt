@@ -74,22 +74,22 @@
             <tr tal:repeat="item invoice.items">
                 <td>${item.service_description}</td>
                 <td>service Title</td>
-                <td>${'%.02f' % item.total()}</td>
+                <td align="right">${'%.02f' % item.total()}</td>
             </tr>
             <tr>
                 <td></td>
                 <td></td>
-                <td>${'%.02f' % invoice.sub_total()}</td>
+                <td align="right">${'%.02f' % invoice.sub_total()}</td>
             </tr>
             <tr>
                 <td></td>
                 <td>MWST (7.6%)</td>
-                <td>${'%.02f' % invoice.tax_amount()}</td>
+                <td align="right">${'%.02f' % invoice.tax_amount()}</td>
             </tr>
             <tr>
                 <td>Total</td>
                 <td>Einmalige Kosten (${invoice.currency})</td>
-                <td>${'%.02f' % invoice.grand_total()}</td>
+                <td align="right">${'%.02f' % invoice.grand_total()}</td>
             </tr>
         </blockTable>
         
