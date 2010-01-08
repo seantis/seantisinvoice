@@ -18,8 +18,8 @@ class InvoiceItemSchema(schemaish.Structure):
     item_id = schemaish.Integer()
     service_title = schemaish.String(validator=validator.Required())
     service_description = schemaish.String(validator=validator.Required())
-    amount = schemaish.Float()
-    hours = schemaish.Float()
+    amount = schemaish.Float(description="Enter the amout")
+    hours = schemaish.Float(description="Or hours (will be multiplied by your rate)")
     
 invoice_item_schema = InvoiceItemSchema()
 
