@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from sqlalchemy import create_engine
 from sqlalchemy import Column
 from sqlalchemy import Integer
@@ -52,8 +54,30 @@ class Invoice(Base):
     recurring_term = Column(Integer)
     currency = Column(Unicode)
     project_description = Column(Unicode)
+    tax = Column(Float)
     
     contact = relation(CustomerContact, lazy=False, backref=backref('invoices', order_by=date))
+    
+    # Calculate values for the invoice
+    def number_counter(self):
+        # ToDo: add a counter starting with company invoice_start_number but no clue how we handle it when you
+        # get new payment slips form your bank you have a new start number!
+    
+    def due_date(self):
+        return self.date + timedelta(days=self.payment_term)
+        
+    def sub_total(self):
+        items = self.items
+        sub_total = 0
+        for item in items:
+            sub_total + item.amount
+        return sub_total
+        
+    def tax_amount(self):
+        return self.sub_total() * self.tax / 100.0
+        
+    def grand_total(self):
+        return self.sub_total() + self.tax_amount()
 
 class InvoiceItem(Base):
     __tablename__ = 'invoice_item'
@@ -62,7 +86,6 @@ class InvoiceItem(Base):
     amount = Column(Float)
     hours = Column(Float)
     service_description = Column(Unicode)
-    tax = Column(Float)
     
     invoice = relation(Invoice, backref=backref('items', order_by=id), cascade="delete")
     

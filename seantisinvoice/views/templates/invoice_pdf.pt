@@ -3,7 +3,7 @@
 <document filename="template.pdf"
           xmlns:tal="http://xml.zope.org/namespaces/tal">
 
-    <template pageSize="(21cm, 29cm)" author="www.flightlog.ch" title="Rechnung :: ${invoice.invoice_number}">
+    <template pageSize="(21cm, 29cm)" author="www.seantis.ch" title="Rechnung :: ${invoice.invoice_number}">
         <pageTemplate id="main">
             <frame id="main" x1="2cm" y1="2cm" width="25cm" height="17cm" />
             <pageGraphics>
@@ -48,11 +48,18 @@
         <blockTable>
             <tr>
                 <td>MWST-Nr.: 696010</td>
-                <td>Rechnungsnummer: ${invoice.invoice_number}</td>
+                <td>Rechnungsnummer:</td>
+                <td>${invoice.invoice_number}</td>
             </tr>
             <tr>
                 <td>IBAN: CH63.....................</td>
-                <td>Rechungsdatum: due_date</td>
+                <td>Rechungsdatum:</td>
+                <td>${invoice.date}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Zahlbar bis:</td>
+                <td>${invoice.due_date()}</td>
             </tr>
         </blockTable>
         
@@ -72,17 +79,17 @@
             <tr>
                 <td></td>
                 <td></td>
-                <td>ST: 37'800</td>
+                <td>${invoice.sub_total()}</td>
             </tr>
             <tr>
                 <td></td>
                 <td>MWST (7.6%)</td>
-                <td>3'221</td>
+                <td>${invoice.tax_amount()}</td>
             </tr>
             <tr>
                 <td>Total</td>
                 <td>Einmalige Kosten (${invoice.currency})</td>
-                <td>40'654</td>
+                <td>${invoice.grand_total()}</td>
             </tr>
         </blockTable>
         
