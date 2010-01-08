@@ -1,13 +1,15 @@
-
 from sqlalchemy import create_engine
 from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import Unicode
 from sqlalchemy import String
 from sqlalchemy import Float
+from sqlalchemy import ForeignKey
+from sqlalchemy import Date
 
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import relation, backref
 
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -30,6 +32,7 @@ class Customer(Base):
 class CustomerContact(Base):
     __tablename__ = 'customer_contact'
     id = Column(Integer, primary_key=True)
+    customer_id = Column(Integer, ForeignKey('customer.id'))
     first_name = Column(Unicode)
     last_name = Column(Unicode)
     title = Column(Unicode)
@@ -37,22 +40,33 @@ class CustomerContact(Base):
     e_mail = Column(String)
     phone = Column(String)
     
+    customer = relation(Customer, backref=backref('contacts', order_by=id))
+    
 class Invoice(Base):
     __tablename__ = 'invoice'
     id = Column(Integer, primary_key=True)
-    invoice_number = Column(Integer)
+    customer_id = Column(Integer, ForeignKey('customer.id'))
+    customer_contact_id = Column(Integer, ForeignKey('customer_contact.id'))
+    invoice_number = Column(Integer, unique=True)
+    date = Column(Date)
     payment_term = Column(Integer)
     recurring_term = Column(Integer)
     currency = Column(Unicode)
     project_description = Column(Unicode)
+    
+    customer = relation(Customer, backref=backref('invoices', order_by=date))
+    contact = relation(CustomerContact)
 
 class InvoiceItem(Base):
     __tablename__ = 'invoice_item'
     id = Column(Integer, primary_key=True)
+    invoice_id = Column(Integer, ForeignKey('invoice.id'))
     amount = Column(Float)
     hours = Column(Float)
     service_description = Column(Unicode)
     tax = Column(Float)
+    
+    invoice = relation(Invoice, backref=backref('items', order_by=id))
     
 class Company(Base):
     __tablename__ = 'company'
