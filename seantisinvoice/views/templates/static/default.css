@@ -414,7 +414,7 @@ html>body #footer {
 /* Overwrite formish styles */
 
 .formish-form .inputs input {
-    width: 320px;
+    width: 300px;
 }
 
 .formish-form label {
@@ -427,4 +427,12 @@ html>body #footer {
     margin-right: 10px;
 }
     
+.widget-container {
+    background: #ededed;
+}
+
+.remove {
+    margin-left: 470px;
+    color: red;
+    cursor: pointer;
 }
