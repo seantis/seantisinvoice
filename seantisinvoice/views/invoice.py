@@ -50,17 +50,18 @@ class InvoiceController(object):
         
     def form_defaults(self):
         
+        session = DBSession()
+        company = session.query(Company).first()
+        
         defaults = {
             'currency' : 'CHF',
             'payment_term' : '30',
-            # Todo: should come from company.tax setting!
-            'tax' : '7.6',
+            'tax' : company.tax,
         }
         
         if "invoice" in self.request.matchdict:
             invoice_id = self.request.matchdict['invoice']
             try:
-                session = DBSession()
                 invoice = session.query(Invoice).filter_by(id=invoice_id).one()
             except NoResultFound:
                 return HTTPFound(location = route_url('invoices', self.request))  
