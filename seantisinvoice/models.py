@@ -75,6 +75,8 @@ class Invoice(Base):
         return sub_total
         
     def tax_amount(self):
+        if not self.tax:
+            return 0
         return self.sub_total() * self.tax / 100.0
         
     def grand_total(self):
