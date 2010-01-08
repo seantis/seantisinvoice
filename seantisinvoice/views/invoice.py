@@ -19,7 +19,7 @@ class InvoiceSchema(schemaish.Structure):
     project_description = schemaish.String(validator=validator.Required())
     date = schemaish.Date(validator=validator.Required())
     invoice_number = schemaish.Integer(validator=validator.Required())
-    recurring_term = schemaish.Integer(validator=validator.Required())
+    recurring_term = schemaish.Integer()
     payment_term = schemaish.Integer(validator=validator.Required())
     currency = schemaish.String(validator=validator.Required())
     
