@@ -150,3 +150,9 @@ def view_invoices(request):
     invoices = session.query(Invoice).all()
     main = get_template('templates/master.pt')
     return dict(request=request, main=main, invoices=invoices)
+    
+def view_reports(request):
+    session = DBSession()
+    invoices = session.query(Invoice).filter(Invoice.recurring_term != None)    
+    main = get_template('templates/master.pt')
+    return dict(request=request, main=main, invoices=invoices)
