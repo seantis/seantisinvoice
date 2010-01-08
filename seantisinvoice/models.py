@@ -90,7 +90,7 @@ class InvoiceItem(Base):
     hours = Column(Float)
     service_description = Column(Unicode)
     
-    invoice = relation(Invoice, backref=backref('items', order_by=id, cascade="delete"))
+    invoice = relation(Invoice, lazy=False, backref=backref('items', order_by=id, cascade="delete"))
     
 class Company(Base):
     __tablename__ = 'company'
