@@ -155,7 +155,9 @@ def view_reports(request):
     session = DBSession()
     if 'recurring' in request.params and request.params['recurring'] == '1':
         invoices = session.query(Invoice).filter(Invoice.recurring_term != None)
+        title = u'Recurring Invoices'
     else:
         invoices = session.query(Invoice).filter(Invoice.recurring_term == None)
+        title = u'Non-Recurring Invoices'
     main = get_template('templates/master.pt')
-    return dict(request=request, main=main, invoices=invoices)
+    return dict(request=request, main=main, invoices=invoices, title=title)
