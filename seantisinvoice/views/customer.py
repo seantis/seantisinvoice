@@ -15,6 +15,7 @@ from seantisinvoice.models import Customer, CustomerContact
 
 class CustomerContactSchema(schemaish.Structure):
     
+    contact_id = schemaish.Integer()
     first_name = schemaish.String(validator=validator.Required())
     last_name = schemaish.String(validator=validator.Required())
 
@@ -65,13 +66,15 @@ class CustomerController(object):
                 for field_name in field_names:
                     if field_name in form_fields:
                         contact_defaults[field_name] = getattr(contact, field_name)
+                contact_defaults['contact_id'] = contact.id
                 defaults['contact_list'].append(contact_defaults)
         
         return defaults
         
     def form_widgets(self, fields):
         widgets = {}
-        widgets['contact_list'] = formish.SequenceDefault()
+        widgets['contact_list'] = formish.SequenceDefault(min_start_fields=1,sortable=False)
+        widgets['contact_list.*.contact_id'] = formish.Hidden()
         return widgets
         
     def __call__(self):
@@ -86,9 +89,14 @@ class CustomerController(object):
                 setattr(customer, field_name, converted[field_name])
             
         # Apply data of the contact subforms
-        for index, contact_data in enumerate(converted['contact_list']):
-            if index < len(customer.contacts):
-                contact = customer.contacts[index]
+        contact_map = {}
+        for contact in customer.contacts:
+            contact_map[contact.id] = contact
+        for contact_data in converted['contact_list']:
+            if contact_data['contact_id']:
+                contact_id = contact_data['contact_id']
+                contact = contact_map[contact_id]
+                del contact_map[contact_id]
             else:
                 contact = CustomerContact()
                 customer.contacts.append(contact)
@@ -97,6 +105,10 @@ class CustomerController(object):
             for field_name in field_names:
                 if field_name in contact_data.keys():
                     setattr(contact, field_name, contact_data[field_name])
+        # Remove contact items that have been removed in the form
+        for contact in contact_map.values():
+            session = DBSession()
+            session.delete(contact)
         
     def handle_add(self, converted):
         customer = Customer()
