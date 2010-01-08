@@ -437,8 +437,17 @@ html>body #footer {
 
 /* styling for the widget containers */
 
+.formish-form {
+    padding-top: 15px;
+    background: #EDEDED;
+}
+
+label {
+    color: #000 !important;
+}
+
 .widget-container {
-    background: #ededed;
+    background: #fff;
 }
 
 .remove {
@@ -484,4 +493,3 @@ html>body #footer {
     border-color: #838383 #5F5F5F #5F5F5F #838383;
     background: #ededed;
 }
-
