@@ -128,9 +128,10 @@ class InvoiceController(object):
             session.delete(item)
         
     def handle_add(self, converted):
-        invoice = Invoice()
-        self._apply_data(invoice, converted)
         session = DBSession()
+        invoice = Invoice()
+        invoice.company = session.query(Company).first()
+        self._apply_data(invoice, converted)
         session.add(invoice)
         return HTTPFound(location=route_url('invoices', self.request))
         

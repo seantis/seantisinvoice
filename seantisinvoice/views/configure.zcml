@@ -45,6 +45,11 @@
     view=".invoice_export.view_invoice_pdf"
     />
     
+  <route
+    path="/company"
+    name="company"
+    />
+    
   <!-- Forms -->
   
   <formish:form
@@ -119,6 +124,19 @@
       name="cancel"
       title="Cancel"
       validate="false"
+      />
+
+  </formish:form>
+  
+  <formish:form
+    name=""
+    route_name="company"
+    renderer="templates/company.pt"
+    controller=".company.CompanyController">
+
+    <formish:action
+      name="submit"
+      title="Save"
       />
 
   </formish:form>

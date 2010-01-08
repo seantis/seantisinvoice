@@ -1,4 +1,5 @@
 from datetime import timedelta
+import transaction
 
 from sqlalchemy import create_engine
 from sqlalchemy import Column
@@ -126,3 +127,7 @@ def initialize_sql(db_string, echo=False):
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
     Base.metadata.create_all(engine)
+    session = DBSession()
+    if not session.query(Company).first():
+        session.add(Company())
+        transaction.commit()
