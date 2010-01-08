@@ -42,7 +42,7 @@ class CustomerContact(Base):
     e_mail = Column(String)
     phone = Column(String)
     
-    customer = relation(Customer, lazy=False, backref=backref('contacts', order_by=id), cascade="delete")
+    customer = relation(Customer, lazy=False, backref=backref('contacts', order_by=id, cascade="delete"))
     
 class Invoice(Base):
     __tablename__ = 'invoice'
@@ -62,6 +62,7 @@ class Invoice(Base):
     def number_counter(self):
         # ToDo: add a counter starting with company invoice_start_number but no clue how we handle it when you
         # get new payment slips form your bank you have a new start number!
+        pass
     
     def due_date(self):
         return self.date + timedelta(days=self.payment_term)
@@ -87,7 +88,7 @@ class InvoiceItem(Base):
     hours = Column(Float)
     service_description = Column(Unicode)
     
-    invoice = relation(Invoice, backref=backref('items', order_by=id), cascade="delete")
+    invoice = relation(Invoice, backref=backref('items', order_by=id, cascade="delete"))
     
 class Company(Base):
     __tablename__ = 'company'

@@ -82,6 +82,7 @@ class CustomerController(object):
         return dict(request=self.request, main=main)
         
     def _apply_data(self, customer, converted):
+        session = DBSession()
         # Apply schema fields to the customer object
         field_names = [ p.key for p in class_mapper(Customer).iterate_properties ]
         for field_name in field_names:
@@ -99,7 +100,8 @@ class CustomerController(object):
                 del contact_map[contact_id]
             else:
                 contact = CustomerContact()
-                customer.contacts.append(contact)
+                contact.customer = customer
+                session.add(contact)
             # Apply schema fields to the customer object
             field_names = [ p.key for p in class_mapper(CustomerContact).iterate_properties ]
             for field_name in field_names:
@@ -107,7 +109,6 @@ class CustomerController(object):
                     setattr(contact, field_name, contact_data[field_name])
         # Remove contact items that have been removed in the form
         for contact in contact_map.values():
-            session = DBSession()
             session.delete(contact)
         
     def handle_add(self, converted):
