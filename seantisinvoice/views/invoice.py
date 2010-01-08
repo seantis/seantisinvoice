@@ -4,6 +4,7 @@ from webob.exc import HTTPFound
 
 import formish
 import schemaish
+import validatish
 from validatish import validator
 
 from sqlalchemy.orm.exc import NoResultFound
@@ -36,7 +37,7 @@ class InvoiceSchema(schemaish.Structure):
     payment_term = schemaish.Integer(validator=validator.Required())
     currency = schemaish.String(validator=validator.Required())
     tax = schemaish.Float()
-    item_list = schemaish.Sequence(invoice_item_schema)
+    item_list = schemaish.Sequence(invoice_item_schema, validator=validatish.Length(min=1))
     
 invoice_schema = InvoiceSchema()
 
