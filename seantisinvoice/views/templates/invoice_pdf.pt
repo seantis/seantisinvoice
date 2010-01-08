@@ -24,7 +24,7 @@
     <story>
         <blockTable>
             <tr>
-                <td>seantis gmbh</td>
+                <td>${invoice.company.name}</td>
                 <td>${invoice.contact.customer.name}</td>
             </tr>
             <tr>

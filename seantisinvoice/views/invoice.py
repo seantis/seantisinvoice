@@ -11,7 +11,7 @@ from repoze.bfg.url import route_url
 from repoze.bfg.chameleon_zpt import get_template
 
 from seantisinvoice.models import DBSession
-from seantisinvoice.models import CustomerContact, Invoice, InvoiceItem
+from seantisinvoice.models import CustomerContact, Invoice, InvoiceItem, Company
 
 class InvoiceItemSchema(schemaish.Structure):
     
