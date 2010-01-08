@@ -1,0 +1,22 @@
+<configure xmlns="http://namespaces.repoze.org/bfg">
+    
+  <route 
+    path=""
+    name="invoices"
+    view=".invoices.view_invoices"
+    view_renderer="templates/invoices.pt"
+    />
+
+  <route 
+    path="add_customer"
+    name="add_customer"
+    view=".customer.add_customer"
+    view_renderer="templates/add_customer.pt"
+    />
+
+  <static
+    name="static"
+    path="templates/static"
+    />
+    
+</configure>
