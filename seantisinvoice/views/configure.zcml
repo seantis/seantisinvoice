@@ -124,4 +124,14 @@
     path="templates/static"
     />
     
+  <static
+    name="formish_css"
+    path="formish:css"
+    />
+    
+  <static
+    name="formish_js"
+    path="formish:js"
+    />
+    
 </configure>

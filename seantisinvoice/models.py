@@ -40,12 +40,12 @@ class CustomerContact(Base):
     e_mail = Column(String)
     phone = Column(String)
     
-    customer = relation(Customer, backref=backref('contacts', order_by=id))
+    customer = relation(Customer, lazy=False, backref=backref('contacts', order_by=id), 
+                        cascade="delete")
     
 class Invoice(Base):
     __tablename__ = 'invoice'
     id = Column(Integer, primary_key=True)
-    customer_id = Column(Integer, ForeignKey('customer.id'))
     customer_contact_id = Column(Integer, ForeignKey('customer_contact.id'))
     invoice_number = Column(Integer, unique=True)
     date = Column(Date)
@@ -54,8 +54,7 @@ class Invoice(Base):
     currency = Column(Unicode)
     project_description = Column(Unicode)
     
-    customer = relation(Customer, lazy=False, backref=backref('invoices', order_by=date))
-    contact = relation(CustomerContact)
+    contact = relation(CustomerContact, lazy=False, backref=backref('invoices', order_by=date))
 
 class InvoiceItem(Base):
     __tablename__ = 'invoice_item'
@@ -66,7 +65,8 @@ class InvoiceItem(Base):
     service_description = Column(Unicode)
     tax = Column(Float)
     
-    invoice = relation(Invoice, backref=backref('items', order_by=id))
+    invoice = relation(Invoice, backref=backref('items', order_by=id), 
+                       cascade="delete")
     
 class Company(Base):
     __tablename__ = 'company'

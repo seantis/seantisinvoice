@@ -26,7 +26,7 @@
             <tbody>
                 <tr tal:repeat="invoice invoices" class="odd">
                     <td><a href="${request.application_url}/invoices/${invoice.id}">${invoice.project_description}</a></td>
-                    <td><a href="${request.application_url}/customers/${invoice.customer.id}">${invoice.customer.name}</a></td>
+                    <td><a href="${request.application_url}/customers/${invoice.contact.customer.id}">${invoice.contact.customer.name}</a></td>
                     <td align="right">20'000</td>
                     <td align="right">${invoice.date}</td>
                     <td align="right"><a href="#"><img src="${request.application_url}/static/images/pdf_icon.png" alt="Download as PDF" /></a></td>

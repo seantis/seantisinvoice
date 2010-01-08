@@ -11,7 +11,7 @@ from repoze.bfg.url import route_url
 from repoze.bfg.chameleon_zpt import get_template
 
 from seantisinvoice.models import DBSession
-from seantisinvoice.models import Customer, Invoice
+from seantisinvoice.models import CustomerContact, Invoice
 
 class InvoiceSchema(schemaish.Structure):
     
@@ -19,6 +19,7 @@ class InvoiceSchema(schemaish.Structure):
     project_description = schemaish.String(validator=validator.Required())
     date = schemaish.Date(validator=validator.Required())
     invoice_number = schemaish.Integer(validator=validator.Required())
+    contact_id = schemaish.String(validator=validator.Required())
     recurring_term = schemaish.Integer()
     payment_term = schemaish.Integer(validator=validator.Required())
     currency = schemaish.String(validator=validator.Required())
@@ -59,8 +60,10 @@ class InvoiceController(object):
         widgets = {}
         widgets['date'] = formish.DateParts(day_first=True)
         session = DBSession()
-        options = [ customer for customer in session.query(Customer.id, Customer.name).all()]
-        widgets['customer_id'] = formish.SelectChoice(options=options)
+        options = []
+        for contact in session.query(CustomerContact).all():
+            options.append((contact.id, '%s: %s %s' % (contact.customer.name, contact.first_name, contact.last_name)))
+        widgets['contact_id'] = formish.SelectChoice(options=options)
         
         return widgets
         
