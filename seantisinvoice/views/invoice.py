@@ -16,7 +16,8 @@ from seantisinvoice.models import CustomerContact, Invoice, InvoiceItem
 class InvoiceItemSchema(schemaish.Structure):
     
     item_id = schemaish.Integer()
-    service_description = schemaish.String()
+    service_title = schemaish.String(validator=validator.Required())
+    service_description = schemaish.String(validator=validator.Required())
     amount = schemaish.Float()
     hours = schemaish.Float()
     

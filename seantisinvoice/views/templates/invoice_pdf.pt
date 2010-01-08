@@ -72,8 +72,8 @@
                 <td>Kosten</td>
             </tr>
             <tr tal:repeat="item invoice.items">
+                <td>${item.service_title}</td>
                 <td>${item.service_description}</td>
-                <td>service Title</td>
                 <td align="right">${'%.02f' % item.total()}</td>
             </tr>
             <tr>

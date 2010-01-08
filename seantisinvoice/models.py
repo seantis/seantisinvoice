@@ -86,9 +86,11 @@ class InvoiceItem(Base):
     __tablename__ = 'invoice_item'
     id = Column(Integer, primary_key=True)
     invoice_id = Column(Integer, ForeignKey('invoice.id'))
+    item_number = Column(Integer)
     amount = Column(Float)
     hours = Column(Float)
     service_description = Column(Unicode)
+    service_title = Column(Unicode)
     
     invoice = relation(Invoice, backref=backref('items', order_by=id, cascade="delete", lazy=False))
     
