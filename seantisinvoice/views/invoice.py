@@ -153,8 +153,7 @@ def view_invoices(request):
     
 def view_reports(request):
     session = DBSession()
-    recurring = request.GET['recurring']
-    if recurring == '1':
+    if 'recurring' in request.params and request.params['recurring'] == '1':
         invoices = session.query(Invoice).filter(Invoice.recurring_term != None)
     else:
         invoices = session.query(Invoice).filter(Invoice.recurring_term == None)
