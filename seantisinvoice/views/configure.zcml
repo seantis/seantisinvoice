@@ -24,17 +24,41 @@
     name="add_customer"
     />
     
+  <route
+    path="/customers/:customer"
+    name="edit_customer"
+    />
+    
   <!-- Forms -->
     
   <formish:form
     name=""
     route_name="add_customer"
-    renderer="templates/add_customer.pt"
-    controller=".customer.AddCustomerController">
+    renderer="templates/customer.pt"
+    controller=".customer.CustomerController">
 
     <formish:action
       name="add"
       title="Add customer"
+      />
+
+    <formish:action
+      name="cancel"
+      title="Cancel"
+      validate="false"
+      />
+
+  </formish:form>
+  
+  <formish:form
+    name=""
+    route_name="edit_customer"
+    renderer="templates/customer.pt"
+    controller=".customer.CustomerController">
+
+    <formish:action
+      name="submit"
+      title="Save"
       />
 
     <formish:action

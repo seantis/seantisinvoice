@@ -21,7 +21,7 @@
             </thead>
             <tbody>
                 <tr tal:repeat="customer customers" class="odd">
-                    <td>${customer.name}</td>
+                    <td><a href="${request.application_url}/customers/${customer.id}">${customer.name}</a></td>
                     <td>${customer.address1}</td>
                     <td>${customer.city}</td>
                 </tr>
