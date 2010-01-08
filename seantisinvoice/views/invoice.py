@@ -15,11 +15,10 @@ from seantisinvoice.models import CustomerContact, Invoice
 
 class InvoiceSchema(schemaish.Structure):
     
-    customer_id = schemaish.String(validator=validator.Required())
+    customer_contact_id = schemaish.String(validator=validator.Required())
     project_description = schemaish.String(validator=validator.Required())
     date = schemaish.Date(validator=validator.Required())
     invoice_number = schemaish.Integer(validator=validator.Required())
-    contact_id = schemaish.String(validator=validator.Required())
     recurring_term = schemaish.Integer()
     payment_term = schemaish.Integer(validator=validator.Required())
     currency = schemaish.String(validator=validator.Required())
@@ -63,7 +62,7 @@ class InvoiceController(object):
         options = []
         for contact in session.query(CustomerContact).all():
             options.append((contact.id, '%s: %s %s' % (contact.customer.name, contact.first_name, contact.last_name)))
-        widgets['contact_id'] = formish.SelectChoice(options=options)
+        widgets['customer_contact_id'] = formish.SelectChoice(options=options)
         
         return widgets
         

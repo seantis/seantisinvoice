@@ -40,8 +40,7 @@ class CustomerContact(Base):
     e_mail = Column(String)
     phone = Column(String)
     
-    customer = relation(Customer, lazy=False, backref=backref('contacts', order_by=id), 
-                        cascade="delete")
+    customer = relation(Customer, lazy=False, backref=backref('contacts', order_by=id), cascade="delete")
     
 class Invoice(Base):
     __tablename__ = 'invoice'
@@ -65,8 +64,7 @@ class InvoiceItem(Base):
     service_description = Column(Unicode)
     tax = Column(Float)
     
-    invoice = relation(Invoice, backref=backref('items', order_by=id), 
-                       cascade="delete")
+    invoice = relation(Invoice, backref=backref('items', order_by=id), cascade="delete")
     
 class Company(Base):
     __tablename__ = 'company'
