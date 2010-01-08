@@ -28,31 +28,31 @@
                 <td>${invoice.contact.customer.name}</td>
             </tr>
             <tr>
-                <td>Unter der Egg 5</td>
+                <td>${invoice.company.address1}</td>
                 <td>${invoice.contact.title} ${invoice.contact.first_name} ${invoice.contact.last_name}</td>
             </tr>
             <tr>
-                <td>CH-6004 Luzern</td>
+                <td>${invoice.company.country}-${invoice.company.postal_code} ${invoice.company.city}</td>
                 <td>${invoice.contact.customer.address1}</td>
             </tr>
             <tr>
-                <td>+41 41 511 22 50</td>
+                <td>${invoice.company.phone}</td>
                 <td>${invoice.contact.customer.postal_code} ${invoice.contact.customer.city}</td>
             </tr>
             <tr>
-                <td></td>
+                <td>${invoice.company.e_mail}</td>
                 <td></td>
             </tr>
         </blockTable>
         
         <blockTable>
             <tr>
-                <td>MWST-Nr.: 696010</td>
+                <td>MWST-Nr.: ${invoice.company.vat_number}</td>
                 <td>Rechnungsnummer:</td>
                 <td>${invoice.invoice_number}</td>
             </tr>
             <tr>
-                <td>IBAN: CH63.....................</td>
+                <td>IBAN: ${invoice.company.iban}</td>
                 <td>Rechungsdatum:</td>
                 <td>${invoice.date.strftime('%d.%m.%Y')}</td>
             </tr>
@@ -95,7 +95,7 @@
         
         <para>Für das entgegengebrachte Vertrauen danken wir bestens und stehen Ihnen bei Fragen jederzeit gerne zur Verfügung.</para>
         
-        <para>SWIFT: 3255666565665656565 / UBS AG, Postfach, CH-6002 Luzern</para>
+        <para>SWIFT: ${invoice.company.swift} / ${invoice.company.bank_address}</para>
         
     </story>
 

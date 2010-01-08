@@ -21,7 +21,9 @@ class CompanySchema(schemaish.Structure):
     address3 = schemaish.String()
     postal_code = schemaish.String(validator=validator.Required())
     city = schemaish.String(validator=validator.Required())
-    country = schemaish.String()
+    # Todo: prodive a vocabulary with countries including country codes: used in combination with 
+    # postal code: CH-6004 Luzern
+    country = schemaish.String(description="Use official country code (e.g. CH for Switzerland)")
     e_mail = schemaish.String(validator=validator.Required())
     phone = schemaish.String(validator=validator.Required())
     # logo = schemaish.String()

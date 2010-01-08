@@ -426,6 +426,13 @@ html>body #footer {
     width: 50px !important;
     margin-right: 10px;
 }
+
+/* special rule for description fields */
+.formish-form span {
+    display: block;
+    margin-top: 5px;
+    margin-left: 210px;
+}
     
 .widget-container {
     background: #ededed;
