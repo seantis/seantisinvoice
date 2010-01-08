@@ -1,4 +1,9 @@
-<configure xmlns="http://namespaces.repoze.org/bfg">
+<configure xmlns="http://namespaces.repoze.org/bfg"
+           xmlns:formish="http://namespaces.repoze.org/formish">
+           
+  <include package="repoze.bfg.formish" file="meta.zcml"/>
+    
+  <!-- Routes -->
     
   <route 
     path=""
@@ -6,14 +11,42 @@
     view=".invoices.view_invoices"
     view_renderer="templates/invoices.pt"
     />
-
+    
   <route 
-    path="add_customer"
-    name="add_customer"
-    view=".customer.add_customer"
-    view_renderer="templates/add_customer.pt"
+    path="/customers"
+    name="customers"
+    view=".customer.view_customers"
+    view_renderer="templates/customers.pt"
     />
 
+  <route
+    path="/add_customer"
+    name="add_customer"
+    />
+    
+  <!-- Forms -->
+    
+  <formish:form
+    name=""
+    route_name="add_customer"
+    renderer="templates/add_customer.pt"
+    controller=".customer.AddCustomerController">
+
+    <formish:action
+      name="add"
+      title="Add customer"
+      />
+
+    <formish:action
+      name="cancel"
+      title="Cancel"
+      validate="false"
+      />
+
+  </formish:form>
+  
+  <!-- Static resources -->
+  
   <static
     name="static"
     path="templates/static"

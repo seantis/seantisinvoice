@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="main.macros['main']">
+
+    <div metal:fill-slot="main_content">
+
+	<div id="main_content">
+	        
+	    <h1>Customers</h1>
+        
+        <a href="${request.application_url}/add_customer">Add new customer</a>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>City</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr tal:repeat="customer customers" class="odd">
+                    <td>${customer.name}</td>
+                    <td>${customer.address1}</td>
+                    <td>${customer.city}</td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+	</div>
+	
+</html>

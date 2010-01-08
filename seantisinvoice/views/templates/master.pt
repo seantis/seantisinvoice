@@ -23,7 +23,7 @@
     	<div id="menu">
     		<ul>
     			<li class="current_page_item"><a href="#">Invoices</a></li>
-    			<li><a href="#">Customers</a></li>
+    			<li><a href="${request.application_url}/customers">Customers</a></li>
     			<li><a href="#">Company Profile</a></li>
     		</ul>
     	</div>

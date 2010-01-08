@@ -1,19 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html
-    xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:tal="http://xml.zope.org/namespaces/tal">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="main.macros['main']">
 
-<head>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-    <title></title>
-</head>
+    <div metal:fill-slot="main_content">
 
-<body>
+	    <div id="main_content">
     
-    <form>
-        <label>ADD A NEW CUSTOMER</label>
-    </form>
+            <span tal:replace="structure request.form()"/>
+        
+        </div>
     
-</body>
+    </div>
+    
 </html>
