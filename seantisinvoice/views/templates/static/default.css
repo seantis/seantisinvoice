@@ -421,3 +421,10 @@ html>body #footer {
     text-align: right;
     padding-top: 5px;
 }
+
+.widget-dateparts .inputs input {
+    width: 50px !important;
+    margin-right: 10px;
+}
+    
+}
