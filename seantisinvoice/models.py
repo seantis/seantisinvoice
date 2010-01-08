@@ -20,6 +20,26 @@ from zope.sqlalchemy import ZopeTransactionExtension
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
 
+class Company(Base):
+    __tablename__ = 'company'
+    id = Column(Integer, primary_key=True)
+    name = Column(Unicode)
+    address1 = Column(Unicode)
+    address2 = Column(Unicode)
+    address3 = Column(Unicode)
+    city = Column(Unicode)
+    postal_code = Column(String(4))
+    country = Column(Unicode)
+    e_mail = Column(String)
+    phone = Column(String)
+    logo = Column(String)
+    tax = Column(Float)
+    vat_number = Column(String)
+    iban = Column(String)
+    swift = Column(String)
+    bank_address = Column(Unicode)
+    invoice_start_number = Column(Integer)
+
 class Customer(Base):
     __tablename__ = 'customer'
     id = Column(Integer, primary_key=True)
@@ -47,6 +67,7 @@ class CustomerContact(Base):
 class Invoice(Base):
     __tablename__ = 'invoice'
     id = Column(Integer, primary_key=True)
+    company_id = Column(Integer, ForeignKey('company.id'))
     customer_contact_id = Column(Integer, ForeignKey('customer_contact.id'))
     invoice_number = Column(Integer, unique=True)
     date = Column(Date)
@@ -56,6 +77,7 @@ class Invoice(Base):
     project_description = Column(Unicode)
     tax = Column(Float)
     
+    company = relation(Company, lazy=False)
     contact = relation(CustomerContact, lazy=False, backref=backref('invoices', order_by=date))
     
     # Calculate values for the invoice
@@ -98,26 +120,6 @@ class InvoiceItem(Base):
         if self.hours:
             return self.hours * 140.0
         return self.amount
-    
-class Company(Base):
-    __tablename__ = 'company'
-    id = Column(Integer, primary_key=True)
-    name = Column(Unicode)
-    address1 = Column(Unicode)
-    address2 = Column(Unicode)
-    address3 = Column(Unicode)
-    city = Column(Unicode)
-    postal_code = Column(String(4))
-    country = Column(Unicode)
-    e_mail = Column(String)
-    phone = Column(String)
-    logo = Column(String)
-    tax = Column(Float)
-    vat_number = Column(String)
-    iban = Column(String)
-    swift = Column(String)
-    bank_address = Column(Unicode)
-    invoice_start_number = Column(Integer)
 
 def initialize_sql(db_string, echo=False):
     engine = create_engine(db_string, echo=echo)
