@@ -132,7 +132,7 @@ class CustomerController(object):
 
 def view_customers(request):
     session = DBSession()
-    customers = session.query(Customer).all()
+    customers = session.query(Customer).order_by(Customer.name).all()
     main = get_template('templates/master.pt')
     return dict(request=request, main=main, customers=customers)
     
