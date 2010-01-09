@@ -134,7 +134,7 @@ class InvoiceController(object):
         item_map = {}
         for item in invoice.items:
             item_map[item.id] = item
-        for item_data in converted['item_list']:
+        for index, item_data in enumerate(converted['item_list']):
             if item_data['item_id']:
                 item_id = item_data['item_id']
                 item = item_map[item_id]
@@ -148,6 +148,7 @@ class InvoiceController(object):
             for field_name in field_names:
                 if field_name in item_data.keys():
                     setattr(item, field_name, item_data[field_name])
+            item.item_number = index
         # Remove contact items that have been removed in the form
         for item in item_map.values():
             session.delete(item)
