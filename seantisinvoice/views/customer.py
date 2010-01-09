@@ -31,7 +31,7 @@ class CustomerSchema(schemaish.Structure):
     city = schemaish.String(validator=validator.Required())
     postal_code = schemaish.String()
     country = schemaish.String()
-    contact_list = schemaish.Sequence(customer_contact_schmema, validator=validatish.Length(min=1))
+    contact_list = schemaish.Sequence(customer_contact_schmema)
     
 customer_schema = CustomerSchema()
 
