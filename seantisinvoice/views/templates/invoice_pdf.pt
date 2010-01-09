@@ -73,21 +73,21 @@
             </tr>
         </blockTable>
         
-        <h3>Rechnung :: ${invoice.project_description}</h3>
+        <h3 fontName="Helvetica" fontSize="10">Rechnung :: ${invoice.project_description}</h3>
         
         <blockTable colWidths="30% 50% 10% 10%">
             <blockTableStyle id="services">
                 <blockFont name="Helvetica" size="8" />
                 <lineStyle kind="LINEABOVE" colorName="black" start="0,0" stop="-1,0"/>
                 <lineStyle kind="LINEABOVE" colorName="black" start="0,1" stop="-1,1" thickness="0.25"/>
-                <lineStyle kind="LINEBELOW" colorName="black" start="0,-4" stop="-1,-4"/>
+                <lineStyle kind="LINEBELOW" colorName="black" start="0,-4" stop="-1,-4" thickness="0.25"/>
                 <lineStyle kind="LINEBELOW" colorName="black" start="0,-2" stop="-1,-2"/>
                 <lineStyle kind="LINEBELOW" colorName="black" start="0,-1" stop="-1,-1" thickness="0.25"/>
             </blockTableStyle>
             <tr>
                 <td>Service</td>
                 <td>Beschreibung</td>
-                <td>h / PT</td>
+                <td>H / PT</td>
                 <td>Kosten</td>
             </tr>
             <tr tal:repeat="item invoice.items">
