@@ -7,6 +7,9 @@ import schemaish
 import validatish
 from validatish import validator
 
+# for sorting of the table used later
+from sqlalchemy import desc, asc
+
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.util import class_mapper
 
@@ -155,11 +158,15 @@ class InvoiceController(object):
 
 def view_invoices(request):
     session = DBSession()
+    
+    # Nice to have: sort with /?recurring=0&sort=date&dir=desc
+    # invoices = session.query(Invoice).filter(Invoice.recurring_term == None).order_by(desc(Invoice.date))
+    
     if 'recurring' in request.params and request.params['recurring'] == '1':
         invoices = session.query(Invoice).filter(Invoice.recurring_term != None)
         title = u'Recurring Invoices'
     elif 'recurring' in request.params and request.params['recurring'] == '0':
-        invoices = session.query(Invoice).filter(Invoice.recurring_term == None)
+        invoices = session.query(Invoice).filter(Invoice.recurring_term == None).order_by(desc(Invoice.date))
         title = u'Non-recurring Invoices'
     elif 'due' in request.params and request.params['due'] == '1':
         today = datetime.date.today()
