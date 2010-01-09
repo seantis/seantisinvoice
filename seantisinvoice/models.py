@@ -47,7 +47,7 @@ class Company(Base):
     iban = Column(String)
     swift = Column(String)
     bank_address = Column(Unicode)
-    invoice_start_number = Column(Integer)
+    invoice_start_number = Column(Integer, default=1)
 
 class Customer(Base):
     __tablename__ = 'customer'
@@ -89,12 +89,6 @@ class Invoice(Base):
     
     company = relation(Company, lazy=False)
     contact = relation(CustomerContact, lazy=False, backref=backref('invoices', order_by=date))
-    
-    # Calculate values for the invoice
-    def number_counter(self):
-        # ToDo: add a counter starting with company invoice_start_number but no clue how we handle it when you
-        # get new payment slips form your bank you have a new start number!
-        pass
         
     def sub_total(self):
         items = self.items

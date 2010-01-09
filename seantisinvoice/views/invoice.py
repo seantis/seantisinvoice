@@ -50,7 +50,7 @@ class InvoiceSchema(schemaish.Structure):
     customer_contact_id = schemaish.String(validator=validator.Required())
     project_description = schemaish.String(validator=validator.Required())
     date = schemaish.Date(validator=validator.Required())
-    invoice_number = schemaish.Integer(validator=validator.Required())
+    invoice_number = schemaish.Integer()
     recurring_term = schemaish.Integer()
     payment_term = schemaish.Integer(validator=validator.Required())
     currency = schemaish.String(validator=validator.Required())
@@ -91,6 +91,10 @@ class InvoiceController(object):
                 if field_name in form_fields:
                     defaults[field_name] = getattr(invoice, field_name)
             defaults['payment_term'] = (invoice.due_date - invoice.date).days
+            # Option has to be a string otherwise its noz selected anymore
+            # after the validation failed.
+            if 'customer_contact_id' in defaults:
+                defaults['customer_contact_id'] = str(defaults['customer_contact_id'])
                     
             # Default values for the item subforms
             defaults['item_list'] = []
@@ -165,6 +169,13 @@ class InvoiceController(object):
         invoice.company = session.query(Company).first()
         self._apply_data(invoice, converted)
         session.add(invoice)
+        
+        # Get and add unique invoice number
+        if invoice.invoice_number is None:
+            company = session.query(Company).with_lockmode("update").first()
+            invoice.invoice_number = company.invoice_start_number
+            company.invoice_start_number += 1
+        
         return HTTPFound(location=route_url('invoices', self.request))
         
     def handle_submit(self, converted):
