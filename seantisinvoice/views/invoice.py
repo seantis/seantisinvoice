@@ -47,7 +47,7 @@ invoice_item_schema = InvoiceItemSchema()
 
 class InvoiceSchema(schemaish.Structure):
     
-    customer_contact_id = schemaish.String(validator=validator.Required())
+    customer_contact_id = schemaish.Integer(validator=validator.Required())
     project_description = schemaish.String(validator=validator.Required())
     date = schemaish.Date(validator=validator.Required())
     invoice_number = schemaish.Integer()
@@ -91,10 +91,6 @@ class InvoiceController(object):
                 if field_name in form_fields:
                     defaults[field_name] = getattr(invoice, field_name)
             defaults['payment_term'] = (invoice.due_date - invoice.date).days
-            # Option has to be a string otherwise its not selected anymore
-            # after the validation failed.
-            if 'customer_contact_id' in defaults:
-                defaults['customer_contact_id'] = str(defaults['customer_contact_id'])
                     
             # Default values for the item subforms
             defaults['item_list'] = []
@@ -120,7 +116,7 @@ class InvoiceController(object):
         query = query.join(CustomerContact.customer)
         query = query.order_by(Customer.name, CustomerContact.last_name, CustomerContact.first_name)
         for (contact_id, company, first_name, last_name) in query.all():
-            options.append((str(contact_id), '%s: %s %s' % (company, first_name, last_name)))
+            options.append((contact_id, '%s: %s %s' % (company, first_name, last_name)))
         widgets['customer_contact_id'] = formish.SelectChoice(options=options)
         widgets['item_list'] = formish.SequenceDefault(min_start_fields=1)
         widgets['item_list.*.item_id'] = formish.Hidden()
