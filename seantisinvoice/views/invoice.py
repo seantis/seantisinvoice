@@ -17,7 +17,7 @@ from repoze.bfg.url import route_url
 from repoze.bfg.chameleon_zpt import get_template
 
 from seantisinvoice.models import DBSession
-from seantisinvoice.models import CustomerContact, Invoice, InvoiceItem, Company
+from seantisinvoice.models import Customer, CustomerContact, Invoice, InvoiceItem, Company
 
 class AmountOrHours(validator.Validator):
     """
@@ -109,8 +109,11 @@ class InvoiceController(object):
         widgets['date'] = formish.DateParts(day_first=True)
         session = DBSession()
         options = []
-        for contact in session.query(CustomerContact).all():
-            options.append((contact.id, '%s: %s %s' % (contact.customer.name, contact.first_name, contact.last_name)))
+        query = session.query(CustomerContact.id, Customer.name, CustomerContact.first_name, CustomerContact.last_name)
+        query = query.join(CustomerContact.customer)
+        query = query.order_by(Customer.name, CustomerContact.last_name, CustomerContact.first_name)
+        for (contact_id, company, first_name, last_name) in query.all():
+            options.append((contact_id, '%s: %s %s' % (company, first_name, last_name)))
         widgets['customer_contact_id'] = formish.SelectChoice(options=options)
         widgets['item_list'] = formish.SequenceDefault(min_start_fields=1)
         widgets['item_list.*.item_id'] = formish.Hidden()
