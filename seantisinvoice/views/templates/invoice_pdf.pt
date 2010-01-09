@@ -3,11 +3,11 @@
 <document filename="template.pdf"
           xmlns:tal="http://xml.zope.org/namespaces/tal">
 
-    <template pageSize="(21cm, 29cm)" author="www.seantis.ch" title="Rechnung :: ${invoice.invoice_number}">
+    <template pageSize="A4" author="www.seantis.ch" title="Rechnung :: ${invoice.invoice_number}">
         <pageTemplate id="main">
-            <frame id="main" x1="2cm" y1="2cm" width="25cm" height="17cm" />
+           <frame id="first" x1="72" y1="72" width="451" height="698"/>
             <pageGraphics>
-                <place x="0.5cm" y="0.5cm" width="10cm" height="1cm">
+                <place x="6cm" y="0.5cm" width="10cm" height="1cm">
                     <para style="footer">seantis gmbh :: Unter der Egg 5 :: CH-6004 Luzern :: +41 41 511 22 50</para>
                 </place>
             </pageGraphics>
@@ -19,10 +19,18 @@
         <paraStyle name="tableHeader" fontName="Helvetica" fontSize="6" alignment="center" />
         <paraStyle name="tableHeaderSmall" fontName="Helvetica" fontSize="4" alignment="center" />
         <paraStyle name="footer" fontName="Helvetica" fontSize="8" />
+        <blockTableStyle id="default">
+            <blockFont name="Helvetica" size="8" />
+            <blockLeftPadding length="1mm" />
+            <blockRightPadding length="1mm" />
+            
+            <!-- <lineStyle start="0,0" stop="-1,-1" kind="GRID" thickness="0.25" colorName="black" /> -->
+            
+        </blockTableStyle>
     </stylesheet>
 
     <story>
-        <blockTable>
+        <blockTable style="default" colWidths="50% 50%">
             <tr>
                 <td>${invoice.company.name}</td>
                 <td>${invoice.contact.customer.name}</td>
@@ -45,7 +53,9 @@
             </tr>
         </blockTable>
         
-        <blockTable>
+        <spacer length="20"/>
+        
+        <blockTable style="default"  colWidths="50% 25% 25%">
             <tr>
                 <td>MWST-Nr.: ${invoice.company.vat_number}</td>
                 <td>Rechnungsnummer:</td>
@@ -65,18 +75,35 @@
         
         <h3>Rechnung :: ${invoice.project_description}</h3>
         
-        <blockTable>
+        <blockTable colWidths="30% 50% 10% 10%">
+            <blockTableStyle id="services">
+                <blockFont name="Helvetica" size="8" />
+                <lineStyle kind="LINEABOVE" colorName="black" start="0,0" stop="-1,0"/>
+                <lineStyle kind="LINEABOVE" colorName="black" start="0,1" stop="-1,1" thickness="0.25"/>
+                <lineStyle kind="LINEBELOW" colorName="black" start="0,-4" stop="-1,-4"/>
+                <lineStyle kind="LINEBELOW" colorName="black" start="0,-2" stop="-1,-2"/>
+                <lineStyle kind="LINEBELOW" colorName="black" start="0,-1" stop="-1,-1" thickness="0.25"/>
+            </blockTableStyle>
             <tr>
                 <td>Service</td>
                 <td>Beschreibung</td>
+                <td>h / PT</td>
                 <td>Kosten</td>
             </tr>
             <tr tal:repeat="item invoice.items">
                 <td>${item.service_title}</td>
                 <td>${item.service_description}</td>
+                <td></td>
                 <td align="right">${'%.02f' % item.total()}</td>
             </tr>
             <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td align="right">${'%.02f' % invoice.sub_total()}</td>
@@ -84,18 +111,30 @@
             <tr>
                 <td></td>
                 <td>MWST (7.6%)</td>
+                <td></td>
                 <td align="right">${'%.02f' % invoice.tax_amount()}</td>
             </tr>
             <tr>
                 <td>Total</td>
                 <td>Einmalige Kosten (${invoice.currency})</td>
+                <td></td>
                 <td align="right">${'%.02f' % invoice.grand_total()}</td>
             </tr>
         </blockTable>
         
+        <spacer length="30"/>
+        
         <para>Für das entgegengebrachte Vertrauen danken wir bestens und stehen Ihnen bei Fragen jederzeit gerne zur Verfügung.</para>
         
+        <spacer length="20"/>
+        
         <para>SWIFT: ${invoice.company.swift} / ${invoice.company.bank_address}</para>
+        
+        <!--
+    	<illustration width="10cm" height="1cm">
+    		<barCode x="1cm" y="0" code="Code128" humanReadable="true" fontName="Helvetica" fontSize="7">${invoice.invoice_number}</barCode>
+    	</illustration>
+    	-->
         
     </story>
 
