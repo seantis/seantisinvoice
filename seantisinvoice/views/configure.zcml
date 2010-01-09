@@ -4,12 +4,25 @@
   <include package="repoze.bfg.formish" file="meta.zcml"/>
     
   <!-- Routes -->
+  
+  <route
+    path="/login"
+    name="login"
+    view=".login.view_login"
+    />
+    
+  <route
+    path="/logout"
+    name="logout"
+    view=".login.view_logout"
+    />
     
   <route 
     path=""
     name="invoices"
     view=".invoice.view_invoices"
     view_renderer="templates/invoices.pt"
+    permission="view"
     />
     
   <route
@@ -27,6 +40,7 @@
     name="customers"
     view=".customer.view_customers"
     view_renderer="templates/customers.pt"
+    permission="view"
     />
 
   <route
@@ -43,6 +57,7 @@
     path="/invoices/:invoice/invoice_pdf"
     name="invoice_pdf"
     view=".invoice_export.view_invoice_pdf"
+    permission="view"
     />
     
   <route
@@ -56,6 +71,7 @@
     name=""
     route_name="add_invoice"
     renderer="templates/invoice.pt"
+    permission="view"
     controller=".invoice.InvoiceController">
 
     <formish:action
@@ -75,6 +91,7 @@
     name=""
     route_name="edit_invoice"
     renderer="templates/invoice.pt"
+    permission="view"
     controller=".invoice.InvoiceController">
 
     <formish:action
@@ -94,6 +111,7 @@
     name=""
     route_name="add_customer"
     renderer="templates/customer.pt"
+    permission="view"
     controller=".customer.CustomerController">
 
     <formish:action
@@ -113,6 +131,7 @@
     name=""
     route_name="edit_customer"
     renderer="templates/customer.pt"
+    permission="view"
     controller=".customer.CustomerController">
 
     <formish:action
@@ -132,6 +151,7 @@
     name=""
     route_name="company"
     renderer="templates/company.pt"
+    permission="view"
     controller=".company.CompanyController">
 
     <formish:action

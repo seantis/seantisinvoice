@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal">
+
+    <body>
+	        
+        <h1>Login</h1>
+        
+        <form action="?__do_login=true" method="post">
+            <fieldset>
+                <legend>Login</legend>
+                <div style="margin-bottom: 0.5em">
+                    <input type="text" name="login" title="E-mail" style="float: left; width: 140px; margin-right: 0.5em"/>
+                    <input type="password" name="password" title="Password" style="width: 120px;" />
+                </div>
+                <div class="align-right">
+                    <input type="image" name="form.submitted" value="Login" src="static/images/bt-login.gif" />
+                </div>
+            </fieldset>
+            <span class="clearFix">&nbsp;</span>
+        </form>
+    
+    </body>
+    
+</html>

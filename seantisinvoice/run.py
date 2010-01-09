@@ -1,7 +1,7 @@
 from repoze.bfg.router import make_app
 
 import seantisinvoice
-from seantisinvoice.models import DBSession
+from seantisinvoice.models import DBSession, RootFactory
 from seantisinvoice.models import initialize_sql
 
 class Cleanup:
@@ -23,5 +23,5 @@ def app(global_config, **settings):
     if db_string is None:
         raise ValueError("No 'db_string' value in application configuration.")
     initialize_sql(db_string)
-    return make_app(None, seantisinvoice, settings=settings)
+    return make_app(RootFactory, seantisinvoice, settings=settings)
 

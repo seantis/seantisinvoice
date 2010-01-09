@@ -18,8 +18,16 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from zope.sqlalchemy import ZopeTransactionExtension
 
+from repoze.bfg.security import Allow
+from repoze.bfg.security import Authenticated
+
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
+
+class RootFactory(object):
+    __acl__ = [ (Allow, Authenticated, 'view'), ]
+    def __init__(self, environ):
+        self.__dict__.update(environ['bfg.routes.matchdict'])
 
 class Company(Base):
     __tablename__ = 'company'

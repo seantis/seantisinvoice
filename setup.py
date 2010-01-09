@@ -14,6 +14,7 @@ requires = [
     'repoze.tm2',
     'zope.sqlalchemy',
     'z3c.rml',
+    'repoze.who',
     ]
 
 if sys.version_info[:3] < (2,5,0):
