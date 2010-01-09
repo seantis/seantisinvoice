@@ -116,7 +116,7 @@ class InvoiceController(object):
         query = query.join(CustomerContact.customer)
         query = query.order_by(Customer.name, CustomerContact.last_name, CustomerContact.first_name)
         for (contact_id, company, first_name, last_name) in query.all():
-            options.append((contact_id, '%s: %s %s' % (company, first_name, last_name)))
+            options.append((str(contact_id), '%s: %s %s' % (company, first_name, last_name)))
         widgets['customer_contact_id'] = formish.SelectChoice(options=options)
         widgets['item_list'] = formish.SequenceDefault(min_start_fields=1)
         widgets['item_list.*.item_id'] = formish.Hidden()
