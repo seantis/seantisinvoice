@@ -136,10 +136,14 @@ input, textarea, select {
 
 #menu a:hover { 
 	color: #FFFFFF;
+	font-weight: bold;
+	text-decoration: underline;
 }
 
-#menu .current_page_item a {
+#menu .current a {
 	color: #FFFFFF;
+	font-weight: bold;
+	text-decoration: underline;
 }
 
 /** LOGO */

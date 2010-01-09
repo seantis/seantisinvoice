@@ -41,9 +41,9 @@
     <div id="header">
     	<div id="menu">
     		<ul>
-    			<li class="current_page_item"><a href="${request.application_url}">&raquo; Invoices</a></li>
-    			<li><a href="${request.application_url}/customers">&raquo; Customers</a></li>
-    			<li><a href="${request.application_url}/company">&raquo; Company Profile</a></li>
+    			<li tal:attributes="class python: 'invoices' in request.url and 'current' or ''"><a href="${request.application_url}">&raquo; Invoices</a></li>
+    			<li tal:attributes="class python: 'customers' in request.url and 'current' or ''"><a href="${request.application_url}/customers">&raquo; Customers</a></li>
+    			<li tal:attributes="class python: 'company' in request.url and 'current' or ''"><a href="${request.application_url}/company">&raquo; Company Profile</a></li>
     		</ul>
     	</div>
     </div>
