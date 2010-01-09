@@ -150,20 +150,20 @@ input, textarea, select {
 
 #logo {
 	width: 880px;
-	height: 130px;
+	height: 70px;
 	margin: 0 auto;
 }
 
 #logo h1, #logo h2 {
 	float: left;
 	margin: 0;
-	padding: 50px 0 0 0px;
+	padding: 20px 0 0 0px;
 	line-height: normal;
 }
 
 #logo h1 { 
-    font-family: Arial, Helvetica, sans-serif;
-	font-size:40px;
+    font-family: Helvetica, sans-serif;
+	font-size:38px;
 }
 
 #logo h1 a {
@@ -175,9 +175,11 @@ input, textarea, select {
 
 #logo h2 {
 	float: left;
-	padding: 65px 0 0 18px;
-    font-family: Arial, Helvetica, sans-serif;
-	color: #28313A; 
+	padding: 38px 0 0 18px;
+    font-family: Helvetica, sans-serif;
+	color: #666; 
+	font-size: 20px;
+	
 }
 
 #logo p a {
