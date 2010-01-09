@@ -91,7 +91,7 @@ class InvoiceController(object):
                 if field_name in form_fields:
                     defaults[field_name] = getattr(invoice, field_name)
             defaults['payment_term'] = (invoice.due_date - invoice.date).days
-            # Option has to be a string otherwise its noz selected anymore
+            # Option has to be a string otherwise its not selected anymore
             # after the validation failed.
             if 'customer_contact_id' in defaults:
                 defaults['customer_contact_id'] = str(defaults['customer_contact_id'])
