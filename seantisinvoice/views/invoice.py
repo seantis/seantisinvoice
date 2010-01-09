@@ -176,23 +176,34 @@ class InvoiceController(object):
 
 def view_invoices(request):
     session = DBSession()
+    query = session.query(Invoice)
     
-    # Nice to have: sort with /?recurring=0&sort=date&dir=desc
-    # invoices = session.query(Invoice).filter(Invoice.recurring_term == None).order_by(desc(Invoice.date))
-    
-    if 'recurring' in request.params and request.params['recurring'] == '1':
-        invoices = session.query(Invoice).filter(Invoice.recurring_term != None)
-        title = u'Recurring Invoices'
-    elif 'recurring' in request.params and request.params['recurring'] == '0':
-        invoices = session.query(Invoice).filter(Invoice.recurring_term == None).order_by(desc(Invoice.date))
-        title = u'Non-recurring Invoices'
+    if 'recurring' in request.params:
+        if request.params['recurring'] == '1':
+            query = query.filter(Invoice.recurring_term != None)
+            title = u'Recurring Invoices'
+        elif request.params['recurring'] == '0':
+            query = query.filter(Invoice.recurring_term == None)
+            title = u'Non-recurring Invoices'
     elif 'due' in request.params and request.params['due'] == '1':
         today = datetime.date.today()
-        invoices = session.query(Invoice).filter(Invoice.due_date <= today)
+        query = query.filter(Invoice.due_date <= today)
         # TODO: only open invoices
         title = u'Invoices due'
     else:
-        invoices = session.query(Invoice).all()
         title = u'All Invoices'
+        
+    # Sorting
+    if 'sort' in request.params:
+        sort_key = request.params['sort']
+        if hasattr(Invoice, sort_key):
+            sort_attr = getattr(Invoice, sort_key)
+            if 'reverse' in request.params:
+                sort_attr = desc(sort_attr)
+            query = query.order_by(sort_attr)
+    else:
+        query = query.order_by(Invoice.date)
+        
+    invoices = query.all()
     main = get_template('templates/master.pt')
     return dict(request=request, main=main, invoices=invoices, title=title)
