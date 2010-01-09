@@ -19,14 +19,28 @@ from repoze.bfg.chameleon_zpt import get_template
 from seantisinvoice.models import DBSession
 from seantisinvoice.models import CustomerContact, Invoice, InvoiceItem, Company
 
+class AmountOrHours(validator.Validator):
+    """
+    validatish validator that checks whether at least one of the two fields amount
+    and hours has a value filled in.
+    """
+    def __call__(self, v):
+        if v['amount'] is not None or v['hours'] is not None:
+            return None
+        else:
+            msg = "Amount or hours must be set"
+            raise validatish.Invalid(msg)
+
+
 class InvoiceItemSchema(schemaish.Structure):
     
     item_id = schemaish.Integer()
     service_title = schemaish.String(validator=validator.Required())
     service_description = schemaish.String(validator=validator.Required())
-    # ToDo: we need a validator that makes sure that at least one of the two is set!
     amount = schemaish.Float(description="Enter the amout")
     hours = schemaish.Float(description="Or hours (will be multiplied by your rate)")
+    # Additional schema wide validator.
+    validator = AmountOrHours()
     
 invoice_item_schema = InvoiceItemSchema()
 
