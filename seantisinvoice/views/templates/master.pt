@@ -82,6 +82,7 @@
 			<li>
 				<h2>Reports</h2>
 				<ul>
+				    <li><a href="${request.application_url}">All</a></li>
 					<li><a href="${request.application_url}/?due=1&amp;sort=date&amp;reverse=1">Invoices due</a></li>
 				</ul>
 			</li>

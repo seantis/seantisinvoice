@@ -130,11 +130,11 @@
         
         <para>SWIFT: ${invoice.company.swift} / ${invoice.company.bank_address}</para>
         
-        <!--
+        
     	<illustration width="10cm" height="1cm">
     		<barCode x="1cm" y="0" code="Code128" humanReadable="true" fontName="Helvetica" fontSize="7">${invoice.invoice_number}</barCode>
     	</illustration>
-    	-->
+    	
         
     </story>
 

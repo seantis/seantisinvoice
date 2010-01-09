@@ -54,6 +54,7 @@ class InvoiceSchema(schemaish.Structure):
     payment_term = schemaish.Integer(validator=validator.Required())
     currency = schemaish.String(validator=validator.Required())
     tax = schemaish.Float()
+    payment_date = schemaish.Date()
     item_list = schemaish.Sequence(invoice_item_schema, validator=validatish.Length(min=1))
     
 invoice_schema = InvoiceSchema()
@@ -107,6 +108,7 @@ class InvoiceController(object):
     def form_widgets(self, fields):
         widgets = {}
         widgets['date'] = formish.DateParts(day_first=True)
+        widgets['payment_date'] = formish.DateParts(day_first=True)
         session = DBSession()
         options = []
         query = session.query(CustomerContact.id, Customer.name, CustomerContact.first_name, CustomerContact.last_name)
@@ -188,7 +190,7 @@ def view_invoices(request):
     elif 'due' in request.params and request.params['due'] == '1':
         today = datetime.date.today()
         query = query.filter(Invoice.due_date <= today)
-        # TODO: only open invoices
+        query = query.filter(Invoice.payment_date == None)
         title = u'Invoices due'
     else:
         title = u'All Invoices'
@@ -202,7 +204,7 @@ def view_invoices(request):
                 sort_attr = desc(sort_attr)
             query = query.order_by(sort_attr)
     else:
-        query = query.order_by(Invoice.date)
+        query = query.order_by(desc(Invoice.date))
         
     invoices = query.all()
     main = get_template('templates/master.pt')

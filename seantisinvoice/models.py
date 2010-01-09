@@ -73,6 +73,7 @@ class Invoice(Base):
     invoice_number = Column(Integer, unique=True)
     date = Column(Date)
     due_date = Column(Date)
+    payment_date = Column(Date)
     recurring_term = Column(Integer)
     currency = Column(Unicode)
     project_description = Column(Unicode)
@@ -118,18 +119,6 @@ class InvoiceItem(Base):
         if self.hours:
             return self.hours * 140.0
         return self.amount
-        
-        
-# Nice to have: possible to edit it on the invoice form?        
-class Payment(Base):
-    __tablename__ = 'payment'
-    id = Column(Integer, primary_key=True)
-    invoice_id = Column(Integer, ForeignKey('invoice.id'))
-    date = Column(Date)
-    amount = Column(Float)
-    note = Column(Unicode)
-
-    invoice = relation(Invoice, lazy=False)
 
 def initialize_sql(db_string, echo=False):
     engine = create_engine(db_string, echo=echo)
