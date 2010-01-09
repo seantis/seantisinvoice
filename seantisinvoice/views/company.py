@@ -10,6 +10,7 @@ from sqlalchemy.orm.util import class_mapper
 from repoze.bfg.url import route_url
 from repoze.bfg.chameleon_zpt import get_template
 
+from seantisinvoice import statusmessage
 from seantisinvoice.models import DBSession
 from seantisinvoice.models import Company
 
@@ -58,7 +59,7 @@ class CompanyController(object):
         
     def __call__(self):
         main = get_template('templates/master.pt')
-        return dict(request=self.request, main=main)
+        return dict(request=self.request, main=main, msgs=statusmessage.messages(self.request))
         
     def _apply_data(self, company, converted):
         session = DBSession()
@@ -67,6 +68,9 @@ class CompanyController(object):
         for field_name in field_names:
             if field_name in converted.keys():
                 setattr(company, field_name, converted[field_name])
+            
+        # Add a status message
+        statusmessage.show(self.request, u"Changes saved.", "success")
                 
     def handle_submit(self, converted):
         session = DBSession()

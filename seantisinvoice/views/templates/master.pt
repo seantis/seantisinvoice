@@ -56,6 +56,10 @@
 
 <!-- start page -->
 <div id="page">
+    
+    <div tal:repeat="msg msgs" class="${msg.msg_type}">
+        ${msg.msg}
+    </div>
 	
 	<!-- start content -->
 	<div id="content">

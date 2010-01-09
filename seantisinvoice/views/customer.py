@@ -11,6 +11,7 @@ from sqlalchemy.orm.util import class_mapper
 from repoze.bfg.url import route_url
 from repoze.bfg.chameleon_zpt import get_template
 
+from seantisinvoice import statusmessage
 from seantisinvoice.models import DBSession
 from seantisinvoice.models import Customer, CustomerContact
 
@@ -80,7 +81,7 @@ class CustomerController(object):
         
     def __call__(self):
         main = get_template('templates/master.pt')
-        return dict(request=self.request, main=main)
+        return dict(request=self.request, main=main, msgs=statusmessage.messages(self.request))
         
     def _apply_data(self, customer, converted):
         session = DBSession()
@@ -134,5 +135,5 @@ def view_customers(request):
     session = DBSession()
     customers = session.query(Customer).order_by(Customer.name).all()
     main = get_template('templates/master.pt')
-    return dict(request=request, main=main, customers=customers)
+    return dict(request=request, main=main, customers=customers, msgs=statusmessage.messages(request))
     

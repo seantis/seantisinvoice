@@ -16,6 +16,7 @@ from sqlalchemy.orm.util import class_mapper
 from repoze.bfg.url import route_url
 from repoze.bfg.chameleon_zpt import get_template
 
+from seantisinvoice import statusmessage
 from seantisinvoice.models import DBSession
 from seantisinvoice.models import Customer, CustomerContact, Invoice, InvoiceItem, Company
 
@@ -124,7 +125,7 @@ class InvoiceController(object):
         
     def __call__(self):
         main = get_template('templates/master.pt')
-        return dict(request=self.request, main=main)
+        return dict(request=self.request, main=main, msgs=statusmessage.messages(self.request))
         
     def _apply_data(self, invoice, converted):
         # Apply schema fields to the customer object
@@ -208,4 +209,5 @@ def view_invoices(request):
         
     invoices = query.all()
     main = get_template('templates/master.pt')
-    return dict(request=request, main=main, invoices=invoices, title=title)
+    return dict(request=request, main=main, invoices=invoices, 
+                title=title, msgs=statusmessage.messages(request))

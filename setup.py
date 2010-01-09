@@ -15,6 +15,7 @@ requires = [
     'zope.sqlalchemy',
     'z3c.rml',
     'repoze.who',
+    'qc.statusmessage',
     ]
 
 if sys.version_info[:3] < (2,5,0):
