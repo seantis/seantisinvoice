@@ -15,6 +15,8 @@
             border: 1px solid #ccc;
             margin: 1em;
             padding: 1em;
+            background: #ededed;
+            height: 200px;
         }
         
         legend {
@@ -27,7 +29,7 @@
         
         .controlsLogin {margin-top: 1em; }
         
-        .button-striking {width: 120px; margin-left: 8.1em;}
+        .button-striking {width: 120px; margin-left: 8.1em; border: 1px solid #fff;}
         
         label {font-weight: bold;}
         
@@ -79,7 +81,7 @@
 	</div>
 	
 	<div id="sidebar">
-        <p>seantis::invoice is open source and released with a ..... license</p>
+        <p>seantis::invoice is open source!</p>
         <p>Join us in improving it:<br />
         <a href="http://invoice.seantis.ch"><b>http://invoice.seantis.ch</b></a></p>
 	</div>
