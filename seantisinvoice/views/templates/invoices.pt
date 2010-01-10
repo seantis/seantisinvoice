@@ -9,7 +9,7 @@
 	        
 	    <h1>${title}</h1>
         
-        <div tal:condition="python: not company.name" class="notice" style="margin: 1em 0">Please fill in your company information. Will be used for the invoice pdfs.</div>
+        <div tal:condition="python: not company.name" class="notice" style="margin: 1em 0">Please fill in your company information. Will be used for the invoice pdfs. Go to <a href="${request.application_url}/company"><b>Company Profile</b></a>.</div>
         
         <table>
             <thead>
