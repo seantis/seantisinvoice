@@ -419,8 +419,8 @@ html>body #footer {
 
 #personal_tools {
     font-weight: bold;
-    padding: 7px !important;
-    background: #ededed;
+    float: right;
+    margin: 45px 20px 0 0;
 }
 
 /* Overwrite formish styles */

@@ -41,6 +41,7 @@
     <div id="logo">
     	<h1><a href="${request.application_url}"><span style="color: #666;">seantis::</span>invoice </a></h1>
     	<h2> &raquo;&nbsp;&nbsp;&nbsp;invoicing with zero pain!</h2>
+    	<div id="personal_tools"><a href="${request.application_url}/logout">logout</a></div>
     </div>
     <div id="header">
     	<div id="menu">
@@ -70,7 +71,6 @@
 	    
 	<!-- start sidebar -->
 	<div id="sidebar">
-	    <div id="personal_tools"><a href="${request.application_url}/logout">logout</a></div>
 		<ul>
 		    <!--
 			<li id="search">
