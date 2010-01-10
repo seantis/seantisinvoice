@@ -58,6 +58,16 @@ class CompanyController(object):
                     
         return defaults
         
+    def form_widgets(self, fields):
+        widgets = {}
+        
+        options = [('invoice_pdf.pt','German PDF Template'),('invoice_pdf.pt','English PDF Template')]
+        
+        # FIXME: No clue why the data is not saved when using the widget
+        # widgets['invoice_template'] = formish.SelectChoice(options=options)
+        
+        return widgets
+        
     def __call__(self):
         main = get_template('templates/master.pt')
         return dict(request=self.request, main=main, msgs=statusmessage.messages(self.request))
