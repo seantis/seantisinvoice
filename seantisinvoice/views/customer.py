@@ -113,12 +113,19 @@ class CustomerController(object):
         # Remove contact items that have been removed in the form
         for contact in contact_map.values():
             session.delete(contact)
+            
+        # Add a status message
+        statusmessage.show(self.request, u"Changes saved.", "success")
         
     def handle_add(self, converted):
         customer = Customer()
         self._apply_data(customer, converted)
         session = DBSession()
         session.add(customer)
+        
+        # Add a status message
+        statusmessage.show(self.request, u"Customer added.", "success")
+        
         return HTTPFound(location=route_url('customers', self.request))
         
     def handle_submit(self, converted):
