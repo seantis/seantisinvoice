@@ -41,6 +41,12 @@
         
     </style>
     
+    <script type="text/javascript">
+        window.onload = function() {
+          document.getElementById("login").focus();
+        };
+    </script>
+    
 </head>
 
 <body>
@@ -68,7 +74,7 @@
             <fieldset>
                 <legend>Login</legend>
                 <div>
-                    <div><label>Username</label>: <input class="inputField" type="text" name="login" title="E-mail"/></div>
+                    <div><label>Username</label>: <input id="login" class="inputField" type="text" name="login" title="username"/></div>
                     <div><label>Password</label> : <input class="inputField" type="password" name="password" title="Password" /></div>
                 </div>
                 <div class="controlsLogin">
