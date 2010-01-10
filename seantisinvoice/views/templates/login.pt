@@ -1,27 +1,101 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
-    <body>
-	        
-        <h1>Login</h1>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>seantis::invoice</title>
+    
+    <link type="text/css" media="screen" rel="stylesheet" href="${request.application_url}/static/default.css" />
+    
+    <style type="text/css">
+    
+        #content {height: 300px;}
+    
+        fieldset {
+            border: 1px solid #ccc;
+            margin: 1em;
+            padding: 1em;
+        }
         
+        legend {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        input {width: 200px;}
+        
+        .controlsLogin {margin-top: 1em; }
+        
+        .button-striking {width: 120px; margin-left: 8.1em;}
+        
+        label {font-weight: bold;}
+        
+        .inputField {margin: 1em 0 0 3em;}
+        
+        #sidebar {margin-top: 2em;}
+        
+        #sidebar p {line-height: 1.5em; text-align: left;}
+        
+    </style>
+    
+</head>
+
+<body>
+    
+<div id="wrapper">
+    <!-- start header -->
+    <div id="logo">
+    	<h1><a href="${request.application_url}"><span style="color: #666;">seantis::</span>invoice </a></h1>
+    	<h2> &raquo;&nbsp;&nbsp;&nbsp;invoicing with zero pain!</h2>
+    </div>
+    <div id="header">
+    	<div id="menu">
+    	</div>
+    </div>
+    <!-- end header -->
+</div>
+
+<!-- start page -->
+<div id="page">
+	
+	<!-- start content -->
+	<div id="content">
+	    
         <form action="?__do_login=true" method="post">
             <fieldset>
                 <legend>Login</legend>
-                <div style="margin-bottom: 0.5em">
-                    <input type="text" name="login" title="E-mail" style="float: left; width: 140px; margin-right: 0.5em"/>
-                    <input type="password" name="password" title="Password" style="width: 120px;" />
+                <div>
+                    <div><label>Username</label>: <input class="inputField" type="text" name="login" title="E-mail"/></div>
+                    <div><label>Password</label> : <input class="inputField" type="password" name="password" title="Password" /></div>
                 </div>
-                <div class="align-right">
-                    <input type="image" name="form.submitted" value="Login" src="static/images/bt-login.gif" />
+                <div class="controlsLogin">
+                    <input type="button" class="button-striking" name="form.submitted" value="Login" />
                 </div>
             </fieldset>
             <span class="clearFix">&nbsp;</span>
         </form>
-    
-    </body>
-    
+	
+	</div>
+	
+	<div id="sidebar">
+        <p>seantis::invoice is open source and released with a ..... license</p>
+        <p>Join us in improving it:<br />
+        <a href="http://invoice.seantis.ch"><b>http://invoice.seantis.ch</b></a></p>
+	</div>
+	<!-- end sidebar -->
+	    
+	<div style="clear: both;">&nbsp;</div>
+	
+</div>
+<!-- end page -->
+
+<!-- start footer -->
+<div id="footer">
+	<p id="legal">2010 by <a target="_blank" href="http://www.seantis.ch">seantis gmbh</a> :: <a target="_blank" href="http://bfg.repoze.org">repoze.bfg powered</a></p>
+</div>
+<!-- end footer -->
+
+</body>
+
 </html>
