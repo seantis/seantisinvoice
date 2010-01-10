@@ -277,7 +277,7 @@ input, textarea, select {
 .error, .notice, .success {
     border:2px solid #DDDDDD;
     padding:0.8em;
-    margin: 1em 0;
+    margin: 1em;
 }
 
 .notice {

@@ -187,6 +187,7 @@ class InvoiceController(object):
 def view_invoices(request):
     session = DBSession()
     query = session.query(Invoice)
+    company = session.query(Company).first()
     
     if 'recurring' in request.params:
         if request.params['recurring'] == '1':
@@ -216,5 +217,5 @@ def view_invoices(request):
         
     invoices = query.all()
     main = get_template('templates/master.pt')
-    return dict(request=request, main=main, invoices=invoices, 
+    return dict(request=request, main=main, invoices=invoices, company=company, 
                 title=title, msgs=statusmessage.messages(request))

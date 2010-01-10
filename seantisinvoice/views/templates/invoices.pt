@@ -9,13 +9,7 @@
 	        
 	    <h1>${title}</h1>
         
-        <!--
-        
-        <div class="error">This is a new status message: There is an ERROR</div>
-        <div class="notice">This is a new status message: There is an NOTICE</div>
-        <div class="success">This is a new status message: There is an SUCCESS</div>
-        
-        -->
+        <div tal:condition="python: not company.name" class="notice" style="margin: 1em 0">Please fill in your company information. Will be used for the invoice pdfs.</div>
         
         <table>
             <thead>
