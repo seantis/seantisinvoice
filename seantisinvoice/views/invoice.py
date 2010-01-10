@@ -159,7 +159,7 @@ class InvoiceController(object):
         for item in item_map.values():
             session.delete(item)
         
-        # Add a status message
+        # ToDo: We should show this only if there are changes to be saved! 
         statusmessage.show(self.request, u"Changes saved.", "success")
         
     def handle_add(self, converted):
@@ -174,8 +174,7 @@ class InvoiceController(object):
             company = session.query(Company).with_lockmode("update").first()
             invoice.invoice_number = company.invoice_start_number
             company.invoice_start_number += 1
-            
-        # Add a status message
+
         statusmessage.show(self.request, u"Invoice added.", "success")
         
         return HTTPFound(location=route_url('invoices', self.request))
@@ -188,6 +187,7 @@ class InvoiceController(object):
         return HTTPFound(location=route_url('invoices', self.request))
         
     def handle_cancel(self):
+        statusmessage.show(self.request, u"No changes saved.", "notice")
         return HTTPFound(location=route_url('invoices', self.request))
 
 def view_invoices(request):

@@ -114,7 +114,7 @@ class CustomerController(object):
         for contact in contact_map.values():
             session.delete(contact)
             
-        # Add a status message
+        # ToDo: We should show this only if there are changes to be saved! 
         statusmessage.show(self.request, u"Changes saved.", "success")
         
     def handle_add(self, converted):
@@ -123,7 +123,6 @@ class CustomerController(object):
         session = DBSession()
         session.add(customer)
         
-        # Add a status message
         statusmessage.show(self.request, u"Customer added.", "success")
         
         return HTTPFound(location=route_url('customers', self.request))
@@ -136,6 +135,7 @@ class CustomerController(object):
         return HTTPFound(location=route_url('customers', self.request))
         
     def handle_cancel(self):
+        statusmessage.show(self.request, u"No changes saved.", "notice")
         return HTTPFound(location=route_url('customers', self.request))
 
 def view_customers(request):

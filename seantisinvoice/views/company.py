@@ -81,8 +81,8 @@ class CompanyController(object):
         for field_name in field_names:
             if field_name in converted.keys():
                 setattr(company, field_name, converted[field_name])
-            
-        # Add a status message
+        
+        # ToDo: We should show this only if there are changes to be saved!    
         statusmessage.show(self.request, u"Changes saved.", "success")
                 
     def handle_submit(self, converted):
@@ -91,5 +91,6 @@ class CompanyController(object):
         self._apply_data(company, converted)
         return HTTPFound(location=route_url('company', self.request))
         
-    def handle_cancel(self):
+    def handle_cancel(self):        
+        statusmessage.show(self.request, u"No changes saved.", "notice")
         return HTTPFound(location=route_url('invoices', self.request))    
