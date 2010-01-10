@@ -28,8 +28,8 @@ class CustomerSchema(schemaish.Structure):
     address1 = schemaish.String(validator=validator.Required())
     address2 = schemaish.String()
     address3 = schemaish.String()
+    postal_code = schemaish.String(validator=validator.Required())
     city = schemaish.String(validator=validator.Required())
-    postal_code = schemaish.String()
     country = schemaish.String()
     contact_list = schemaish.Sequence(customer_contact_schmema)
     
