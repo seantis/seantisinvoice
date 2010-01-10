@@ -27,9 +27,9 @@ def view_invoice_pdf(request):
             return HTTPFound(location = route_url('invoices', request))
     
     if company.invoice_template:
-        rml_template = 'templates/' + company.invoice_template
+        rml_template = 'templates/rml/' + company.invoice_template
     else:
-        rml_template = 'templates/invoice_pdf.pt'
+        rml_template = 'templates/rml/invoice_pdf.pt'
     result = render_template(rml_template, invoice=invoice)
     rmlfile = tempfile.mktemp(suffix=".rml")
     fd = open(rmlfile, "wb")
