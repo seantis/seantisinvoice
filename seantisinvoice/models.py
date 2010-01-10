@@ -84,6 +84,7 @@ class Invoice(Base):
     due_date = Column(Date)
     payment_date = Column(Date)
     recurring_term = Column(Integer)
+    recurring_stop = Column(Date)
     currency = Column(Unicode)
     project_description = Column(Unicode)
     tax = Column(Float)

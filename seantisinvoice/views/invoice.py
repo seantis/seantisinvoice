@@ -52,6 +52,7 @@ class InvoiceSchema(schemaish.Structure):
     date = schemaish.Date(validator=validator.Required())
     invoice_number = schemaish.Integer()
     recurring_term = schemaish.Integer()
+    recurring_stop = schemaish.Date()
     payment_term = schemaish.Integer(validator=validator.Required())
     currency = schemaish.String(validator=validator.Required())
     tax = schemaish.Float()
@@ -109,6 +110,7 @@ class InvoiceController(object):
     def form_widgets(self, fields):
         widgets = {}
         widgets['date'] = formish.DateParts(day_first=True)
+        widgets['recurring_stop'] = formish.DateParts(day_first=True)
         widgets['payment_date'] = formish.DateParts(day_first=True)
         session = DBSession()
         options = []
