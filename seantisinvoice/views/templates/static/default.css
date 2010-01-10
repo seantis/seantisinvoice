@@ -417,6 +417,12 @@ html>body #footer {
 	color: #1B75A9;
 }
 
+#personal_tools {
+    font-weight: bold;
+    padding: 7px !important;
+    background: #ededed;
+}
+
 /* Overwrite formish styles */
 
 .formish-form .inputs input {

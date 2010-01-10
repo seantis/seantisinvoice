@@ -70,6 +70,7 @@
 	    
 	<!-- start sidebar -->
 	<div id="sidebar">
+	    <div id="personal_tools"><a href="${request.application_url}/logout">logout</a></div>
 		<ul>
 		    <!--
 			<li id="search">
