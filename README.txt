@@ -25,3 +25,5 @@ Install seantis.invoice
 Start seantisinvoice:
 
 % paster serve seantisinvoice/seantisinvoice.ini
+
+login the first time with admin:admin. Don't forget to change this in passwd!
