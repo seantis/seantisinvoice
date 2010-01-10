@@ -29,6 +29,9 @@
     </stylesheet>
 
     <story>
+        
+        <h1 textColor="red">TRANSLATE ME</h1>
+        
         <blockTable style="default" colWidths="50% 50%">
             <tr>
                 <td>${invoice.company.name}</td>

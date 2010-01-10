@@ -34,6 +34,7 @@ class CompanySchema(schemaish.Structure):
     swift = schemaish.String()
     bank_address= schemaish.String()
     invoice_start_number = schemaish.String()
+    invoice_template = schemaish.String()
     
 company_schema = CompanySchema()
 

@@ -13,19 +13,24 @@ from repoze.bfg.chameleon_zpt import get_template
 from webob import Response
 
 from seantisinvoice.models import DBSession
-from seantisinvoice.models import Customer, Invoice
+from seantisinvoice.models import Customer, Invoice, Company
 
 def view_invoice_pdf(request):
+    session = DBSession()
+    company = session.query(Company).first()
     
     if "invoice" in request.matchdict:
         invoice_id = request.matchdict['invoice']
         try:
-            session = DBSession()
             invoice = session.query(Invoice).filter_by(id=invoice_id).one()
         except NoResultFound:
             return HTTPFound(location = route_url('invoices', request))
     
-    result = render_template('templates/invoice_pdf.pt', invoice=invoice)
+    if company.invoice_template:
+        rml_template = 'templates/' + company.invoice_template
+    else:
+        rml_template = 'templates/invoice_pdf.pt'
+    result = render_template(rml_template, invoice=invoice)
     rmlfile = tempfile.mktemp(suffix=".rml")
     fd = open(rmlfile, "wb")
     fd.write(result.encode('utf-8'))

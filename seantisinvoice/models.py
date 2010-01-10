@@ -48,6 +48,7 @@ class Company(Base):
     swift = Column(String)
     bank_address = Column(Unicode)
     invoice_start_number = Column(Integer, default=1)
+    invoice_template = Column(String)
 
 class Customer(Base):
     __tablename__ = 'customer'
