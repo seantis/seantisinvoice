@@ -72,7 +72,7 @@ class CustomerContact(Base):
     e_mail = Column(String)
     phone = Column(String)
     
-    customer = relation(Customer, lazy=False, backref=backref('contacts', order_by=[last_name, first_name], cascade="delete"))
+    customer = relation(Customer, lazy=False, backref=backref('contacts', order_by=[last_name, first_name], lazy=False, cascade="delete"))
     
 class Invoice(Base):
     __tablename__ = 'invoice'
