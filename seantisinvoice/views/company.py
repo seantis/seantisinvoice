@@ -61,6 +61,8 @@ class CompanyController(object):
     def form_widgets(self, fields):
         widgets = {}
         
+        # we might move the options here into a configuration file or we even let the users upload
+        # rml templates TTW!
         options = [('invoice_pdf.pt','German PDF Template'),('invoice_pdf.pt','English PDF Template')]
         
         # FIXME: No clue why the data is not saved when using the widget
