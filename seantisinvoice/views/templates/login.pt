@@ -78,7 +78,7 @@
                     <div><label>Password</label> : <input class="inputField" type="password" name="password" title="Password" /></div>
                 </div>
                 <div class="controlsLogin">
-                    <input type="button" class="button-striking" name="form.submitted" value="Login" />
+                    <input type="submit" class="button-striking" name="form.submitted" value="Login" />
                 </div>
             </fieldset>
             <span class="clearFix">&nbsp;</span>
