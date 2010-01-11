@@ -116,7 +116,7 @@
             </tr>
             <tr>
                 <td></td>
-                <td><para style="small">MWST (7.6%)</para></td>
+                <td vAlign="bottom">MWST (7.6%)</td>
                 <td></td>
                 <td align="right">${'%.02f' % invoice.tax_amount()}</td>
             </tr>
@@ -130,7 +130,7 @@
         
         <spacer length="30"/>
         
-        <para style="normal">Für das entgegengebrachte Vertrauen danken wir bestens und stehen Ihnen bei Fragen jederzeit gerne zur Verfügung.</para>
+        <para style="normal" leading="15">Für das entgegengebrachte Vertrauen danken wir bestens und stehen Ihnen bei Fragen jederzeit gerne zur Verfügung.</para>
         
         <spacer length="20"/>
         
