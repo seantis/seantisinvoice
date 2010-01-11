@@ -1,5 +1,6 @@
 from webob.exc import HTTPFound
 
+import os
 import tempfile
 
 from z3c.rml.rml2pdf import go
@@ -30,7 +31,12 @@ def view_invoice_pdf(request):
         rml_template = 'templates/rml/' + company.invoice_template
     else:
         rml_template = 'templates/rml/invoice_pdf.pt'
-    result = render_template(rml_template, invoice=invoice)
+        
+    # Only jpeg without PIL
+    logo_name = 'seantis_logo.jpg'
+    logo_path = os.path.join(os.path.dirname(__file__), 'templates', 'rml', logo_name)
+        
+    result = render_template(rml_template, invoice=invoice, logo_path=logo_path)
     rmlfile = tempfile.mktemp(suffix=".rml")
     fd = open(rmlfile, "wb")
     fd.write(result.encode('utf-8'))

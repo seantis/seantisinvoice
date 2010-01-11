@@ -5,8 +5,9 @@
 
     <template pageSize="A4" author="www.seantis.ch" title="Rechnung :: ${invoice.invoice_number}">
         <pageTemplate id="main">
-           <frame id="first" x1="72" y1="12" width="451" height="698"/>
+           <frame id="first" x1="72" y1="12" width="451" height="698"/>           
             <pageGraphics>
+                <image file="${logo_path}" x="10mm" y="270mm" preserveRatio="1" />
                 <place x="6cm" y="0.5cm" width="10cm" height="1cm">
                     <para style="footer" tal:condition="invoice.company.name">${invoice.company.name} :: ${invoice.company.address1} :: ${invoice.company.country}-${invoice.company.postal_code} ${invoice.company.city} :: ${invoice.company.phone}</para>
                 </place>
@@ -36,10 +37,6 @@
     <story>
         
         <!-- PLEASE HELP ME WITH THE PATH. Should point to the uploaded image in company profile: field logo -->
-        
-        <pageGraphics>
-            <image file="%(here)/seantis_logo.png" x="-7mm" y="263mm" height="45mm" width="212mm" preserveRatio="1" />
-        </pageGraphics>
         
         <blockTable style="address" colWidths="55% 45%" rowHeights="0.6cm 0.6cm 0.6cm 0.6cm 0.6cm">
             <tr>
