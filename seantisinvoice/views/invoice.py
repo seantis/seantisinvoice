@@ -25,10 +25,10 @@ class AmountOrHours(validator.Validator):
     and hours has a value filled in.
     """
     def __call__(self, v):
-        if v['amount'] is not None or v['hours'] is not None:
+        if v['amount'] is not None or v['hours'] is not None or v['days'] is not None:
             return None
         else:
-            msg = "Amount or hours must be set"
+            msg = "Amount or hours or days must be set"
             raise validatish.Invalid(msg)
 
 
@@ -39,6 +39,7 @@ class InvoiceItemSchema(schemaish.Structure):
     service_description = schemaish.String(validator=validator.Required())
     amount = schemaish.Float(description="Enter the amout")
     hours = schemaish.Float(description="Or hours (will be multiplied by your rate)")
+    days = schemaish.Float(description="Or days (will be multiplied by your rate)")
     # Additional schema wide validator.
     validator = AmountOrHours()
     

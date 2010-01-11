@@ -41,6 +41,8 @@ class Company(Base):
     e_mail = Column(String)
     phone = Column(String)
     logo = Column(String)
+    hourly_rate = Column(Float)
+    daily_rate = Column(Float)
     tax = Column(Float)
     vat_number = Column(String)
     iban = Column(String)
@@ -105,6 +107,15 @@ class Invoice(Base):
         
     def grand_total(self):
         return self.sub_total() + self.tax_amount()
+        
+    def unit(self):
+        items = self.items
+        for item in items:
+            if item.days:
+                return u'PT'
+            if item.hours:
+                return u'H'
+        return ''
 
 class InvoiceItem(Base):
     __tablename__ = 'invoice_item'
@@ -113,14 +124,18 @@ class InvoiceItem(Base):
     item_number = Column(Integer)
     amount = Column(Float)
     hours = Column(Float)
+    days = Column(Float)
     service_description = Column(Unicode)
     service_title = Column(Unicode)
     
     invoice = relation(Invoice, backref=backref('items', order_by=item_number, cascade="delete", lazy=False))
     
+    # The rates have to come from Company hourly_rate / daily rate
     def total(self):
         if self.hours:
             return self.hours * 140.0
+        if self.days:
+            return self.days * 1400.0
         return self.amount
 
 def initialize_sql(db_string, echo=False):

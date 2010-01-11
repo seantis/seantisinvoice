@@ -95,13 +95,13 @@
             <tr>
                 <td>Service</td>
                 <td>Beschreibung</td>
-                <td>H / PT</td>
+                <td>${invoice.unit()}</td>
                 <td>Kosten</td>
             </tr>
             <tr tal:repeat="item invoice.items">
                 <td><para style="normal">${item.service_title}</para></td>
                 <td><para style="small">${item.service_description}</para></td>
-                <td></td>
+                <td>${item.hours} ${item.days}</td>
                 <td align="right">${'%.02f' % item.total()}</td>
             </tr>
             <tr>
