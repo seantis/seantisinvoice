@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 import transaction
 
 from sqlalchemy import create_engine
@@ -106,15 +108,19 @@ class Invoice(Base):
         return self.sub_total() * self.tax / 100.0
         
     def grand_total(self):
-        return self.sub_total() + self.tax_amount()
+        amount_str = str(self.sub_total() + self.tax_amount())
+        amount = Decimal(amount_str)
+        # import pdb; pdb.set_trace()
+        rounder = Decimal("0.05")  # precision for rounding
+        return amount - amount.remainder_near(rounder)
         
     def unit(self):
         items = self.items
         for item in items:
             if item.days:
-                return u'PT'
+                return u'(PT)'
             if item.hours:
-                return u'H'
+                return u'(h)'
         return ''
 
 class InvoiceItem(Base):
