@@ -36,8 +36,6 @@
 
     <story>
         
-        <!-- PLEASE HELP ME WITH THE PATH. Should point to the uploaded image in company profile: field logo -->
-        
         <blockTable style="address" colWidths="55% 45%" rowHeights="0.6cm 0.6cm 0.6cm 0.6cm 0.6cm">
             <tr>
                 <td>${invoice.company.name}</td>
