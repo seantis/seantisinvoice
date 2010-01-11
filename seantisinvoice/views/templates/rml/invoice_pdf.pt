@@ -36,7 +36,7 @@
             <image file="%(here)/seantis_logo.png" x="-7mm" y="263mm" height="45mm" width="212mm" preserveRatio="1" />
         </pageGraphics>
         
-        <blockTable style="default" colWidths="50% 50%">
+        <blockTable style="default" colWidths="50% 50%" rowHeights="0.5cm 0.5cm 0.5cm 0.5cm 0.5cm">
             <tr>
                 <td>${invoice.company.name}</td>
                 <td>${invoice.contact.customer.name}</td>
