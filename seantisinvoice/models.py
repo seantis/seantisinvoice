@@ -110,7 +110,6 @@ class Invoice(Base):
     def grand_total(self):
         amount_str = str(self.sub_total() + self.tax_amount())
         amount = Decimal(amount_str)
-        # import pdb; pdb.set_trace()
         rounder = Decimal("0.05")  # precision for rounding
         return amount - amount.remainder_near(rounder)
         
