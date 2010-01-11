@@ -7,14 +7,13 @@ from z3c.rml.rml2pdf import go
 
 from sqlalchemy.orm.exc import NoResultFound
 
-from repoze.bfg.chameleon_zpt import render_template_to_response
+from repoze.bfg.url import route_url
 from repoze.bfg.chameleon_zpt import render_template
-from repoze.bfg.chameleon_zpt import get_template
 
 from webob import Response
 
 from seantisinvoice.models import DBSession
-from seantisinvoice.models import Customer, Invoice, Company
+from seantisinvoice.models import Invoice, Company
 
 def view_invoice_pdf(request):
     session = DBSession()

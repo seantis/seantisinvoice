@@ -7,8 +7,7 @@ import schemaish
 import validatish
 from validatish import validator
 
-# for sorting of the table used later
-from sqlalchemy import desc, asc
+from sqlalchemy import desc
 
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.util import class_mapper

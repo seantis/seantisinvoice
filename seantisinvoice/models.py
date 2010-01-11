@@ -1,4 +1,3 @@
-from datetime import timedelta
 import transaction
 
 from sqlalchemy import create_engine

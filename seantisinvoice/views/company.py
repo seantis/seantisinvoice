@@ -1,10 +1,8 @@
 from webob.exc import HTTPFound
 
-import formish
 import schemaish
 from validatish import validator
 
-from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.util import class_mapper
 
 from repoze.bfg.url import route_url
@@ -75,20 +73,20 @@ class CompanyController(object):
         return dict(request=self.request, main=main, msgs=statusmessage.messages(self.request))
         
     def _apply_data(self, company, converted):
-        session = DBSession()
         # Apply schema fields to the company object
         field_names = [ p.key for p in class_mapper(Company).iterate_properties ]
         for field_name in field_names:
             if field_name in converted.keys():
                 setattr(company, field_name, converted[field_name])
-        
-        # ToDo: We should show this only if there are changes to be saved!    
-        statusmessage.show(self.request, u"Changes saved.", "success")
                 
     def handle_submit(self, converted):
         session = DBSession()
         company = session.query(Company).first()
         self._apply_data(company, converted)
+        
+        # ToDo: We should show this only if there are changes to be saved!    
+        statusmessage.show(self.request, u"Changes saved.", "success")
+        
         return HTTPFound(location=route_url('company', self.request))
         
     def handle_cancel(self):        
