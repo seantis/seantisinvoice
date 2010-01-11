@@ -20,6 +20,10 @@ class CustomerContactSchema(schemaish.Structure):
     contact_id = schemaish.Integer()
     first_name = schemaish.String(validator=validator.Required())
     last_name = schemaish.String(validator=validator.Required())
+    title = schemaish.String(validator=validator.Required())
+    academic_title = schemaish.String()
+    e_mail = schemaish.String()
+    phone = schemaish.String()
 
 customer_contact_schmema = CustomerContactSchema()
 
