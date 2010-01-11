@@ -8,7 +8,7 @@
            <frame id="first" x1="72" y1="72" width="451" height="698"/>
             <pageGraphics>
                 <place x="6cm" y="0.5cm" width="10cm" height="1cm">
-                    <para style="footer">${invoice.company.name} :: ${invoice.company.address1} :: ${invoice.company.country}-${invoice.company.postal_code} ${invoice.company.city} :: ${invoice.company.phone}</para>
+                    <para style="footer" tal:condition="invoice.company.name">${invoice.company.name} :: ${invoice.company.address1} :: ${invoice.company.country}-${invoice.company.postal_code} ${invoice.company.city} :: ${invoice.company.phone}</para>
                 </place>
             </pageGraphics>
                    
@@ -43,10 +43,10 @@
             </tr>
             <tr>
                 <td>${invoice.company.address1}</td>
-                <td>${invoice.contact.title} ${invoice.contact.first_name} ${invoice.contact.last_name}</td>
+                <td>${invoice.contact.title} ${invoice.contact.academic_title} ${invoice.contact.first_name} ${invoice.contact.last_name}</td>
             </tr>
             <tr>
-                <td>${invoice.company.country}-${invoice.company.postal_code} ${invoice.company.city}</td>
+                <td>${invoice.company.postal_code} ${invoice.company.city}</td>
                 <td>${invoice.contact.customer.address1}</td>
             </tr>
             <tr>
@@ -63,12 +63,12 @@
         
         <blockTable style="default"  colWidths="50% 25% 25%">
             <tr>
-                <td>MWST-Nr.: ${invoice.company.vat_number}</td>
+                <td><tal:block tal:condition="invoice.company.vat_number">MWST-Nr.: ${invoice.company.vat_number}</tal:block></td>
                 <td>Rechnungsnummer:</td>
                 <td>${invoice.invoice_number}</td>
             </tr>
             <tr>
-                <td>IBAN: ${invoice.company.iban}</td>
+                <td><tal:block tal:condition="invoice.company.vat_number">IBAN: ${invoice.company.iban}</tal:block></td>
                 <td>Rechungsdatum:</td>
                 <td>${invoice.date.strftime('%d.%m.%Y')}</td>
             </tr>
@@ -134,7 +134,7 @@
         
         <spacer length="20"/>
         
-        <para style="normal">SWIFT: ${invoice.company.swift} / ${invoice.company.bank_address}</para>
+        <para style="normal" tal:condition="invoice.company.swift">SWIFT: ${invoice.company.swift} / ${invoice.company.bank_address}</para>
         
         <!--
         
