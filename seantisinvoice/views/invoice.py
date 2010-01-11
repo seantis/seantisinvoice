@@ -161,9 +161,6 @@ class InvoiceController(object):
         for item in item_map.values():
             session.delete(item)
         
-        # ToDo: We should show this only if there are changes to be saved! 
-        statusmessage.show(self.request, u"Changes saved.", "success")
-        
     def handle_add(self, converted):
         session = DBSession()
         invoice = Invoice()
@@ -186,6 +183,10 @@ class InvoiceController(object):
         session = DBSession()
         invoice = session.query(Invoice).filter_by(id=invoice_id).one()
         self._apply_data(invoice, converted)
+        
+        # ToDo: We should show this only if there are changes to be saved! 
+        statusmessage.show(self.request, u"Changes saved.", "success")
+        
         return HTTPFound(location=route_url('invoices', self.request))
         
     def handle_cancel(self):

@@ -117,9 +117,6 @@ class CustomerController(object):
         # Remove contact items that have been removed in the form
         for contact in contact_map.values():
             session.delete(contact)
-            
-        # ToDo: We should show this only if there are changes to be saved! 
-        statusmessage.show(self.request, u"Changes saved.", "success")
         
     def handle_add(self, converted):
         customer = Customer()
@@ -136,6 +133,10 @@ class CustomerController(object):
         session = DBSession()
         customer = session.query(Customer).filter_by(id=customer_id).one()
         self._apply_data(customer, converted)
+        
+        # ToDo: We should show this only if there are changes to be saved! 
+        statusmessage.show(self.request, u"Changes saved.", "success")
+        
         return HTTPFound(location=route_url('customers', self.request))
         
     def handle_cancel(self):
