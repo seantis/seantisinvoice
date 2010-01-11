@@ -7,7 +7,7 @@
         <pageTemplate id="main">
            <frame id="first" x1="72" y1="12" width="451" height="698"/>           
             <pageGraphics>
-                <image file="${logo_path}" x="10mm" y="270mm" preserveRatio="1" />
+                <image file="${logo_path}" x="12mm" y="275mm" width="70mm" height="11mm" />
                 <place x="6cm" y="0.5cm" width="10cm" height="1cm">
                     <para style="footer" tal:condition="invoice.company.name">${invoice.company.name} :: ${invoice.company.address1} :: ${invoice.company.country}-${invoice.company.postal_code} ${invoice.company.city} :: ${invoice.company.phone}</para>
                 </place>
