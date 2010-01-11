@@ -5,7 +5,7 @@
 
     <template pageSize="A4" author="www.seantis.ch" title="Rechnung :: ${invoice.invoice_number}">
         <pageTemplate id="main">
-           <frame id="first" x1="72" y1="72" width="451" height="698"/>
+           <frame id="first" x1="72" y1="12" width="451" height="698"/>
             <pageGraphics>
                 <place x="6cm" y="0.5cm" width="10cm" height="1cm">
                     <para style="footer" tal:condition="invoice.company.name">${invoice.company.name} :: ${invoice.company.address1} :: ${invoice.company.country}-${invoice.company.postal_code} ${invoice.company.city} :: ${invoice.company.phone}</para>
@@ -26,6 +26,11 @@
             <blockLeftPadding length="1mm" />
             <blockRightPadding length="1mm" />
         </blockTableStyle>
+        <blockTableStyle id="address">
+            <blockFont name="Helvetica" size="11" />
+            <blockLeftPadding length="1mm" />
+            <blockRightPadding length="1mm" />
+        </blockTableStyle>
     </stylesheet>
 
     <story>
@@ -36,7 +41,7 @@
             <image file="%(here)/seantis_logo.png" x="-7mm" y="263mm" height="45mm" width="212mm" preserveRatio="1" />
         </pageGraphics>
         
-        <blockTable style="default" colWidths="50% 50%" rowHeights="0.5cm 0.5cm 0.5cm 0.5cm 0.5cm">
+        <blockTable style="address" colWidths="55% 45%" rowHeights="0.6cm 0.6cm 0.6cm 0.6cm 0.6cm">
             <tr>
                 <td>${invoice.company.name}</td>
                 <td>${invoice.contact.customer.name}</td>
@@ -61,7 +66,7 @@
         
         <spacer length="20"/>
         
-        <blockTable style="default"  colWidths="50% 25% 25%">
+        <blockTable style="default"  colWidths="55% 25% 20%">
             <tr>
                 <td><tal:block tal:condition="invoice.company.vat_number">MWST-Nr.: ${invoice.company.vat_number}</tal:block></td>
                 <td>Rechnungsnummer:</td>
@@ -78,6 +83,8 @@
                 <td><para style="normal"><b>${invoice.due_date.strftime('%d.%m.%Y')}</b></para></td>
             </tr>
         </blockTable>
+        
+        <spacer length="20"/>
         
         <h3 fontName="Helvetica" fontSize="10"><b>Rechnung</b> :: ${invoice.project_description}</h3>
         
