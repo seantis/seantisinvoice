@@ -29,6 +29,13 @@
     </stylesheet>
 
     <story>
+        
+        <!-- PLEASE HELP ME WITH THE PATH. Should point to the uploaded image in company profile: field logo -->
+        
+        <pageGraphics>
+            <image file="%(here)/seantis_logo.png" x="-7mm" y="263mm" height="45mm" width="212mm" preserveRatio="1" />
+        </pageGraphics>
+        
         <blockTable style="default" colWidths="50% 50%">
             <tr>
                 <td>${invoice.company.name}</td>
@@ -129,10 +136,13 @@
         
         <para style="normal">SWIFT: ${invoice.company.swift} / ${invoice.company.bank_address}</para>
         
+        <!--
         
     	<illustration width="10cm" height="1cm">
     		<barCode x="1cm" y="0" code="Code128" humanReadable="true" fontName="Helvetica" fontSize="7">${invoice.invoice_number}</barCode>
     	</illustration>
+    	
+    	-->
     	
         
     </story>
