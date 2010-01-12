@@ -93,10 +93,10 @@
                 <lineStyle kind="LINEBELOW" colorName="black" start="0,-1" stop="-1,-1" thickness="0.25"/>
             </blockTableStyle>
             <tr>
-                <td>Service</td>
-                <td>Beschreibung</td>
-                <td>${invoice.unit()}</td>
-                <td>Kosten</td>
+                <td><para style="normal"><b>Service</b></para></td>
+                <td><para style="normal"><b>Beschreibung</b></para></td>
+                <td><para style="normal"><b>${invoice.unit()}</b></para></td>
+                <td><para style="normal"><b>Kosten</b></para></td>
             </tr>
             <tr tal:repeat="item invoice.items">
                 <td><para style="normal">${item.service_title}</para></td>
