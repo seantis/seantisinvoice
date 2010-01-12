@@ -135,12 +135,15 @@ class InvoiceItem(Base):
     
     invoice = relation(Invoice, backref=backref('items', order_by=item_number, cascade="delete", lazy=False))
     
-    # The rates have to come from Company hourly_rate / daily rate
+    # Fixme: This brings you an ugly exeception as long are the rates 
+    # are not set on Company!
     def total(self):
+        session = DBSession()
+        company = session.query(Company).first()
         if self.hours:
-            return self.hours * 140.0
+            return self.hours * company.hourly_rate
         if self.days:
-            return self.days * 1400.0
+            return self.days * company.daily_rate
         return self.amount
 
 def initialize_sql(db_string, echo=False):

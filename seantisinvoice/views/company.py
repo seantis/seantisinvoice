@@ -26,6 +26,8 @@ class CompanySchema(schemaish.Structure):
     e_mail = schemaish.String(validator=validator.Required())
     phone = schemaish.String(validator=validator.Required())
     # logo = schemaish.String()
+    hourly_rate = schemaish.Float(validator=validator.Required())
+    daily_rate = schemaish.Float(validator=validator.Required())
     tax = schemaish.String(validator=validator.Required())
     vat_number = schemaish.String()
     iban = schemaish.String()
