@@ -135,8 +135,6 @@ class InvoiceItem(Base):
     
     invoice = relation(Invoice, backref=backref('items', order_by=item_number, cascade="delete", lazy=False))
     
-    # Fixme: This brings you an ugly exeception as long are the rates 
-    # are not set on Company!
     def total(self):
         session = DBSession()
         company = session.query(Company).first()

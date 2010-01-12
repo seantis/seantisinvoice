@@ -9,8 +9,6 @@
 	        
 	    <h1>${title}</h1>
         
-        <div tal:condition="python: not company.name" class="notice" style="margin: 1em 0">Please fill in your company information. Will be used for the invoice pdfs. Go to <a href="${request.application_url}/company"><b>Company Profile</b></a>.</div>
-        
         <table>
             <thead>
                 <tr>
@@ -32,7 +30,9 @@
             </tbody>
         </table>
         
-        <div class="controls">
+        <div tal:condition="python: not company.name" class="notice" style="margin: 1em 0">Please fill in your company information. Will be used for the invoice pdfs. Go to <a href="${request.application_url}/company"><b>Company Profile</b></a>.</div>
+        
+        <div tal:condition="python: company.name" class="controls">
              <a href="${request.application_url}/add_invoice"><button class="button-striking">Add invoice</button></a>
         </div>
         
