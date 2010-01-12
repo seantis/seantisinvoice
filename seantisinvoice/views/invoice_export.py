@@ -12,6 +12,7 @@ from repoze.bfg.chameleon_zpt import render_template
 
 from webob import Response
 
+from seantisinvoice.utils import formatThousands
 from seantisinvoice.models import DBSession
 from seantisinvoice.models import Invoice, Company
 
@@ -35,7 +36,8 @@ def view_invoice_pdf(request):
     logo_name = 'seantis_logo.jpg'
     logo_path = os.path.join(os.path.dirname(__file__), 'templates', 'rml', logo_name)
         
-    result = render_template(rml_template, invoice=invoice, logo_path=logo_path)
+    result = render_template(rml_template, invoice=invoice, logo_path=logo_path,
+                             formatThousands=formatThousands)
     rmlfile = tempfile.mktemp(suffix=".rml")
     fd = open(rmlfile, "wb")
     fd.write(result.encode('utf-8'))

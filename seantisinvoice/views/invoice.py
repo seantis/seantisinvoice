@@ -16,6 +16,7 @@ from repoze.bfg.url import route_url
 from repoze.bfg.chameleon_zpt import get_template
 
 from seantisinvoice import statusmessage
+from seantisinvoice.utils import formatThousands
 from seantisinvoice.models import DBSession
 from seantisinvoice.models import Customer, CustomerContact, Invoice, InvoiceItem, Company
 
@@ -227,4 +228,4 @@ def view_invoices(request):
     company = session.query(Company).first()
     main = get_template('templates/master.pt')
     return dict(request=request, main=main, invoices=invoices, company=company, 
-                title=title, msgs=statusmessage.messages(request))
+                title=title, msgs=statusmessage.messages(request), formatThousands=formatThousands)

@@ -102,7 +102,7 @@
                 <td><para style="normal">${item.service_title}</para></td>
                 <td><para style="small">${item.service_description}</para></td>
                 <td>${item.hours} ${item.days}</td>
-                <td align="right">${'%.02f' % item.total()}</td>
+                <td align="right">${formatThousands('%.02f' % item.total())}</td>
             </tr>
             <tr>
                 <td></td>
@@ -114,19 +114,19 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td align="right">${'%.02f' % invoice.sub_total()}</td>
+                <td align="right">${formatThousands('%.02f' % invoice.sub_total())}</td>
             </tr>
             <tr>
                 <td></td>
                 <td vAlign="bottom">MWST (7.6%)</td>
                 <td></td>
-                <td align="right">${'%.02f' % invoice.tax_amount()}</td>
+                <td align="right">${formatThousands('%.02f' % invoice.tax_amount())}</td>
             </tr>
             <tr>
                 <td>Total</td>
                 <td>Einmalige Kosten (${invoice.currency})</td>
                 <td></td>
-                <td align="right">${'%.02f' % invoice.grand_total()}</td>
+                <td align="right">${formatThousands('%.02f' % invoice.grand_total())}</td>
             </tr>
         </blockTable>
         

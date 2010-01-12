@@ -23,7 +23,7 @@
                 <tr tal:repeat="invoice invoices" tal:attributes="class python:str(repeat['invoice'].odd() and 'even' or 'odd')">
                     <td><a href="${request.application_url}/invoices/${invoice.id}">${invoice.project_description}</a></td>
                     <td><a href="${request.application_url}/customers/${invoice.contact.customer.id}">${invoice.contact.customer.name}</a></td>
-                    <td align="right">${'%.02f' % invoice.grand_total()}</td>
+                    <td align="right">${formatThousands('%.02f' % invoice.grand_total())}</td>
                     <td align="right">${invoice.date.strftime('%d.%m.%Y')}</td>
                     <td align="right"><a href="${request.application_url}/invoices/${invoice.id}/invoice_pdf"><img src="${request.application_url}/static/images/pdf_icon.png" alt="Download as PDF" /></a></td>
                 </tr>
