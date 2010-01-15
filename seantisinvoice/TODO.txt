@@ -1,0 +1,18 @@
+Please delete from the list below when implemented:
+
+- Bug: InvalidRequestError: The transaction is closed
+- remove redundant first "drag me" for invoice items and customer contact
+- working hours calculation
+- Please add a message for failed login attempt!
+
+
+Nice to have:
+
+- Do we status message 'data saved' only if there are changes to be saved?
+- internationalize: date / thousands separator
+- Company: invoice_template should be a dropdown: options in configuration file?
+- logout button broken for safari
+- Company logo file can be uploaded TTW
+- Company: prodive a vocabulary with countries including country codes. This way country codes can be used in addresses.
+- batches for lists
+- TESTS TESTS TESTS!
