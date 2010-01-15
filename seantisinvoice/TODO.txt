@@ -14,6 +14,6 @@ Nice to have:
 - Company: invoice_template should be a dropdown: options in configuration file?
 - logout button broken for safari
 - Company logo file can be uploaded TTW
-- Company: prodive a vocabulary with countries including country codes. This way country codes can be used in addresses.
+- Company: provide a vocabulary with countries including country codes. This way country codes can be used in addresses.
 - batches for lists
 - TESTS TESTS TESTS!
