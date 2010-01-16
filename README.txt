@@ -2,17 +2,18 @@ seantisinvoice README
 
 Create and activate virtualenv:
 
-% virtualenv --no-site-packages invoice
-% cd invoice
+% virtualenv --no-site-packages seantisinvoice
+% cd seantisinvoice
 % source bin/activate
 
-Install repoze.bfg:
+Install Reportlab:
 
-% easy_install -i http://dist.repoze.org/bfg/1.1/simple repoze.bfg
+Download from http://www.reportlab.com/ftp/ReportLab_2_3.tar.gz
+% python setup.py install
 
-Install repoze.bfg.formish (not on pypi yet):
+Install lxml (build statically on Mac):
 
-% easy_install -i http://dist.repoze.org/karl/1/simple repoze.bfg.formish
+% STATIC_DEPS=true easy_install lxml
 
 Get seantis.invoice:
 
@@ -22,8 +23,13 @@ Install seantis.invoice
 
 % python setup.py develop
 
+Install repoze.bfg.formish (not on pypi yet):
+
+% easy_install -i http://dist.repoze.org/karl/1/simple repoze.bfg.formish
+
 Start seantisinvoice:
 
-% paster serve seantisinvoice/seantisinvoice.ini
+% cd seantisinvoice
+% paster serve seantisinvoice.ini
 
 login the first time with admin:admin. Don't forget to change this in passwd!
