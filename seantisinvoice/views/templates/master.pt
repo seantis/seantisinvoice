@@ -19,10 +19,11 @@
     <script type="text/javascript">
         $(document).ready(function() {
             formish();
+            
+            // There's a bug in formish concerning the renumbering in sortable sequences.
+            // Thus, fix it here until its fixed in the formish JS.
+            $('form').find('.sortable').bind('sortstop', order_changed);
         });
-        // There's a bug in formish concerning the renumbering in sortable sequences.
-        // Thus, fix it here until its fixed in the formish JS.
-        $('form').find('.sortable').bind('sortstop', order_changed);
         
     </script>
     
