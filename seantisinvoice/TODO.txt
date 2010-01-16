@@ -1,6 +1,5 @@
 Please delete from the list below when implemented:
 
-- working hours calculation
 - Please add a message for failed login attempt!
 
 
