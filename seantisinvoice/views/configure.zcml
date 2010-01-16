@@ -17,6 +17,13 @@
     view=".login.view_logout"
     />
     
+  <route
+    path="/license"
+    name="license"
+    view=".license.license"
+    view_renderer="templates/license.pt"
+    />
+    
   <route 
     path=""
     name="invoices"
