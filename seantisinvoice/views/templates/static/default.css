@@ -325,11 +325,12 @@ input, textarea, select {
 	margin: 0;
 }
 
+
 #sidebar h2 {
 	width: 250px;
 	padding: 8px 0 0 0px;
 	margin-bottom: 10px;
-	background: url(images/img07.jpg) no-repeat left top;
+	/* background: url(images/img07.jpg) no-repeat left top; */
 	font-size: 20px;
 	color: #28313A; 
 }
