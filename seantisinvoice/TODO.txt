@@ -1,6 +1,5 @@
 Please delete from the list below when implemented:
 
-- Bug: InvalidRequestError: The transaction is closed
 - remove redundant first "drag me" for invoice items and customer contact
 - working hours calculation
 - Please add a message for failed login attempt!
