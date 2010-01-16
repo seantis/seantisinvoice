@@ -167,6 +167,12 @@
 
   </formish:form>
   
+  <!-- Additional or redefined repoze.bfg.formish widget templates -->
+  
+  <formish:add_template_path
+    path="templates"
+    />
+  
   <!-- Static resources -->
   
   <static
