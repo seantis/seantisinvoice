@@ -12,6 +12,12 @@
     />
     
   <route
+    path="/login_redirect"
+    name="login_redirect"
+    view=".login.view_login_redirect"
+    />
+    
+  <route
     path="/license"
     name="license"
     view=".license.license"
