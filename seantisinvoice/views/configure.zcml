@@ -12,12 +12,6 @@
     />
     
   <route
-    path="/logout"
-    name="logout"
-    view=".login.view_logout"
-    />
-    
-  <route
     path="/license"
     name="license"
     view=".license.license"

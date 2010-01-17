@@ -1,7 +1,5 @@
 Please delete from the list below when implemented:
 
-- Please add a message for failed login attempt!
-
 
 Nice to have:
 

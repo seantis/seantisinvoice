@@ -15,6 +15,7 @@ requires = [
     'zope.sqlalchemy',
     'z3c.rml',
     'repoze.who',
+    'repoze.who-friendlyform',
     'qc.statusmessage',
     ]
 

@@ -70,7 +70,11 @@
 	<!-- start content -->
 	<div id="content">
 	    
-        <form action="?__do_login=true" method="post">
+	    <div tal:condition="login_failed" class="error">
+            Login failed.
+        </div>
+	    
+        <form action="${request.application_url}/dologin" method="post">
             <fieldset>
                 <legend>Login</legend>
                 <div>
