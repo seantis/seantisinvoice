@@ -3,6 +3,8 @@ Please delete from the list below when implemented:
 
 Nice to have:
 
+- Recurring invoices: script to check recurring_term (todo: change it to a date field, analog to due_date) and copy the invoice.
+  This script should be started via cronjob then.
 - internationalize: date / thousands separator
 - Company: invoice_template options in configuration file?
 - Company logo file can be uploaded TTW
