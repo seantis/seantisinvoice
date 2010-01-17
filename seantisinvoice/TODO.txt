@@ -3,7 +3,6 @@ Please delete from the list below when implemented:
 
 Nice to have:
 
-- Do we status message 'data saved' only if there are changes to be saved?
 - internationalize: date / thousands separator
 - Company: invoice_template should be a dropdown: options in configuration file?
 - logout button broken for safari

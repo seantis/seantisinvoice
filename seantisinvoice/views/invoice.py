@@ -131,12 +131,17 @@ class InvoiceController(object):
         return dict(request=self.request, main=main, msgs=statusmessage.messages(self.request))
         
     def _apply_data(self, invoice, converted):
+        changed = False
         # Apply schema fields to the customer object
         field_names = [ p.key for p in class_mapper(Invoice).iterate_properties ]
         for field_name in field_names:
             if field_name in converted.keys():
-                setattr(invoice, field_name, converted[field_name])
-        invoice.due_date = invoice.date + datetime.timedelta(days=converted['payment_term'])
+                if getattr(invoice, field_name) != converted[field_name]:
+                    setattr(invoice, field_name, converted[field_name])
+                    changed = True
+        if invoice.due_date != invoice.date + datetime.timedelta(days=converted['payment_term']):
+            invoice.due_date = invoice.date + datetime.timedelta(days=converted['payment_term'])
+            changed = True
                 
         # Apply data of the items subforms
         session = DBSession()
@@ -152,15 +157,23 @@ class InvoiceController(object):
                 item = InvoiceItem()
                 item.invoice = invoice
                 session.add(item)
-            # Apply schema fields to the customer object
+                changed = True
+            # Apply schema fields to the invoice item object
             field_names = [ p.key for p in class_mapper(InvoiceItem).iterate_properties ]
             for field_name in field_names:
                 if field_name in item_data.keys():
-                    setattr(item, field_name, item_data[field_name])
-            item.item_number = index
-        # Remove contact items that have been removed in the form
+                    if getattr(item, field_name) != item_data[field_name]:
+                        setattr(item, field_name, item_data[field_name])
+                        changed = True
+            if item.item_number != index:
+                item.item_number = index
+                changed = True
+        # Remove invoice items that have been removed in the form
         for item in item_map.values():
             session.delete(item)
+            changed = True
+            
+        return changed
         
     def handle_add(self, converted):
         session = DBSession()
@@ -183,10 +196,12 @@ class InvoiceController(object):
         invoice_id = self.request.matchdict['invoice']
         session = DBSession()
         invoice = session.query(Invoice).filter_by(id=invoice_id).one()
-        self._apply_data(invoice, converted)
+        changed = self._apply_data(invoice, converted)
         
-        # ToDo: We should show this only if there are changes to be saved! 
-        statusmessage.show(self.request, u"Changes saved.", "success")
+        if changed:
+            statusmessage.show(self.request, u"Changes saved.", "success")
+        else:
+            statusmessage.show(self.request, u"No changes saved.", "notice")
         
         return HTTPFound(location=route_url('invoices', self.request))
         
