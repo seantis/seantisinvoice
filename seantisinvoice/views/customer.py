@@ -88,12 +88,15 @@ class CustomerController(object):
         return dict(request=self.request, main=main, msgs=statusmessage.messages(self.request))
         
     def _apply_data(self, customer, converted):
+        changed = False
         session = DBSession()
         # Apply schema fields to the customer object
         field_names = [ p.key for p in class_mapper(Customer).iterate_properties ]
         for field_name in field_names:
             if field_name in converted.keys():
-                setattr(customer, field_name, converted[field_name])
+                if getattr(customer, field_name) != converted[field_name]:
+                    setattr(customer, field_name, converted[field_name])
+                    changed = True
             
         # Apply data of the contact subforms
         contact_map = {}
@@ -104,19 +107,25 @@ class CustomerController(object):
                 contact_id = contact_data['contact_id']
                 contact = contact_map[contact_id]
                 del contact_map[contact_id]
-                # FIXME: what happens to existing invoices that loose their contact?
             else:
                 contact = CustomerContact()
                 contact.customer = customer
                 session.add(contact)
+                changed = True
             # Apply schema fields to the customer object
             field_names = [ p.key for p in class_mapper(CustomerContact).iterate_properties ]
             for field_name in field_names:
                 if field_name in contact_data.keys():
-                    setattr(contact, field_name, contact_data[field_name])
+                    if getattr(contact, field_name) != contact_data[field_name]:
+                        setattr(contact, field_name, contact_data[field_name])
+                        changed = True
         # Remove contact items that have been removed in the form
         for contact in contact_map.values():
+            # FIXME: what happens to existing invoices that loose their contact?
             session.delete(contact)
+            changed = True
+            
+        return changed
         
     def handle_add(self, converted):
         customer = Customer()
@@ -132,10 +141,12 @@ class CustomerController(object):
         customer_id = self.request.matchdict['customer']
         session = DBSession()
         customer = session.query(Customer).filter_by(id=customer_id).one()
-        self._apply_data(customer, converted)
+        changed = self._apply_data(customer, converted)
         
-        # ToDo: We should show this only if there are changes to be saved! 
-        statusmessage.show(self.request, u"Changes saved.", "success")
+        if changed: 
+            statusmessage.show(self.request, u"Changes saved.", "success")
+        else:
+            statusmessage.show(self.request, u"No changes saved.", "notice")
         
         return HTTPFound(location=route_url('customers', self.request))
         
