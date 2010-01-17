@@ -28,12 +28,12 @@ class CompanySchema(schemaish.Structure):
     # logo = schemaish.String()
     hourly_rate = schemaish.Float(validator=validator.Required())
     daily_rate = schemaish.Float(validator=validator.Required())
-    tax = schemaish.String(validator=validator.Required())
+    tax = schemaish.Float(validator=validator.Required())
     vat_number = schemaish.String()
     iban = schemaish.String()
     swift = schemaish.String()
     bank_address= schemaish.String()
-    invoice_start_number = schemaish.String()
+    invoice_start_number = schemaish.Integer()
     invoice_template = schemaish.String()
     
 company_schema = CompanySchema()
@@ -76,18 +76,24 @@ class CompanyController(object):
         
     def _apply_data(self, company, converted):
         # Apply schema fields to the company object
+        changed = False
         field_names = [ p.key for p in class_mapper(Company).iterate_properties ]
         for field_name in field_names:
             if field_name in converted.keys():
-                setattr(company, field_name, converted[field_name])
+                if getattr(company, field_name) != converted[field_name]:
+                    setattr(company, field_name, converted[field_name])
+                    changed = True
+        return changed
                 
     def handle_submit(self, converted):
         session = DBSession()
         company = session.query(Company).first()
-        self._apply_data(company, converted)
+        changed = self._apply_data(company, converted)
         
-        # ToDo: We should show this only if there are changes to be saved!    
-        statusmessage.show(self.request, u"Changes saved.", "success")
+        if changed:    
+            statusmessage.show(self.request, u"Changes saved.", "success")
+        else:
+            statusmessage.show(self.request, u"No changes saved.", "notice")
         
         return HTTPFound(location=route_url('company', self.request))
         
