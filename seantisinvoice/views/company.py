@@ -1,5 +1,6 @@
 from webob.exc import HTTPFound
 
+import formish
 import schemaish
 from validatish import validator
 
@@ -34,7 +35,7 @@ class CompanySchema(schemaish.Structure):
     swift = schemaish.String()
     bank_address= schemaish.String()
     invoice_start_number = schemaish.Integer()
-    invoice_template = schemaish.String()
+    invoice_template = schemaish.String(validator=validator.Required())
     
 company_schema = CompanySchema()
 
@@ -63,10 +64,8 @@ class CompanyController(object):
         
         # we might move the options here into a configuration file or we even let the users upload
         # rml templates TTW!
-        options = [('invoice_pdf.pt','German PDF Template'),('invoice_pdf.pt','English PDF Template')]
-        
-        # FIXME: No clue why the data is not saved when using the widget
-        # widgets['invoice_template'] = formish.SelectChoice(options=options)
+        options = [('invoice_pdf.pt','German PDF Template'),('invoice_pdf_en.pt','English PDF Template')]
+        widgets['invoice_template'] = formish.SelectChoice(options=options)
         
         return widgets
         
