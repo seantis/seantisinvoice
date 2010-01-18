@@ -112,7 +112,7 @@ class CustomerController(object):
                 contact.customer = customer
                 session.add(contact)
                 changed = True
-            # Apply schema fields to the customer object
+            # Apply schema fields to the customer contact object
             field_names = [ p.key for p in class_mapper(CustomerContact).iterate_properties ]
             for field_name in field_names:
                 if field_name in contact_data.keys():

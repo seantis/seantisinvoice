@@ -17,6 +17,8 @@ requires = [
     'repoze.who',
     'repoze.who-friendlyform',
     'qc.statusmessage',
+    'nose',
+    'coverage',
     ]
 
 if sys.version_info[:3] < (2,5,0):

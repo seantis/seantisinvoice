@@ -77,7 +77,7 @@ class InvoiceController(object):
         
         defaults = {
             'currency' : 'CHF',
-            'payment_term' : '30',
+            'payment_term' : 30,
             'tax' : company.tax,
         }
         
