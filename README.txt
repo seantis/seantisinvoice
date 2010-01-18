@@ -1,35 +1,7 @@
 seantisinvoice README
 
-Create and activate virtualenv:
+seantisinvoice is a small web based invoicing and payment tracking solution for freelancers and small companies.
 
-% virtualenv --no-site-packages seantisinvoice
-% cd seantisinvoice
-% source bin/activate
+Find more information on http://invoice.seantis.ch.
 
-Install Reportlab:
-
-Download from http://www.reportlab.com/ftp/ReportLab_2_3.tar.gz
-% python setup.py install
-
-Install lxml (build statically on Mac):
-
-% STATIC_DEPS=true easy_install lxml
-
-Get seantis.invoice:
-
-% svn co https://svn.seantis.ch/code/santisinvoice/trunk seantisinvoice
-
-Install seantis.invoice
-
-% python setup.py develop
-
-Install repoze.bfg.formish (not on pypi yet):
-
-% easy_install -i http://dist.repoze.org/karl/1/simple repoze.bfg.formish
-
-Start seantisinvoice:
-
-% cd seantisinvoice
-% paster serve seantisinvoice.ini
-
-login the first time with admin:admin. Don't forget to change this in passwd!
+Intructions on how to install it can be found in INSTALL.txt.
