@@ -1,6 +1,6 @@
 from qc.statusmessage.message import Message
 
-def show(request, msg, msg_type='notice'):
+def show(request, msg, msg_type=u'notice'):
     msg = Message(msg, msg_type=msg_type)
     request.environ['qc.statusmessage'].append(msg)
     

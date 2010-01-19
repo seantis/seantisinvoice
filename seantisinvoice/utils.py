@@ -1,4 +1,5 @@
 def formatThousands(s, tSep="'", dSep='.'):
+    s = str(s)
     if s.rfind('.')>0:
         rhs=s[s.rfind('.')+1:]
         s=s[:s.rfind('.')]

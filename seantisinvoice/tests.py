@@ -314,3 +314,36 @@ class TestViews(unittest.TestCase):
         request.environ['qc.statusmessage'] = []
         view = view_invoices(request)
         self.assertEqual(view['invoices'], [])
+        
+class TestUtilities(unittest.TestCase):
+    
+    def test_statusmessage(self):
+        from seantisinvoice import statusmessage
+        request = testing.DummyRequest()
+        request.environ['qc.statusmessage'] = []
+        msgs = statusmessage.messages(request)
+        self.assertEquals([], msgs)
+        statusmessage.show(request, u'Test message')
+        msgs = statusmessage.messages(request)
+        self.assertEquals(1, len(msgs))
+        self.assertEquals(u'Test message', msgs[0].msg)
+        self.assertEquals(u'notice', msgs[0].msg_type)
+        # Shown messages are removed
+        msgs = statusmessage.messages(request)
+        self.assertEquals([], msgs)
+        statusmessage.show(request, u'First message')
+        statusmessage.show(request, u'Second message', msg_type=u'error')
+        msgs = statusmessage.messages(request)
+        self.assertEquals(2, len(msgs))
+        self.assertEquals(u'Second message', msgs[0].msg)
+        self.assertEquals(u'error', msgs[0].msg_type)
+        self.assertEquals(u'First message', msgs[1].msg)
+        
+    def test_formatThousands(self):
+        from seantisinvoice.utils import formatThousands
+        self.assertEquals('1', formatThousands(1))
+        self.assertEquals('1.5', formatThousands(1.5))
+        self.assertEquals('12,545', formatThousands(12.545, dSep=','))
+        self.assertEquals("12'000", formatThousands(12000))
+        self.assertEquals("1'600'000.45", formatThousands(1600000.45))
+        self.assertEquals("-1'000", formatThousands(-1000))
