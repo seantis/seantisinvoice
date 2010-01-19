@@ -33,6 +33,16 @@ class TestInvoiceItem(unittest.TestCase):
         item.invoice = invoice
         item.days = 2.5
         self.assertEquals(3250.0, item.total())
+        
+    def test_unit(self):
+        from seantisinvoice.models import InvoiceItem
+        item = InvoiceItem()
+        self.assertEquals(u'', item.unit())
+        item.hours = 5.5
+        self.assertEquals(u'h', item.unit())
+        item.hours = None
+        item.days = 12
+        self.assertEquals(u'PT', item.unit())
 
 class TestInvoice(unittest.TestCase):
         

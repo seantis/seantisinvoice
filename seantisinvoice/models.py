@@ -112,15 +112,6 @@ class Invoice(Base):
         amount = Decimal(amount_str)
         rounder = Decimal("0.05")  # precision for rounding
         return amount - amount.remainder_near(rounder)
-        
-    def unit(self):
-        items = self.items
-        for item in items:
-            if item.days:
-                return u'(PT)'
-            if item.hours:
-                return u'(h)'
-        return ''
 
 class InvoiceItem(Base):
     __tablename__ = 'invoice_item'
@@ -141,6 +132,13 @@ class InvoiceItem(Base):
         if self.days:
             return self.days * self.invoice.company.daily_rate
         return self.amount
+        
+    def unit(self):
+        if self.days:
+            return u'PT'
+        if self.hours:
+            return u'h'
+        return u''
 
 def initialize_sql(db_string, echo=False):
     engine = create_engine(db_string, echo=echo)
