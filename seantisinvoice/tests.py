@@ -259,6 +259,13 @@ class TestViews(ViewTest):
         self.assertEquals(302, response.status_int)
         self.assertEquals(request.application_url, response.location)
         
+    def test_license(self):
+        from seantisinvoice.views.license import view_license
+        request = testing.DummyRequest()
+        request.environ['qc.statusmessage'] = []
+        response = view_license(request)
+        self.failUnless('main' in response)
+        
 class TestCompanyController(ViewTest):
     
     def test_handle_submit(self):

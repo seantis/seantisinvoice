@@ -20,7 +20,7 @@
   <route
     path="/license"
     name="license"
-    view=".license.license"
+    view=".license.view_license"
     view_renderer="templates/license.pt"
     />
     
