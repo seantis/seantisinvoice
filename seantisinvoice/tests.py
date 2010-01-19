@@ -1,7 +1,6 @@
 import datetime
 from decimal import Decimal
 import unittest
-import transaction
 from repoze.bfg import testing
 
 def _initTestingDB():
@@ -90,24 +89,16 @@ class TestInvoice(unittest.TestCase):
         invoice.tax = None
         self.assertEquals(Decimal('160.00'), invoice.grand_total())
         
-
-class TestViews(unittest.TestCase):
+class ViewTest(unittest.TestCase):
+    
     def setUp(self):
         testing.setUp()
         _initTestingDB()
 
     def tearDown(self):
-        from seantisinvoice.models import Invoice, Customer, Company
-        from seantisinvoice.models import DBSession
-        session = DBSession()
-        # Remove all data from DB
-        for company in session.query(Company).all():
-            session.delete(company)
-        for customer in session.query(Customer).all():
-            session.delete(customer)
-        for invoice in session.query(Invoice).all():
-            session.delete(invoice)
-        session.flush()
+        import transaction
+        # Abort transaction to clear the DB.
+        transaction.abort()
         testing.tearDown()
         
     def _set_company_profile(self):
@@ -170,8 +161,26 @@ class TestViews(unittest.TestCase):
         session.add(item)
         session.flush()
         return invoice
+
+class TestViews(ViewTest):
+    
+    def test_view_customers(self):
+        from seantisinvoice.views.customer import view_customers
+        request = testing.DummyRequest()
+        request.environ['qc.statusmessage'] = []
+        view = view_customers(request)
+        self.assertEqual(view['customers'], [])
+
+    def test_view_invoices(self):
+        from seantisinvoice.views.invoice import view_invoices
+        request = testing.DummyRequest()
+        request.environ['qc.statusmessage'] = []
+        view = view_invoices(request)
+        self.assertEqual(view['invoices'], [])
         
-    def test_edit_company(self):
+class TestCompanyController(ViewTest):
+    
+    def test_handle_submit(self):
         from seantisinvoice.views.company import CompanyController
         # Register route for redirect in company form actions
         testing.registerRoute('/company', 'company', factory=None)
@@ -191,7 +200,9 @@ class TestViews(unittest.TestCase):
         default_values = view.form_defaults()
         self.assertEquals(u'Seantis GmbH', default_values['name'])
         
-    def test_add_customer(self):
+class TestCustomerController(ViewTest):
+    
+    def test_handle_add(self):
         from seantisinvoice.models import Customer
         from seantisinvoice.models import DBSession
         from seantisinvoice.views.customer import CustomerController
@@ -210,7 +221,7 @@ class TestViews(unittest.TestCase):
         self.assertEquals(u'Customers Inc.', customer.name)
         self.assertEquals(u'Buck', customer.contacts[0].first_name)
         
-    def test_edit_customer(self):
+    def test_handle_submit(self):
         from seantisinvoice.views.customer import CustomerController
         # Register route for redirect in customer form actions
         testing.registerRoute('/customers', 'customers', factory=None)
@@ -239,13 +250,14 @@ class TestViews(unittest.TestCase):
         # Remove one of the contacts
         del default_values['contact_list'][0]
         view.handle_submit(default_values)
-        transaction.commit()
         default_values = view.form_defaults()
         self.assertEquals(1, len(default_values['contact_list']))
         # Contacts are alphabetically ordered.
         self.assertEquals(u'Stephen', default_values['contact_list'][0]['first_name'])
         
-    def test_add_invoice(self):
+class TestInvoiceController(ViewTest):
+    
+    def test_handle_add(self):
         from seantisinvoice.models import Invoice
         from seantisinvoice.models import DBSession
         from seantisinvoice.views.invoice import InvoiceController
@@ -269,7 +281,8 @@ class TestViews(unittest.TestCase):
         self.assertEquals(1, len(invoice.items))
         self.assertEquals(u'Testing', invoice.items[0].service_title)
         
-    def test_edit_invoice(self):
+    def test_handle_submit(self):
+        from seantisinvoice.models import DBSession
         from seantisinvoice.views.invoice import InvoiceController
         # Register route for redirect in invoice form actions
         testing.registerRoute('/', 'invoices', factory=None)
@@ -297,23 +310,14 @@ class TestViews(unittest.TestCase):
         data['item_list'][0] = view.form_defaults()['item_list'][1]
         data['item_list'][1] = view.form_defaults()['item_list'][0]
         view.handle_submit(data)
-        transaction.commit()
         data = view.form_defaults()
         self.assertEquals(u'Training', data['item_list'][0]['service_title'])
-        # And remove one of the items
+        # And remove one of them
         del data['item_list'][0]
         view.handle_submit(data)
-        transaction.commit()
         data = view.form_defaults()
         self.assertEquals(1, len(data['item_list']))
         self.assertEquals(u'My service', data['item_list'][0]['service_title'])
-
-    def test_view_invoices(self):
-        from seantisinvoice.views.invoice import view_invoices
-        request = testing.DummyRequest()
-        request.environ['qc.statusmessage'] = []
-        view = view_invoices(request)
-        self.assertEqual(view['invoices'], [])
         
 class TestUtilities(unittest.TestCase):
     

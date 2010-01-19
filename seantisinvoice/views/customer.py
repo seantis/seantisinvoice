@@ -122,7 +122,7 @@ class CustomerController(object):
         # Remove contact items that have been removed in the form
         for contact in contact_map.values():
             # FIXME: what happens to existing invoices that loose their contact?
-            session.delete(contact)
+            customer.contacts.remove(contact)
             changed = True
             
         return changed

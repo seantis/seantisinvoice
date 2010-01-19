@@ -96,6 +96,8 @@ class InvoiceController(object):
                     
             # Default values for the item subforms
             defaults['item_list'] = []
+            # Make test happy
+            invoice.items.sort(key=lambda obj: obj.item_number)
             for item in invoice.items:
                 item_defaults = {}
                 field_names = [ p.key for p in class_mapper(InvoiceItem).iterate_properties ]
@@ -170,7 +172,7 @@ class InvoiceController(object):
                 changed = True
         # Remove invoice items that have been removed in the form
         for item in item_map.values():
-            session.delete(item)
+            invoice.items.remove(item)
             changed = True
             
         return changed
