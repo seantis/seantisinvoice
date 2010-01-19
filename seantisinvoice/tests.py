@@ -182,6 +182,7 @@ class TestCompanyController(ViewTest):
     
     def test_handle_submit(self):
         from seantisinvoice.views.company import CompanyController
+        from seantisinvoice import statusmessage
         # Register route for redirect in company form actions
         testing.registerRoute('/company', 'company', factory=None)
         request = testing.DummyRequest()
@@ -199,6 +200,52 @@ class TestCompanyController(ViewTest):
         view.handle_submit(dict(name=u'Seantis GmbH'))
         default_values = view.form_defaults()
         self.assertEquals(u'Seantis GmbH', default_values['name'])
+        # Check status message
+        msgs = statusmessage.messages(request)
+        self.assertEquals(1, len(msgs))
+        self.assertEquals(u"Changes saved.", msgs[0].msg)
+        # Submit without changing anything
+        view.handle_submit(default_values)
+        msgs = statusmessage.messages(request)
+        self.assertEquals(1, len(msgs))
+        self.assertEquals(u"No changes saved.", msgs[0].msg)
+        
+    def test_handle_cancel(self):
+        from seantisinvoice.views.company import CompanyController
+        from seantisinvoice import statusmessage
+        # Register route for redirect in company form actions
+        testing.registerRoute('/', 'invoices', factory=None)
+        request = testing.DummyRequest()
+        request.environ['qc.statusmessage'] = []
+        view = CompanyController(None, request)
+        view.handle_cancel()
+        msgs = statusmessage.messages(request)
+        self.assertEquals(1, len(msgs))
+        self.assertEquals(u"No changes saved.", msgs[0].msg)
+        
+    def test_form_fields(self):
+        from seantisinvoice.views.company import CompanyController
+        from seantisinvoice.views.company import CompanySchema
+        request = testing.DummyRequest()
+        view = CompanyController(None, request)
+        fields = view.form_fields()
+        self.assertEquals(CompanySchema.attrs, fields)
+        
+    def test_form_widgets(self):
+        from seantisinvoice.views.company import CompanyController
+        request = testing.DummyRequest()
+        view = CompanyController(None, request)
+        widgets = view.form_widgets(view.form_fields())
+        self.assertEquals(2, len(widgets['invoice_template'].options))
+        
+    def test_call(self):
+        from seantisinvoice.views.company import CompanyController
+        request = testing.DummyRequest()
+        request.environ['qc.statusmessage'] = []
+        view = CompanyController(None, request)
+        result = view()
+        self.failUnless('main' in result.keys())
+        self.failUnless('msgs' in result.keys())
         
 class TestCustomerController(ViewTest):
     
@@ -223,6 +270,7 @@ class TestCustomerController(ViewTest):
         
     def test_handle_submit(self):
         from seantisinvoice.views.customer import CustomerController
+        from seantisinvoice import statusmessage
         # Register route for redirect in customer form actions
         testing.registerRoute('/customers', 'customers', factory=None)
         # Add a customer
@@ -254,6 +302,58 @@ class TestCustomerController(ViewTest):
         self.assertEquals(1, len(default_values['contact_list']))
         # Contacts are alphabetically ordered.
         self.assertEquals(u'Stephen', default_values['contact_list'][0]['first_name'])
+        # Submit without changing anything
+        request = testing.DummyRequest()
+        request.environ['qc.statusmessage'] = []
+        request.matchdict = dict(customer=str(customer.id))
+        view = CustomerController(None, request)
+        view.handle_submit(default_values)
+        msgs = statusmessage.messages(request)
+        self.assertEquals(1, len(msgs))
+        self.assertEquals(u"No changes saved.", msgs[0].msg)
+        
+    def test_form_fields(self):
+        from seantisinvoice.views.customer import CustomerController
+        from seantisinvoice.views.customer import CustomerSchema
+        request = testing.DummyRequest()
+        view = CustomerController(None, request)
+        fields = view.form_fields()
+        self.assertEquals(CustomerSchema.attrs, fields)
+        
+    def test_form_widgets(self):
+        from seantisinvoice.views.customer import CustomerController
+        request = testing.DummyRequest()
+        view = CustomerController(None, request)
+        widgets = view.form_widgets(view.form_fields())
+        self.failIf(widgets['contact_list'].sortable)
+        
+    def test_call(self):
+        from seantisinvoice.views.customer import CustomerController
+        request = testing.DummyRequest()
+        request.matchdict = dict(customer='2')
+        view = CustomerController(None, request)
+        result = view()
+        self.assertEquals(404, result.status_int)
+        # Add a customer
+        customer = self._add_customer()
+        request.matchdict = dict(customer=str(customer.id))
+        request.environ['qc.statusmessage'] = []
+        view = CustomerController(None, request)
+        result = view()
+        self.failUnless('main' in result.keys())
+        
+    def test_handle_cancel(self):
+        from seantisinvoice.views.customer import CustomerController
+        from seantisinvoice import statusmessage
+        # Register route for redirect in customer form actions
+        testing.registerRoute('/customers', 'customers', factory=None)
+        request = testing.DummyRequest()
+        request.environ['qc.statusmessage'] = []
+        view = CustomerController(None, request)
+        view.handle_cancel()
+        msgs = statusmessage.messages(request)
+        self.assertEquals(1, len(msgs))
+        self.assertEquals(u"No changes saved.", msgs[0].msg)
         
 class TestInvoiceController(ViewTest):
     

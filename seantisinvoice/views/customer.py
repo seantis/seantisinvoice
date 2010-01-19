@@ -1,4 +1,5 @@
-from webob.exc import HTTPFound
+from webob import Response
+from webob.exc import HTTPFound, HTTPNotFound
 
 import formish
 import schemaish
@@ -52,28 +53,26 @@ class CustomerController(object):
         defaults = {}
         if "customer" in self.request.matchdict:
             customer_id = self.request.matchdict['customer']
-            try:
-                session = DBSession()
-                customer = session.query(Customer).filter_by(id=customer_id).one()
-            except NoResultFound:
-                return HTTPFound(location = route_url('customers', self.request))  
-            field_names = [ p.key for p in class_mapper(Customer).iterate_properties ]
-            form_fields = [ field[0] for field in customer_schema.attrs ]
-            for field_name in field_names:
-                if field_name in form_fields:
-                    defaults[field_name] = getattr(customer, field_name)
-                    
-            # Default values for the contact subforms
-            defaults['contact_list'] = []
-            for contact in customer.contacts:
-                contact_defaults = {}
-                field_names = [ p.key for p in class_mapper(CustomerContact).iterate_properties ]
-                form_fields = [ field[0] for field in customer_contact_schmema.attrs ]
+            session = DBSession()
+            customer = session.query(Customer).filter_by(id=customer_id).first()
+            if customer:
+                field_names = [ p.key for p in class_mapper(Customer).iterate_properties ]
+                form_fields = [ field[0] for field in customer_schema.attrs ]
                 for field_name in field_names:
                     if field_name in form_fields:
-                        contact_defaults[field_name] = getattr(contact, field_name)
-                contact_defaults['contact_id'] = contact.id
-                defaults['contact_list'].append(contact_defaults)
+                        defaults[field_name] = getattr(customer, field_name)
+                    
+                # Default values for the contact subforms
+                defaults['contact_list'] = []
+                for contact in customer.contacts:
+                    contact_defaults = {}
+                    field_names = [ p.key for p in class_mapper(CustomerContact).iterate_properties ]
+                    form_fields = [ field[0] for field in customer_contact_schmema.attrs ]
+                    for field_name in field_names:
+                        if field_name in form_fields:
+                            contact_defaults[field_name] = getattr(contact, field_name)
+                    contact_defaults['contact_id'] = contact.id
+                    defaults['contact_list'].append(contact_defaults)
         
         return defaults
         
@@ -84,6 +83,13 @@ class CustomerController(object):
         return widgets
         
     def __call__(self):
+        if "customer" in self.request.matchdict:
+            customer_id = self.request.matchdict['customer']
+            session = DBSession()
+            customer = session.query(Customer).filter_by(id=customer_id).first()
+            if not customer:
+                return Response(status = 404)
+        
         main = get_template('templates/master.pt')
         return dict(request=self.request, main=main, msgs=statusmessage.messages(self.request))
         
