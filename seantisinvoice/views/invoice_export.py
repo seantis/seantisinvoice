@@ -33,7 +33,7 @@ def view_invoice_pdf(request):
         rml_template = 'templates/rml/invoice_pdf.pt'
         
     # Only jpeg without PIL
-    logo_name = 'seantis_logo.jpg'
+    logo_name = 'logo.jpg'
     logo_path = os.path.join(os.path.dirname(__file__), 'templates', 'rml', logo_name)
         
     result = render_template(rml_template, invoice=invoice, logo_path=logo_path,
