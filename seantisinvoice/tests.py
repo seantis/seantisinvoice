@@ -1,4 +1,5 @@
 import datetime
+from decimal import Decimal
 import unittest
 import transaction
 from repoze.bfg import testing
@@ -7,6 +8,78 @@ def _initTestingDB():
     from seantisinvoice.models import initialize_sql
     session = initialize_sql('sqlite://')
     return session
+    
+class TestInvoiceItem(unittest.TestCase):
+    
+    def test_total(self):
+        from seantisinvoice.models import Company
+        from seantisinvoice.models import Invoice
+        from seantisinvoice.models import InvoiceItem
+        item = InvoiceItem()
+        item.amount = 3000.0
+        self.assertEquals(3000.0, item.total())
+        # Hourly rate is defined on the company
+        company = Company()
+        company.hourly_rate = 120.0
+        invoice = Invoice()
+        invoice.company = company
+        item = InvoiceItem()
+        item.invoice = invoice
+        item.hours = 13
+        self.assertEquals(1560.0, item.total())
+        # Daily rate is also defined on the company
+        company.daily_rate = 1300.0
+        item = InvoiceItem()
+        item.invoice = invoice
+        item.days = 2.5
+        self.assertEquals(3250.0, item.total())
+
+class TestInvoice(unittest.TestCase):
+        
+    def test_sub_total(self):
+        from seantisinvoice.models import Invoice
+        from seantisinvoice.models import InvoiceItem
+        invoice = Invoice()
+        item = InvoiceItem()
+        item.amount = 1250.50
+        invoice.items.append(item)
+        self.assertEquals(1250.5, invoice.sub_total())
+        item = InvoiceItem()
+        item.amount = 120.0
+        invoice.items.append(item)
+        self.assertEquals(1370.5, invoice.sub_total())
+        
+    def test_tax_amount(self):
+        from seantisinvoice.models import Invoice
+        from seantisinvoice.models import InvoiceItem
+        invoice = Invoice()
+        self.assertEquals(0, invoice.tax_amount())
+        invoice.tax = 7.6
+        self.assertEquals(0, invoice.tax_amount())
+        item = InvoiceItem()
+        item.amount = 100.0
+        invoice.items.append(item)
+        self.assertEquals(7.6, invoice.tax_amount())
+        
+    def test_grand_total(self):
+        from seantisinvoice.models import Invoice
+        from seantisinvoice.models import InvoiceItem
+        invoice = Invoice()
+        self.assertEquals(0, invoice.grand_total())
+        item = InvoiceItem()
+        item.amount = 100.0
+        invoice.items.append(item)
+        self.assertEquals(Decimal('100.00'), invoice.grand_total())
+        invoice.tax = 7.6
+        self.assertEquals(Decimal('107.60'), invoice.grand_total())
+        item = InvoiceItem()
+        item.amount = 60.0
+        invoice.items.append(item)
+        # Value is rounded
+        self.assertEquals(Decimal('172.15'), invoice.grand_total())
+        invoice.tax = None
+        self.assertEquals(Decimal('160.00'), invoice.grand_total())
+        
 
 class TestViews(unittest.TestCase):
     def setUp(self):
@@ -104,7 +177,7 @@ class TestViews(unittest.TestCase):
         default_values = view.form_defaults()
         self.assertEquals(u'Example Inc.', default_values['name'])
         # Change company name through the form
-        view.handle_submit(dict(name='Seantis GmbH'))
+        view.handle_submit(dict(name=u'Seantis GmbH'))
         default_values = view.form_defaults()
         self.assertEquals(u'Seantis GmbH', default_values['name'])
         

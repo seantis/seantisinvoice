@@ -76,7 +76,7 @@ class InvoiceController(object):
         company = session.query(Company).first()
         
         defaults = {
-            'currency' : 'CHF',
+            'currency' : u'CHF',
             'payment_term' : 30,
             'tax' : company.tax,
         }

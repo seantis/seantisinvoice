@@ -136,12 +136,10 @@ class InvoiceItem(Base):
     invoice = relation(Invoice, backref=backref('items', order_by=item_number, cascade="delete", lazy=False))
     
     def total(self):
-        session = DBSession()
-        company = session.query(Company).first()
         if self.hours:
-            return self.hours * company.hourly_rate
+            return self.hours * self.invoice.company.hourly_rate
         if self.days:
-            return self.days * company.daily_rate
+            return self.days * self.invoice.company.daily_rate
         return self.amount
 
 def initialize_sql(db_string, echo=False):
