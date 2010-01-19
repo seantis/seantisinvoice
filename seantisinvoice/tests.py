@@ -223,6 +223,42 @@ class TestViews(ViewTest):
         view = view_invoices(request)
         self.assertEqual(view['invoices'], [invoice, invoice2])
         
+    def test_view_invoice_export(self):
+        from seantisinvoice.views.invoice_export import view_invoice_pdf
+        # Add an invoice
+        company = self._set_company_profile()
+        invoice = self._add_invoice()
+        invoice.company = company
+        request = testing.DummyRequest()
+        request.matchdict = dict(invoice=str(invoice.id))
+        response = view_invoice_pdf(request)
+        self.assertEquals('application/pdf', response.content_type)
+        # Not existing invoice
+        request.matchdict = dict(invoice='10')
+        response = view_invoice_pdf(request)
+        self.assertEquals(404, response.status_int)
+        
+    def test_view_login(self):
+        from seantisinvoice.views.login import view_login
+        request = testing.DummyRequest()
+        response = view_login(request)
+        self.failUnless('seantis::invoice' in response.app_iter[0])
+        request.params = dict(failed='1')
+        response = view_login(request)
+        self.failUnless('Login failed.' in response.app_iter[0])
+        
+    def test_view_login_redirect(self):
+        from seantisinvoice.views.login import view_login_redirect
+        request = testing.DummyRequest()
+        response = view_login_redirect(request)
+        self.assertEquals(302, response.status_int)
+        self.assertEquals(request.application_url + '/login?failed=1', response.location)
+        # Register permissive security policy which allows all access
+        testing.registerDummySecurityPolicy('admin')
+        response = view_login_redirect(request)
+        self.assertEquals(302, response.status_int)
+        self.assertEquals(request.application_url, response.location)
+        
 class TestCompanyController(ViewTest):
     
     def test_handle_submit(self):

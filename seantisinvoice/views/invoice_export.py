@@ -20,17 +20,12 @@ def view_invoice_pdf(request):
     session = DBSession()
     company = session.query(Company).first()
     
-    if "invoice" in request.matchdict:
-        invoice_id = request.matchdict['invoice']
-        try:
-            invoice = session.query(Invoice).filter_by(id=invoice_id).one()
-        except NoResultFound:
-            return HTTPFound(location = route_url('invoices', request))
+    invoice_id = request.matchdict['invoice']
+    invoice = session.query(Invoice).filter_by(id=invoice_id).first()
+    if not invoice:
+        return Response(status=404)
     
-    if company.invoice_template:
-        rml_template = 'templates/rml/' + company.invoice_template
-    else:
-        rml_template = 'templates/rml/invoice_pdf.pt'
+    rml_template = 'templates/rml/' + company.invoice_template
         
     # Only jpeg without PIL
     logo_name = 'logo.jpg'
