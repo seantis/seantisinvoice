@@ -1,5 +1,5 @@
 import datetime
-
+from webob import Response
 from webob.exc import HTTPFound
 
 import formish
@@ -9,7 +9,6 @@ from validatish import validator
 
 from sqlalchemy import desc
 
-from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.util import class_mapper
 
 from repoze.bfg.url import route_url
@@ -20,16 +19,20 @@ from seantisinvoice.utils import formatThousands
 from seantisinvoice.models import DBSession
 from seantisinvoice.models import Customer, CustomerContact, Invoice, InvoiceItem, Company
 
-class AmountOrHours(validator.Validator):
+class ItemAmountValidator(validator.Validator):
     """
-    validatish validator that checks whether at least one of the two fields amount
-    and hours has a value filled in.
+    validatish validator that checks whether exactly one of the three fields amount,
+    hours and days has a value filled in.
     """
     def __call__(self, v):
-        if v['amount'] is not None or v['hours'] is not None or v['days'] is not None:
+        if v['amount'] is not None and v['hours'] is None and v['days'] is None:
+            return None
+        if v['amount'] is None and v['hours'] is not None and v['days'] is None:
+            return None
+        if v['amount'] is None and v['hours'] is None and v['days'] is not None:
             return None
         else:
-            msg = "Amount or hours or days must be set"
+            msg = "Exactly one of amount, hours or days must be set."
             raise validatish.Invalid(msg)
 
 
@@ -42,7 +45,7 @@ class InvoiceItemSchema(schemaish.Structure):
     hours = schemaish.Float(description="Or hours (will be multiplied by your rate)")
     days = schemaish.Float(description="Or days (will be multiplied by your rate)")
     # Additional schema wide validator.
-    validator = AmountOrHours()
+    validator = ItemAmountValidator()
     
 invoice_item_schema = InvoiceItemSchema()
 
@@ -83,30 +86,28 @@ class InvoiceController(object):
         
         if "invoice" in self.request.matchdict:
             invoice_id = self.request.matchdict['invoice']
-            try:
-                invoice = session.query(Invoice).filter_by(id=invoice_id).one()
-            except NoResultFound:
-                return HTTPFound(location = route_url('invoices', self.request))  
-            field_names = [ p.key for p in class_mapper(Invoice).iterate_properties ]
-            form_fields = [ field[0] for field in invoice_schema.attrs ]
-            for field_name in field_names:
-                if field_name in form_fields:
-                    defaults[field_name] = getattr(invoice, field_name)
-            defaults['payment_term'] = (invoice.due_date - invoice.date).days
-                    
-            # Default values for the item subforms
-            defaults['item_list'] = []
-            # Make test happy
-            invoice.items.sort(key=lambda obj: obj.item_number)
-            for item in invoice.items:
-                item_defaults = {}
-                field_names = [ p.key for p in class_mapper(InvoiceItem).iterate_properties ]
-                form_fields = [ field[0] for field in invoice_item_schema.attrs ]
+            invoice = session.query(Invoice).filter_by(id=invoice_id).first()
+            if invoice: 
+                field_names = [ p.key for p in class_mapper(Invoice).iterate_properties ]
+                form_fields = [ field[0] for field in invoice_schema.attrs ]
                 for field_name in field_names:
                     if field_name in form_fields:
-                        item_defaults[field_name] = getattr(item, field_name)
-                item_defaults['item_id'] = item.id
-                defaults['item_list'].append(item_defaults)
+                        defaults[field_name] = getattr(invoice, field_name)
+                defaults['payment_term'] = (invoice.due_date - invoice.date).days
+                    
+                # Default values for the item subforms
+                defaults['item_list'] = []
+                # Make test happy
+                invoice.items.sort(key=lambda obj: obj.item_number)
+                for item in invoice.items:
+                    item_defaults = {}
+                    field_names = [ p.key for p in class_mapper(InvoiceItem).iterate_properties ]
+                    form_fields = [ field[0] for field in invoice_item_schema.attrs ]
+                    for field_name in field_names:
+                        if field_name in form_fields:
+                            item_defaults[field_name] = getattr(item, field_name)
+                    item_defaults['item_id'] = item.id
+                    defaults['item_list'].append(item_defaults)
         
         return defaults
         
@@ -129,6 +130,13 @@ class InvoiceController(object):
         return widgets
         
     def __call__(self):
+        if "invoice" in self.request.matchdict:
+            session = DBSession()
+            invoice_id = self.request.matchdict['invoice']
+            invoice = session.query(Invoice).filter_by(id=invoice_id).first()
+            if not invoice:
+                return Response(status = 404)
+        
         main = get_template('templates/master.pt')
         return dict(request=self.request, main=main, msgs=statusmessage.messages(self.request))
         

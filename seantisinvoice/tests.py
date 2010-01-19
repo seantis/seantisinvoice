@@ -161,6 +161,25 @@ class ViewTest(unittest.TestCase):
         session.add(item)
         session.flush()
         return invoice
+        
+class TestValidators(unittest.TestCase):
+    
+    def test_item_amount(self):
+        from seantisinvoice.views.invoice import ItemAmountValidator
+        from validatish import Invalid
+        validator = ItemAmountValidator()
+        values = dict(amount=None, hours=None, days=None)
+        self.assertRaises(Invalid, validator, values)
+        values = dict(amount=1000, hours=None, days=None)
+        validator(values)
+        values = dict(amount=None, hours=10, days=None)
+        validator(values)
+        values = dict(amount=None, hours=None, days=2.5)
+        validator(values)
+        values = dict(amount=3000.5, hours=7.5, days=None)
+        self.assertRaises(Invalid, validator, values)
+        values = dict(amount=3000.5, hours=7.5, days=4)
+        self.assertRaises(Invalid, validator, values)
 
 class TestViews(ViewTest):
     
@@ -177,6 +196,32 @@ class TestViews(ViewTest):
         request.environ['qc.statusmessage'] = []
         view = view_invoices(request)
         self.assertEqual(view['invoices'], [])
+        invoice = self._add_invoice()
+        view = view_invoices(request)
+        self.assertEqual(view['invoices'], [invoice])
+        # Filtering recurring
+        invoice2 = self._add_invoice()
+        invoice2.recurring_term = 30
+        request.params = dict(recurring='1')
+        view = view_invoices(request)
+        self.assertEqual(view['invoices'], [invoice2])
+        request.params = dict(recurring='0')
+        view = view_invoices(request)
+        self.assertEqual(view['invoices'], [invoice])
+        # Filtering due
+        invoice.due_date = datetime.date.today() - datetime.timedelta(days=5)
+        request.params = dict(due='1')
+        view = view_invoices(request)
+        self.assertEqual(view['invoices'], [invoice])
+        # Sorting
+        invoice.date = datetime.date(2010, 1, 18)
+        invoice2.date = datetime.date(2010, 1, 2)
+        request.params = dict(sort='date')
+        view = view_invoices(request)
+        self.assertEqual(view['invoices'], [invoice2, invoice])
+        request.params = dict(sort='date', reverse='1')
+        view = view_invoices(request)
+        self.assertEqual(view['invoices'], [invoice, invoice2])
         
 class TestCompanyController(ViewTest):
     
@@ -330,6 +375,7 @@ class TestCustomerController(ViewTest):
     def test_call(self):
         from seantisinvoice.views.customer import CustomerController
         request = testing.DummyRequest()
+        # No customer with this id
         request.matchdict = dict(customer='2')
         view = CustomerController(None, request)
         result = view()
@@ -382,8 +428,8 @@ class TestInvoiceController(ViewTest):
         self.assertEquals(u'Testing', invoice.items[0].service_title)
         
     def test_handle_submit(self):
-        from seantisinvoice.models import DBSession
         from seantisinvoice.views.invoice import InvoiceController
+        from seantisinvoice import statusmessage
         # Register route for redirect in invoice form actions
         testing.registerRoute('/', 'invoices', factory=None)
         # Create an invoice
@@ -418,6 +464,62 @@ class TestInvoiceController(ViewTest):
         data = view.form_defaults()
         self.assertEquals(1, len(data['item_list']))
         self.assertEquals(u'My service', data['item_list'][0]['service_title'])
+        # Submit without changing anything
+        request = testing.DummyRequest()
+        request.environ['qc.statusmessage'] = []
+        request.matchdict = dict(invoice=str(invoice.id))
+        view = InvoiceController(None, request)
+        view.handle_submit(data)
+        msgs = statusmessage.messages(request)
+        self.assertEquals(1, len(msgs))
+        self.assertEquals(u"No changes saved.", msgs[0].msg)
+        
+    def test_handle_cancel(self):
+        from seantisinvoice.views.invoice import InvoiceController
+        from seantisinvoice import statusmessage
+        # Register route for redirect in customer form actions
+        testing.registerRoute('/', 'invoices', factory=None)
+        request = testing.DummyRequest()
+        request.environ['qc.statusmessage'] = []
+        view = InvoiceController(None, request)
+        view.handle_cancel()
+        msgs = statusmessage.messages(request)
+        self.assertEquals(1, len(msgs))
+        self.assertEquals(u"No changes saved.", msgs[0].msg)
+        
+    def test_form_fields(self):
+        from seantisinvoice.views.invoice import InvoiceController
+        from seantisinvoice.views.invoice import InvoiceSchema
+        request = testing.DummyRequest()
+        view = InvoiceController(None, request)
+        fields = view.form_fields()
+        self.assertEquals(InvoiceSchema.attrs, fields)
+        
+    def test_form_widgets(self):
+        from seantisinvoice.views.invoice import InvoiceController
+        customer = self._add_customer()
+        contact = customer.contacts[0]
+        request = testing.DummyRequest()
+        view = InvoiceController(None, request)
+        widgets = view.form_widgets(view.form_fields())
+        option = (customer.id, u'%s: %s %s' % (customer.name, contact.first_name, contact.last_name))
+        self.failUnless(option in widgets['customer_contact_id'].options)
+        
+    def test_call(self):
+        from seantisinvoice.views.invoice import InvoiceController
+        request = testing.DummyRequest()
+        # No invoice with this id
+        request.matchdict = dict(invoice='1')
+        view = InvoiceController(None, request)
+        result = view()
+        self.assertEquals(404, result.status_int)
+        # Add an invoice
+        invoice = self._add_invoice()
+        request.matchdict = dict(invoice=str(invoice.id))
+        request.environ['qc.statusmessage'] = []
+        view = InvoiceController(None, request)
+        result = view()
+        self.failUnless('main' in result.keys())
         
 class TestUtilities(unittest.TestCase):
     

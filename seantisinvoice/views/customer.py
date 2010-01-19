@@ -1,12 +1,10 @@
 from webob import Response
-from webob.exc import HTTPFound, HTTPNotFound
+from webob.exc import HTTPFound
 
 import formish
 import schemaish
-import validatish
 from validatish import validator
 
-from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.util import class_mapper
 
 from repoze.bfg.url import route_url
