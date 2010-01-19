@@ -87,8 +87,7 @@ class CompanyController(object):
                     
         # TODO we need a filehandler here!!
         # http://ish.io/embedded/formish/walkthrough.html#file-uploads
-        if company.logo != converted['logo'].filename:
-            company.logo = 'logo.jpg'
+        company.logo = 'logo.jpg'
         
         return changed
                 
