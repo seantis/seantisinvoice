@@ -1,5 +1,9 @@
 Please delete from the list below when implemented:
 
+- Company logo file can be uploaded TTW: we have a logo field on the company. The file widget is ready. What we need to do
+  there is to add a file handler to save the uploaded image on the filesystem. Should always be a .jpg and filename can be
+  logo.jpg
+
 
 Nice to have:
 
@@ -7,7 +11,6 @@ Nice to have:
   This script should be started via cronjob then.
 - internationalize: date / thousands separator
 - Company: invoice_template options in configuration file?
-- Company logo file can be uploaded TTW
 - Company: provide a vocabulary with countries including country codes. This way country codes can be used in addresses.
 - batches for lists
 - TESTS TESTS TESTS!

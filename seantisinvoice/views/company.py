@@ -3,6 +3,7 @@ from webob.exc import HTTPFound
 import formish
 import schemaish
 from validatish import validator
+from formish import filestore
 
 from sqlalchemy.orm.util import class_mapper
 
@@ -26,7 +27,7 @@ class CompanySchema(schemaish.Structure):
     country = schemaish.String()
     e_mail = schemaish.String(validator=validator.Required())
     phone = schemaish.String(validator=validator.Required())
-    # logo = schemaish.String()
+    logo = schemaish.File(description=".jpg / 70mm x 11mm / 300dpi")
     hourly_rate = schemaish.Float(validator=validator.Required())
     daily_rate = schemaish.Float(validator=validator.Required())
     tax = schemaish.Float(validator=validator.Required())
@@ -66,6 +67,7 @@ class CompanyController(object):
         # rml templates TTW!
         options = [('invoice_pdf.pt','German PDF Template'),('invoice_pdf_en.pt','English PDF Template')]
         widgets['invoice_template'] = formish.SelectChoice(options=options)
+        widgets['logo'] = formish.FileUpload(filestore.CachedTempFilestore())
         
         return widgets
         
@@ -82,6 +84,12 @@ class CompanyController(object):
                 if getattr(company, field_name) != converted[field_name]:
                     setattr(company, field_name, converted[field_name])
                     changed = True
+                    
+        # TODO we need a filehandler here!!
+        # http://ish.io/embedded/formish/walkthrough.html#file-uploads
+        if company.logo != converted['logo'].filename:
+            company.logo = 'logo.jpg'
+        
         return changed
                 
     def handle_submit(self, converted):
