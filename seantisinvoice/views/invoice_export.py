@@ -28,8 +28,7 @@ def view_invoice_pdf(request):
     rml_template = 'templates/rml/' + company.invoice_template
         
     # Only jpeg without PIL
-    logo_name = 'logo.jpg'
-    logo_path = os.path.join(os.path.dirname(__file__), 'templates', 'rml', logo_name)
+    logo_path = os.path.join(os.path.dirname(__file__), 'templates', 'static', 'uploads', 'logo.jpg')
         
     result = render_template(rml_template, invoice=invoice, logo_path=logo_path,
                              formatThousands=formatThousands)

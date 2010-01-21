@@ -1,8 +1,9 @@
+import os
 from webob.exc import HTTPFound
 
 import formish
 import schemaish
-from validatish import validator
+from validatish import validator, Invalid
 from formish import filestore
 
 from sqlalchemy.orm.util import class_mapper
@@ -13,6 +14,20 @@ from repoze.bfg.chameleon_zpt import get_template
 from seantisinvoice import statusmessage
 from seantisinvoice.models import DBSession
 from seantisinvoice.models import Company
+
+class FileMimetypeValidator(validator.Validator):
+    """
+    Validator that checks whether the correct file type was uploaded.
+    """
+    def __init__(self, types):
+        super(FileMimetypeValidator, self).__init__()
+        self.types = types
+    
+    def __call__(self, v):
+        if v and v.mimetype not in self.types:
+            msg = "Please upload a jpeg image."
+            raise Invalid(msg)
+            
 
 class CompanySchema(schemaish.Structure):
     
@@ -27,7 +42,8 @@ class CompanySchema(schemaish.Structure):
     country = schemaish.String()
     e_mail = schemaish.String(validator=validator.Required())
     phone = schemaish.String(validator=validator.Required())
-    logo = schemaish.File(description=".jpg / 70mm x 11mm / 300dpi")
+    logo = schemaish.File(validator=FileMimetypeValidator(['image/jpeg']), 
+                          description=".jpg / 70mm x 11mm / 300dpi")
     hourly_rate = schemaish.Float(validator=validator.Required())
     daily_rate = schemaish.Float(validator=validator.Required())
     tax = schemaish.Float(validator=validator.Required())
@@ -67,7 +83,11 @@ class CompanyController(object):
         # rml templates TTW!
         options = [('invoice_pdf.pt','German PDF Template'),('invoice_pdf_en.pt','English PDF Template')]
         widgets['invoice_template'] = formish.SelectChoice(options=options)
-        widgets['logo'] = formish.FileUpload(filestore.CachedTempFilestore())
+        
+        logo_path = self.request.application_url + '/static/uploads/logo.jpg'
+        widgets['logo'] = formish.FileUpload(filestore.CachedTempFilestore(),
+                                             show_image_thumbnail=True,
+                                             image_thumbnail_default=logo_path)
         
         return widgets
         
@@ -84,10 +104,13 @@ class CompanyController(object):
                 if getattr(company, field_name) != converted[field_name]:
                     setattr(company, field_name, converted[field_name])
                     changed = True
-                    
-        # TODO we need a filehandler here!!
-        # http://ish.io/embedded/formish/walkthrough.html#file-uploads
-        company.logo = 'logo.jpg'
+        
+        if 'logo' in converted and converted['logo']:
+            logo_path = os.path.join(os.path.dirname(__file__), 'templates', 'static', 'uploads', 'logo.jpg')
+            fd = open(logo_path, 'wb')
+            fd.write(converted['logo'].file.read())
+            fd.close()
+            changed = True
         
         return changed
                 

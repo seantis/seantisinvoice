@@ -180,6 +180,19 @@ class TestValidators(unittest.TestCase):
         self.assertRaises(Invalid, validator, values)
         values = dict(amount=3000.5, hours=7.5, days=4)
         self.assertRaises(Invalid, validator, values)
+        
+    def test_file_mimetype(self):
+        from seantisinvoice.views.company import FileMimetypeValidator
+        from validatish import Invalid
+        validator = FileMimetypeValidator('image/jpeg')
+        validator(None)
+        class DummyFile(object):
+            mimetype = None
+        value = DummyFile()
+        value.mimetype = 'application/pdf'
+        self.assertRaises(Invalid, validator, value)
+        value.mimetype = 'image/jpeg'
+        validator(None)
 
 class TestViews(ViewTest):
     
@@ -297,6 +310,12 @@ class TestCompanyController(ViewTest):
         msgs = statusmessage.messages(request)
         self.assertEquals(1, len(msgs))
         self.assertEquals(u"No changes saved.", msgs[0].msg)
+        # Logo upload
+        from os.path import join, dirname
+        from schemaish.type import File
+        logo_path = join(dirname(__file__), 'views', 'templates', 'static', 'uploads', 'test_logo.jpg')
+        default_values['logo'] = File(open(logo_path, 'rb'), 'logo.jpg', 'image/jpeg')
+        view.handle_submit(default_values)
         
     def test_handle_cancel(self):
         from seantisinvoice.views.company import CompanyController
