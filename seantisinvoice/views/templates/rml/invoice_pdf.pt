@@ -43,7 +43,7 @@
             </tr>
             <tr>
                 <td>${invoice.company.address1}</td>
-                <td>${invoice.contact.title} ${invoice.contact.academic_title} ${invoice.contact.first_name} ${invoice.contact.last_name}</td>
+                <td>${invoice.contact.title} ${invoice.contact.first_name} ${invoice.contact.last_name}</td>
             </tr>
             <tr>
                 <td>${invoice.company.postal_code} ${invoice.company.city}</td>

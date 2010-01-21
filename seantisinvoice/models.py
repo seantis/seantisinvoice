@@ -70,7 +70,6 @@ class CustomerContact(Base):
     first_name = Column(Unicode)
     last_name = Column(Unicode)
     title = Column(Unicode)
-    academic_title = Column(Unicode)
     e_mail = Column(String)
     phone = Column(String)
     
