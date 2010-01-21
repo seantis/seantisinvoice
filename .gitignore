@@ -1,5 +1,6 @@
 *.pyc
 *.mo
 *.egg-info
+.coverage
 seantisinvoice.db
 
