@@ -4,4 +4,4 @@ seantisinvoice is a small web based invoicing and payment tracking solution for 
 
 Find more information on http://invoice.seantis.ch.
 
-Intructions on how to install it can be found in INSTALL.txt.
+Installing instructions can be found in INSTALL.txt.
