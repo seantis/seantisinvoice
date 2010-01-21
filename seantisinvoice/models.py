@@ -42,7 +42,6 @@ class Company(Base):
     country = Column(Unicode)
     e_mail = Column(String)
     phone = Column(String)
-    logo = Column(String)
     hourly_rate = Column(Float)
     daily_rate = Column(Float)
     tax = Column(Float)
