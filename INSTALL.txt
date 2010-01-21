@@ -15,7 +15,7 @@ Install lxml (build statically on Mac):
 
 Get seantis.invoice:
 
-% svn co https://svn.seantis.ch/code/santisinvoice/trunk seantisinvoice
+% % git clone git://github.com/seantis/seantisinvoice.git seantisinvoice
 
 Install seantis.invoice
 
