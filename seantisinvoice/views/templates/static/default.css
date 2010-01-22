@@ -506,3 +506,13 @@ label {
     border-color: #838383 #5F5F5F #5F5F5F #838383;
     background: #ededed;
 }
+
+#logo-remove {
+    display: none;
+}
+
+input#logo {
+    margin-top: 1em;
+    height: 20px;
+    width: 100% ;
+}
