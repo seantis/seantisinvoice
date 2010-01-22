@@ -1,14 +1,13 @@
 Please delete from the list below when implemented:
 
-- Company logo file can be uploaded TTW: we have a logo field on the company. The file widget is ready. What we need to do
-  there is to add a file handler to save the uploaded image on the filesystem. Should always be a .jpg and filename can be
-  logo.jpg
+- Recurring invoices: script to check recurring_term (todo: change it to a date field, analog to due_date)
+  and copy the invoice.
+  This script should be started via cronjob then.
 
 Nice to have:
 
-- Recurring invoices: script to check recurring_term (todo: change it to a date field, analog to due_date) and copy the invoice.
-  This script should be started via cronjob then.
-- internationalize: date / thousands separator
+- Move "uploads" folder out from templates: comment in INSTALL.txt about write access on this folder. 
+- Internationalize: date / thousands separator
 - Company: invoice_template options in configuration file?
 - Company: provide a vocabulary with countries including country codes. This way country codes can be used in addresses.
-- batches for lists
+- Batches for lists
