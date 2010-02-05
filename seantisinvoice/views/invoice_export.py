@@ -1,13 +1,7 @@
-from webob.exc import HTTPFound
-
 import os
-import tempfile
 
-from z3c.rml.rml2pdf import go
+from z3c.rml.rml2pdf import parseString
 
-from sqlalchemy.orm.exc import NoResultFound
-
-from repoze.bfg.url import route_url
 from repoze.bfg.chameleon_zpt import render_template
 
 from webob import Response
@@ -32,15 +26,6 @@ def view_invoice_pdf(request):
         
     result = render_template(rml_template, invoice=invoice, logo_path=logo_path,
                              formatThousands=formatThousands)
-    rmlfile = tempfile.mktemp(suffix=".rml")
-    fd = open(rmlfile, "wb")
-    fd.write(result.encode('utf-8'))
-    fd.close()
-    pdffile = tempfile.mktemp(suffix=".pdf")
-    go(rmlfile, pdffile)
-
-    fd = open(pdffile, 'r')
-    response = Response(fd.read())
-    fd.close()
+    response = Response(parseString(result.encode('utf-8')).read())
     response.content_type =  "application/pdf"
     return response
