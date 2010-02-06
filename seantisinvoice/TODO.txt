@@ -1,9 +1,5 @@
 Please delete from the list below when implemented:
 
-- Recurring invoices: script to check recurring_term (todo: change it to a date field, analog to due_date)
-  and copy the invoice.
-  This script should be started via cronjob then.
-
 Nice to have:
 
 - Move "uploads" folder out from templates: comment in INSTALL.txt about write access on this folder. 

@@ -84,7 +84,7 @@ class Invoice(Base):
     date = Column(Date)
     due_date = Column(Date)
     payment_date = Column(Date)
-    recurring_term = Column(Integer)
+    recurring_date = Column(Date)
     recurring_stop = Column(Date)
     currency = Column(Unicode)
     project_description = Column(Unicode)
@@ -110,6 +110,7 @@ class Invoice(Base):
         amount = Decimal(amount_str)
         rounder = Decimal("0.05")  # precision for rounding
         return amount - amount.remainder_near(rounder)
+        
 
 class InvoiceItem(Base):
     __tablename__ = 'invoice_item'
@@ -147,3 +148,10 @@ def initialize_sql(db_string, echo=False):
     if not session.query(Company).first():
         session.add(Company())
         transaction.commit()
+        
+def next_invoice_number():
+    session = DBSession()
+    company = session.query(Company).with_lockmode("update").first()
+    number = company.invoice_start_number
+    company.invoice_start_number += 1
+    return number

@@ -89,17 +89,20 @@ class TestInvoice(unittest.TestCase):
         invoice.tax = None
         self.assertEquals(Decimal('160.00'), invoice.grand_total())
         
-class ViewTest(unittest.TestCase):
+class BaseTest(unittest.TestCase):
     
     def setUp(self):
         testing.setUp()
         _initTestingDB()
 
     def tearDown(self):
+        from seantisinvoice.models import DBSession
         import transaction
-        # Abort transaction to clear the DB.
+        DBSession.remove()
         transaction.abort()
         testing.tearDown()
+        
+class ViewTest(BaseTest):
         
     def _set_company_profile(self):
         from seantisinvoice.models import Company
@@ -214,7 +217,7 @@ class TestViews(ViewTest):
         self.assertEqual(view['invoices'], [invoice])
         # Filtering recurring
         invoice2 = self._add_invoice()
-        invoice2.recurring_term = 30
+        invoice2.recurring_date = datetime.date.today()
         request.params = dict(recurring='1')
         view = view_invoices(request)
         self.assertEqual(view['invoices'], [invoice2])
@@ -479,6 +482,7 @@ class TestInvoiceController(ViewTest):
         data = view.form_defaults()
         data['customer_contact_id'] = customer.contacts[0].id
         data['project_description'] = u'Project name'
+        data['recurring_term'] = 30
         data['date'] = datetime.date(2010, 1, 18)
         data['item_list'] = [dict(item_id='', service_title=u'Testing', service_description=u'Work', amount=2000.0)]
         view.handle_add(data)
@@ -504,6 +508,7 @@ class TestInvoiceController(ViewTest):
         self.assertEquals(u'Project', data['project_description'])
         # Change some of the invoice date
         data['project_description'] = u'My project'
+        data['recurring_term'] = 30
         data['item_list'][0]['service_title'] = u'My service'
         view.handle_submit(data)
         data = view.form_defaults()
@@ -583,7 +588,7 @@ class TestInvoiceController(ViewTest):
         result = view()
         self.failUnless('main' in result.keys())
         
-class TestUtilities(unittest.TestCase):
+class TestUtilities(BaseTest):
     
     def test_statusmessage(self):
         from seantisinvoice import statusmessage
@@ -615,3 +620,49 @@ class TestUtilities(unittest.TestCase):
         self.assertEquals("12'000", formatThousands(12000))
         self.assertEquals("1'600'000.45", formatThousands(1600000.45))
         self.assertEquals("-1'000", formatThousands(-1000))
+        
+    def test_recurring(self):
+        from seantisinvoice.models import DBSession
+        from seantisinvoice.models import Invoice, InvoiceItem
+        from seantisinvoice.recurring import copy_recurring
+        session = DBSession()
+        copy_recurring()
+        self.assertEquals(0, session.query(Invoice).count())
+        # Add a new invoice
+        invoice = Invoice()
+        invoice_date = datetime.date.today() - datetime.timedelta(days=100)
+        invoice.date = invoice_date
+        invoice.due_date = datetime.date.today() - datetime.timedelta(days=70)
+        invoice.project_description = u'Invoice project description'
+        session.add(invoice)
+        # Add an item to the invoice
+        item = InvoiceItem()
+        item.item_number = 0
+        item.amount = 1000
+        item.service_description = u'Item description'
+        item.service_title = u'Invoice item'
+        item.invoice = invoice
+        session.merge(item)
+        copy_recurring()
+        # Invoice not cloned as it has no recurring_date
+        self.assertEquals(1, session.query(Invoice).count())
+        invoice = session.query(Invoice).one()
+        # Set the recurring date on the invoice
+        recurring_date = datetime.date.today() - datetime.timedelta(days=70)
+        invoice.recurring_date = recurring_date
+        copy_recurring()
+        # There are now two invoices
+        self.assertEquals(2, session.query(Invoice).count())
+        invoice = session.query(Invoice).filter_by(date=invoice_date).one()
+        # Recurring date of the original invoice has been reset
+        self.failIf(invoice.recurring_date)
+        cloned_invoice = session.query(Invoice).filter_by(date=recurring_date).one()
+        # New invoice has the recurring date of the original one as date
+        self.assertEquals(recurring_date, cloned_invoice.date)
+        self.assertEquals(recurring_date + datetime.timedelta(days=30), cloned_invoice.recurring_date)
+        # Check whether attributes on invoice and invoice item have been cloned
+        self.assertEquals(invoice.project_description, cloned_invoice.project_description)
+        cloned_item = cloned_invoice.items[0]
+        self.assertEquals(item.amount, cloned_item.amount)
+        self.assertEquals(item.service_description, cloned_item.service_description)
+        self.assertEquals(item.service_title, cloned_item.service_title)

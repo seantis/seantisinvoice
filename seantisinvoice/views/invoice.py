@@ -16,7 +16,7 @@ from repoze.bfg.chameleon_zpt import get_template
 
 from seantisinvoice import statusmessage
 from seantisinvoice.utils import formatThousands
-from seantisinvoice.models import DBSession
+from seantisinvoice.models import DBSession, next_invoice_number
 from seantisinvoice.models import Customer, CustomerContact, Invoice, InvoiceItem, Company
 
 class ItemAmountValidator(validator.Validator):
@@ -94,6 +94,10 @@ class InvoiceController(object):
                     if field_name in form_fields:
                         defaults[field_name] = getattr(invoice, field_name)
                 defaults['payment_term'] = (invoice.due_date - invoice.date).days
+                if invoice.recurring_date:
+                    defaults['recurring_term'] = (invoice.recurring_date - invoice.date).days
+                else:
+                    defaults['recurring_term'] = None
                     
                 # Default values for the item subforms
                 defaults['item_list'] = []
@@ -152,6 +156,9 @@ class InvoiceController(object):
         if invoice.due_date != invoice.date + datetime.timedelta(days=converted['payment_term']):
             invoice.due_date = invoice.date + datetime.timedelta(days=converted['payment_term'])
             changed = True
+        if converted['recurring_term'] and invoice.recurring_date != invoice.date + datetime.timedelta(days=converted['recurring_term']):
+            invoice.recurring_date = invoice.date + datetime.timedelta(days=converted['recurring_term'])
+            changed = True
                 
         # Apply data of the items subforms
         session = DBSession()
@@ -194,9 +201,7 @@ class InvoiceController(object):
         
         # Get and add unique invoice number
         if invoice.invoice_number is None:
-            company = session.query(Company).with_lockmode("update").first()
-            invoice.invoice_number = company.invoice_start_number
-            company.invoice_start_number += 1
+            invoice.invoice_number = next_invoice_number()
 
         statusmessage.show(self.request, u"Invoice added.", "success")
         
@@ -225,10 +230,10 @@ def view_invoices(request):
     
     if 'recurring' in request.params:
         if request.params['recurring'] == '1':
-            query = query.filter(Invoice.recurring_term != None)
+            query = query.filter(Invoice.recurring_date != None)
             title = u'Recurring Invoices'
         elif request.params['recurring'] == '0':
-            query = query.filter(Invoice.recurring_term == None)
+            query = query.filter(Invoice.recurring_date == None)
             title = u'Non-recurring Invoices'
     elif 'due' in request.params and request.params['due'] == '1':
         today = datetime.date.today()
