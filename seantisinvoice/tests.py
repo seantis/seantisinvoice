@@ -8,6 +8,15 @@ def _initTestingDB():
     session = initialize_sql('sqlite://')
     return session
     
+class TestRootFactory(unittest.TestCase):
+    
+    def test_acl(self):
+        from seantisinvoice.models import RootFactory
+        from repoze.bfg.security import Allow, Authenticated
+        environ = {'bfg.routes.matchdict': {}}
+        root_factory = RootFactory(environ)
+        self.assertEquals([(Allow, Authenticated, 'view')], root_factory.__acl__)
+    
 class TestInvoiceItem(unittest.TestCase):
     
     def test_total(self):
