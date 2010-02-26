@@ -73,7 +73,7 @@ class CustomerContact(Base):
     e_mail = Column(String)
     phone = Column(String)
     
-    customer = relation(Customer, lazy=False, backref=backref('contacts', order_by=[last_name, first_name], lazy=False, cascade="delete"))
+    customer = relation(Customer, backref=backref('contacts', order_by=[last_name, first_name], cascade="delete"))
     
 class Invoice(Base):
     __tablename__ = 'invoice'
@@ -90,8 +90,8 @@ class Invoice(Base):
     project_description = Column(Unicode)
     tax = Column(Float)
     
-    company = relation(Company, lazy=False)
-    contact = relation(CustomerContact, lazy=False, backref=backref('invoices', order_by=date))
+    company = relation(Company)
+    contact = relation(CustomerContact, backref=backref('invoices', order_by=date))
         
     def sub_total(self):
         items = self.items
@@ -123,7 +123,7 @@ class InvoiceItem(Base):
     service_description = Column(Unicode)
     service_title = Column(Unicode)
     
-    invoice = relation(Invoice, backref=backref('items', order_by=item_number, cascade="delete", lazy=False))
+    invoice = relation(Invoice, backref=backref('items', order_by=item_number, cascade="delete"))
     
     def total(self):
         if self.hours:
