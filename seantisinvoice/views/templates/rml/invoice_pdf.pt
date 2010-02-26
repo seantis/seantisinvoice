@@ -8,7 +8,7 @@
            <frame id="first" x1="72" y1="12" width="451" height="698"/>           
             <pageGraphics>
                 <image file="${logo_path}" x="12mm" y="275mm" width="70mm" height="11mm" />
-                <place x="6cm" y="0.5cm" width="10cm" height="1cm">
+                <place x="72" y="0.5cm" width="451" height="1cm">
                     <para style="footer" tal:condition="invoice.company.name">${invoice.company.name} :: ${invoice.company.address1} :: ${invoice.company.country}-${invoice.company.postal_code} ${invoice.company.city} :: ${invoice.company.phone}</para>
                 </place>
             </pageGraphics>
@@ -19,7 +19,7 @@
     <stylesheet>
         <paraStyle name="tableHeader" fontName="Helvetica" fontSize="6" alignment="center" />
         <paraStyle name="tableHeaderSmall" fontName="Helvetica" fontSize="4" alignment="center" />
-        <paraStyle name="footer" fontName="Helvetica" fontSize="9" />
+        <paraStyle name="footer" fontName="Helvetica" fontSize="9" alignment="center" />
         <paraStyle name="normal" fontName="Helvetica" fontSize="10" />
         <paraStyle name="small" fontName="Helvetica" fontSize="7.5" />
         <blockTableStyle id="default">
