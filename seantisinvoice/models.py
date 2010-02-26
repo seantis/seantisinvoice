@@ -6,7 +6,6 @@ from sqlalchemy import create_engine
 from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import Unicode
-from sqlalchemy import String
 from sqlalchemy import Float
 from sqlalchemy import ForeignKey
 from sqlalchemy import Date
@@ -33,45 +32,45 @@ class RootFactory(object):
 class Company(Base):
     __tablename__ = 'company'
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode)
-    address1 = Column(Unicode)
-    address2 = Column(Unicode)
-    address3 = Column(Unicode)
-    city = Column(Unicode)
-    postal_code = Column(String(4))
-    country = Column(Unicode)
-    e_mail = Column(String)
-    phone = Column(String)
+    name = Column(Unicode(255))
+    address1 = Column(Unicode(255))
+    address2 = Column(Unicode(255))
+    address3 = Column(Unicode(255))
+    city = Column(Unicode(255))
+    postal_code = Column(Unicode(255))
+    country = Column(Unicode(255))
+    e_mail = Column(Unicode(255))
+    phone = Column(Unicode(255))
     hourly_rate = Column(Float)
     daily_rate = Column(Float)
     tax = Column(Float)
-    vat_number = Column(String)
-    iban = Column(String)
-    swift = Column(String)
-    bank_address = Column(Unicode)
+    vat_number = Column(Unicode(255))
+    iban = Column(Unicode(34))
+    swift = Column(Unicode(11))
+    bank_address = Column(Unicode(255))
     invoice_start_number = Column(Integer, default=1)
-    invoice_template = Column(String)
+    invoice_template = Column(Unicode(255))
 
 class Customer(Base):
     __tablename__ = 'customer'
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode)
-    address1 = Column(Unicode)
-    address2 = Column(Unicode)
-    address3 = Column(Unicode)
-    city = Column(Unicode)
-    postal_code = Column(String(4))
-    country = Column(Unicode)
+    name = Column(Unicode(255))
+    address1 = Column(Unicode(255))
+    address2 = Column(Unicode(255))
+    address3 = Column(Unicode(255))
+    city = Column(Unicode(255))
+    postal_code = Column(Unicode(255))
+    country = Column(Unicode(255))
     
 class CustomerContact(Base):
     __tablename__ = 'customer_contact'
     id = Column(Integer, primary_key=True)
     customer_id = Column(Integer, ForeignKey('customer.id'))
-    first_name = Column(Unicode)
-    last_name = Column(Unicode)
-    title = Column(Unicode)
-    e_mail = Column(String)
-    phone = Column(String)
+    first_name = Column(Unicode(255))
+    last_name = Column(Unicode(255))
+    title = Column(Unicode(255))
+    e_mail = Column(Unicode(255))
+    phone = Column(Unicode(255))
     
     customer = relation(Customer, backref=backref('contacts', order_by=[last_name, first_name], cascade="delete"))
     
@@ -86,8 +85,8 @@ class Invoice(Base):
     payment_date = Column(Date)
     recurring_date = Column(Date)
     recurring_stop = Column(Date)
-    currency = Column(Unicode)
-    project_description = Column(Unicode)
+    currency = Column(Unicode(255))
+    project_description = Column(Unicode(255))
     tax = Column(Float)
     
     company = relation(Company)
@@ -120,8 +119,8 @@ class InvoiceItem(Base):
     amount = Column(Float)
     hours = Column(Float)
     days = Column(Float)
-    service_description = Column(Unicode)
-    service_title = Column(Unicode)
+    service_description = Column(Unicode(255))
+    service_title = Column(Unicode(255))
     
     invoice = relation(Invoice, backref=backref('items', order_by=item_number, cascade="delete"))
     

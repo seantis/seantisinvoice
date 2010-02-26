@@ -158,7 +158,7 @@ class ViewTest(BaseTest):
         customer = self._add_customer()
         invoice = Invoice()
         invoice.project_description = u'Project'
-        invoice.date = datetime.date(2010, 1, 18)
+        invoice.date = datetime.date.today()
         invoice.due_date = invoice.date + datetime.timedelta(days=30)
         invoice.currency = u'CHF'
         invoice.contact = customer.contacts[0]
