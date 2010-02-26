@@ -1,6 +1,8 @@
 import datetime
 from decimal import Decimal
 import unittest
+
+from repoze.bfg.configuration import Configurator
 from repoze.bfg import testing
 
 def _initTestingDB():
@@ -101,7 +103,8 @@ class TestInvoice(unittest.TestCase):
 class BaseTest(unittest.TestCase):
     
     def setUp(self):
-        testing.setUp()
+        self.config = Configurator()
+        self.config.begin()
         _initTestingDB()
 
     def tearDown(self):
@@ -109,7 +112,7 @@ class BaseTest(unittest.TestCase):
         import transaction
         DBSession.remove()
         transaction.abort()
-        testing.tearDown()
+        self.config.end()
         
 class ViewTest(BaseTest):
         

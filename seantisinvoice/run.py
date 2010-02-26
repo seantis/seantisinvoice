@@ -1,10 +1,9 @@
 import transaction
 
-from repoze.bfg.router import make_app
+from repoze.bfg.configuration import Configurator
 from repoze.tm import after_end
 from repoze.tm import isActive
 
-import seantisinvoice
 from seantisinvoice.models import RootFactory
 from seantisinvoice.models import DBSession
 from seantisinvoice.models import initialize_sql
@@ -34,5 +33,9 @@ def app(global_config, **settings):
     s.add_interval_task(copy_recurring, "copy recurring invoices", 0, 300, method.threaded, None, None)
     s.start()
     
-    return make_app(RootFactory, seantisinvoice, settings=settings)
-
+    config = Configurator(root_factory=RootFactory, settings=settings)
+    config.begin()
+    zcml_file = settings.get('configure_zcml', 'configure.zcml')
+    config.load_zcml(zcml_file)
+    config.end()
+    return config.make_wsgi_app()
