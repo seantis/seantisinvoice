@@ -214,14 +214,12 @@ class TestViews(ViewTest):
     def test_view_customers(self):
         from seantisinvoice.views.customer import view_customers
         request = testing.DummyRequest()
-        request.environ['qc.statusmessage'] = []
         view = view_customers(request)
         self.assertEqual(view['customers'], [])
 
     def test_view_invoices(self):
         from seantisinvoice.views.invoice import view_invoices
         request = testing.DummyRequest()
-        request.environ['qc.statusmessage'] = []
         view = view_invoices(request)
         self.assertEqual(view['invoices'], [])
         invoice = self._add_invoice()
@@ -290,7 +288,6 @@ class TestViews(ViewTest):
     def test_license(self):
         from seantisinvoice.views.license import view_license
         request = testing.DummyRequest()
-        request.environ['qc.statusmessage'] = []
         response = view_license(request)
         self.failUnless('main' in response)
         
@@ -363,7 +360,6 @@ class TestCompanyController(ViewTest):
     def test_call(self):
         from seantisinvoice.views.company import CompanyController
         request = testing.DummyRequest()
-        request.environ['qc.statusmessage'] = []
         view = CompanyController(None, request)
         result = view()
         self.failUnless('main' in result.keys())
@@ -378,7 +374,6 @@ class TestCustomerController(ViewTest):
         # Register route for redirect in customer form actions
         testing.registerRoute('/customers', 'customers', factory=None)
         request = testing.DummyRequest()
-        request.environ['qc.statusmessage'] = []
         view = CustomerController(None, request)
         # Add a new customer
         data = dict(name=u'Customers Inc.', address1=u'Street', 
@@ -398,7 +393,6 @@ class TestCustomerController(ViewTest):
         # Add a customer
         customer = self._add_customer()
         request = testing.DummyRequest()
-        request.environ['qc.statusmessage'] = []
         request.matchdict = dict(customer=str(customer.id))
         view = CustomerController(None, request)
         # Check default values
@@ -460,7 +454,6 @@ class TestCustomerController(ViewTest):
         # Add a customer
         customer = self._add_customer()
         request.matchdict = dict(customer=str(customer.id))
-        request.environ['qc.statusmessage'] = []
         view = CustomerController(None, request)
         result = view()
         self.failUnless('main' in result.keys())
@@ -489,7 +482,6 @@ class TestInvoiceController(ViewTest):
         # Each invoice belongs to a customer, thus add one.
         customer = self._add_customer()
         request = testing.DummyRequest()
-        request.environ['qc.statusmessage'] = []
         view = InvoiceController(None, request)
         data = view.form_defaults()
         data['customer_contact_id'] = customer.contacts[0].id
@@ -513,7 +505,6 @@ class TestInvoiceController(ViewTest):
         # Create an invoice
         invoice = self._add_invoice()
         request = testing.DummyRequest()
-        request.environ['qc.statusmessage'] = []
         request.matchdict = dict(invoice=str(invoice.id))
         view = InvoiceController(None, request)
         data = view.form_defaults()
@@ -595,7 +586,6 @@ class TestInvoiceController(ViewTest):
         # Add an invoice
         invoice = self._add_invoice()
         request.matchdict = dict(invoice=str(invoice.id))
-        request.environ['qc.statusmessage'] = []
         view = InvoiceController(None, request)
         result = view()
         self.failUnless('main' in result.keys())
