@@ -678,3 +678,17 @@ class TestUtilities(BaseTest):
         self.assertEquals(item.amount, cloned_item.amount)
         self.assertEquals(item.service_description, cloned_item.service_description)
         self.assertEquals(item.service_title, cloned_item.service_title)
+
+
+class ViewIntegrationTest(ViewTest):
+    
+    def setUp(self):
+        import seantisinvoice
+        self.config = Configurator(package=seantisinvoice)
+        self.config.begin()
+        self.config.load_zcml('seantisinvoice:configure.zcml')
+        _initTestingDB()
+        
+    def test_zcml_registration(self):
+        pass
+        
