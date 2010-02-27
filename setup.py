@@ -17,6 +17,7 @@ requires = [
     'repoze.who',
     'repoze.who-friendlyform',
     'qc.statusmessage',
+    'TGScheduler',
     'nose',
     'coverage',
     ]

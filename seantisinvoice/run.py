@@ -4,11 +4,12 @@ from repoze.bfg.configuration import Configurator
 from repoze.tm import after_end
 from repoze.tm import isActive
 
+from tgscheduler.scheduler import Scheduler
+
 from seantisinvoice.models import RootFactory
 from seantisinvoice.models import DBSession
 from seantisinvoice.models import initialize_sql
 
-from seantisinvoice.kronos import ThreadedScheduler, method
 from seantisinvoice.recurring import copy_recurring
 
 def handle_teardown(event):
@@ -28,10 +29,10 @@ def app(global_config, **settings):
     initialize_sql(db_string)
     
     # Scheduler to copy recurring invoices
-    s = ThreadedScheduler()
+    s = Scheduler()
     # Check every 5 minutes for recurring invoices
-    s.add_interval_task(copy_recurring, "copy recurring invoices", 0, 300, method.threaded, None, None)
-    s.start()
+    s.add_interval_task(copy_recurring, 300)
+    s.start_scheduler()
     
     config = Configurator(root_factory=RootFactory, settings=settings)
     config.begin()
