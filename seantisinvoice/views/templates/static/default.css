@@ -516,3 +516,18 @@ input#logo {
     height: 20px;
     width: 100% ;
 }
+
+.date {
+    font-weight: normal;
+}
+
+fieldset {
+    border: 1px solid #ccc;
+    background: #EDEDED;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+#dateRange {
+    margin-left: 260px;
+}

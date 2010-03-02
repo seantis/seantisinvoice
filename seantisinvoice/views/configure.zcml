@@ -72,6 +72,14 @@
     name="company"
     />
     
+  <route 
+    path="/reports"
+    name="reports"
+    view=".reports.view_reports"
+    view_renderer="templates/reports.pt"
+    permission="view"
+    />
+    
   <!-- Forms -->
   
   <formish:form

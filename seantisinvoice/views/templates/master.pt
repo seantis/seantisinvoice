@@ -49,6 +49,7 @@
             <ul>
                 <li tal:attributes="class python: 'invoices' in request.url and 'current' or ''"><a href="${request.application_url}">&raquo; Invoices</a></li>
                 <li tal:attributes="class python: 'customers' in request.url and 'current' or ''"><a href="${request.application_url}/customers">&raquo; Customers</a></li>
+                <li tal:attributes="class python: 'reports' in request.url and 'current' or ''"><a href="${request.application_url}/reports">&raquo; Reports</a></li>
                 <li tal:attributes="class python: 'company' in request.url and 'current' or ''"><a href="${request.application_url}/company">&raquo; Company Profile</a></li>
             </ul>
         </div>
