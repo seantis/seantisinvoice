@@ -9,11 +9,15 @@
 	        
 	    <h1>Reports</h1>
 	    
-	    <fieldset>
+	    <div tal:condition="not invoices">
+	        No invoices yet.
+	    </div>
+	    
+	    <fieldset tal:condition="invoices">
             <span tal:replace="structure request.form()"/>
         </fieldset>
         
-        <table>
+        <table tal:condition="invoices">
             <thead>
                 <tr>
                     <th>Project</th>
@@ -39,7 +43,7 @@
                     <th align="right">${formatThousands('%.02f' % total_tax)}</th>
                 </tr>
             </tbody>
-        </table>        
+        </table>
         
     </div>
 	</div>
