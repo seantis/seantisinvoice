@@ -10,7 +10,7 @@ from repoze.bfg.chameleon_zpt import get_template
 from seantisinvoice import statusmessage
 from seantisinvoice.utils import formatThousands
 from seantisinvoice.models import DBSession
-from seantisinvoice.models import Invoice
+from seantisinvoice.models import Invoice, Customer, CustomerContact
 
 class DateRangeValidator(validator.Validator):
     """
@@ -27,6 +27,7 @@ class ReportsSchema(schemaish.Structure):
     
     from_date = schemaish.Date(validator=validator.Required())
     to_date = schemaish.Date(validator=validator.Required())
+    customer = schemaish.Integer()
     # Additional schema wide validator.
     validator = DateRangeValidator()
     
@@ -38,6 +39,7 @@ class ReportsController(object):
         self.request = request
         self.from_date = None
         self.to_date = None
+        self.customer = None
         
     def form_fields(self):
         return reports_schema.attrs
@@ -47,6 +49,7 @@ class ReportsController(object):
         defaults = {
             'from_date' : self.from_date,
             'to_date' : self.to_date,
+            'customer' : None,
         }
         return defaults
         
@@ -54,6 +57,12 @@ class ReportsController(object):
         widgets = {}
         widgets['from_date'] = formish.DateParts(day_first=True)
         widgets['to_date'] = formish.DateParts(day_first=True)
+        session = DBSession()
+        query = session.query(Customer).order_by(Customer.name)
+        options = []
+        for customer in query.all():
+            options.append((customer.id, customer.name))
+        widgets['customer'] = formish.SelectChoice(options=options)
         return widgets
         
     def invoices(self):
@@ -61,6 +70,10 @@ class ReportsController(object):
         query = session.query(Invoice)
         if self.from_date and self.to_date:
             query = query.filter(and_(Invoice.date >= self.from_date, Invoice.date <= self.to_date))
+        if self.customer is not None:
+            query = query.filter(Customer.id == self.customer)
+            query = query.join(Invoice.contact)
+            query = query.join(CustomerContact.customer)
         query = query.order_by(desc(Invoice.date))
         invoices = query.all()
         if invoices and (self.from_date is None or self.to_date is None):
@@ -93,4 +106,5 @@ class ReportsController(object):
     def handle_submit(self, converted):
         self.from_date = converted['from_date']
         self.to_date = converted['to_date']
+        self.customer = converted['customer']
         return self()

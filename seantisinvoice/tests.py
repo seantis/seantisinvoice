@@ -642,6 +642,10 @@ class TestReportsController(ViewTest):
         widgets = view.form_widgets(view.form_fields())
         self.assertEquals(DateParts, type(widgets['from_date']))
         self.assertEquals(DateParts, type(widgets['to_date']))
+        self.assertEquals([], widgets['customer'].options)
+        customer = self._add_customer()
+        widgets = view.form_widgets(view.form_fields())
+        self.assertEquals([(customer.id, customer.name)], widgets['customer'].options)
     
     def test_invoices(self):
         from seantisinvoice.views.reports import ReportsController
@@ -684,6 +688,14 @@ class TestReportsController(ViewTest):
         data['to_date'] = datetime.date(2010, 4, 25)
         results = view.handle_submit(data)
         self.assertEquals([invoice2], results['invoices'])
+        data['customer'] = invoice2.contact.customer.id
+        results = view.handle_submit(data)
+        self.assertEquals([invoice2], results['invoices'])
+        # Add a second customer
+        customer2 = self._add_customer()
+        invoice2.contact = customer2.contacts[0]
+        results = view.handle_submit(data)
+        self.assertEquals([], results['invoices'])
     
     def test_call(self):
         from seantisinvoice.views.reports import ReportsController
