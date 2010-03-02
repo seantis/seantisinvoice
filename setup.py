@@ -14,7 +14,7 @@ requires = [
     'repoze.tm2',
     'zope.sqlalchemy',
     'z3c.rml',
-    'repoze.who',
+    'repoze.who<2.0',
     'repoze.who-friendlyform',
     'qc.statusmessage',
     'TGScheduler',
