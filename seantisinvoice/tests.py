@@ -208,6 +208,18 @@ class TestValidators(unittest.TestCase):
         self.assertRaises(Invalid, validator, value)
         value.mimetype = 'image/jpeg'
         validator(None)
+        
+    def test_date_range(self):
+        from seantisinvoice.views.reports import DateRangeValidator
+        from validatish import Invalid
+        validator = DateRangeValidator()
+        values = dict(from_date=datetime.date(2010, 3, 1), to_date=datetime.date(2010, 3, 2))
+        validator(values)
+        values = dict(from_date=datetime.date(2010, 3, 1), to_date=datetime.date(2010, 3, 1))
+        validator(values)
+        values = dict(from_date=datetime.date(2010, 4, 1), to_date=datetime.date(2010, 3, 1))
+        self.assertRaises(Invalid, validator, values)
+        
 
 class TestViews(ViewTest):
     
@@ -589,6 +601,107 @@ class TestInvoiceController(ViewTest):
         view = InvoiceController(None, request)
         result = view()
         self.failUnless('main' in result.keys())
+        
+class TestReportsController(ViewTest):
+    
+    def test_form_fields(self):
+        from seantisinvoice.views.reports import ReportsController
+        from seantisinvoice.views.reports import ReportsSchema
+        request = testing.DummyRequest()
+        view = ReportsController(None, request)
+        fields = view.form_fields()
+        self.assertEquals(ReportsSchema.attrs, fields)
+        
+    def test_form_defaults(self):
+        from seantisinvoice.views.reports import ReportsController
+        request = testing.DummyRequest()
+        view = ReportsController(None, request)
+        defaults = view.form_defaults()
+        self.assertEquals(None, defaults['from_date'])
+        self.assertEquals(None, defaults['to_date'])
+        # Add an invoice
+        invoice = self._add_invoice()
+        invoice.date = datetime.date(2010, 3, 1)
+        view = ReportsController(None, request)
+        defaults = view.form_defaults()
+        self.assertEquals(datetime.date(2010, 3, 1), defaults['from_date'])
+        self.assertEquals(datetime.date(2010, 3, 1), defaults['to_date'])
+        # Add a second invoice
+        invoice2 = self._add_invoice()
+        invoice2.date = datetime.date(2010, 4, 1)
+        view = ReportsController(None, request)
+        defaults = view.form_defaults()
+        self.assertEquals(datetime.date(2010, 3, 1), defaults['from_date'])
+        self.assertEquals(datetime.date(2010, 4, 1), defaults['to_date'])
+        
+    def test_form_widgets(self):
+        from seantisinvoice.views.reports import ReportsController
+        from formish import DateParts
+        request = testing.DummyRequest()
+        view = ReportsController(None, request)
+        widgets = view.form_widgets(view.form_fields())
+        self.assertEquals(DateParts, type(widgets['from_date']))
+        self.assertEquals(DateParts, type(widgets['to_date']))
+    
+    def test_invoices(self):
+        from seantisinvoice.views.reports import ReportsController
+        request = testing.DummyRequest()
+        view = ReportsController(None, request)
+        self.assertEquals([], view.invoices())
+        invoice = self._add_invoice()
+        invoice.date = datetime.date(2010, 3, 1)
+        self.assertEquals([invoice], view.invoices())
+        invoice2 = self._add_invoice()
+        invoice2.date = datetime.date(2010, 4, 25)
+        view = ReportsController(None, request)
+        self.assertEquals([invoice2, invoice], view.invoices())
+        
+    def test_handle_submit(self):
+        from seantisinvoice.views.reports import ReportsController
+        request = testing.DummyRequest()
+        view = ReportsController(None, request)
+        data = view.form_defaults()
+        results = view.handle_submit(data)
+        self.assertEquals([], results['invoices'])
+        data['from_date'] = datetime.date(2010, 1, 1)
+        data['to_date'] = datetime.date(2010, 12, 31)
+        results = view.handle_submit(data)
+        self.assertEquals([], results['invoices'])
+        # Add two invoices
+        invoice1 = self._add_invoice()
+        invoice1.date = datetime.date(2010, 3, 1)
+        invoice2 = self._add_invoice()
+        invoice2.date = datetime.date(2010, 4, 25)
+        data['from_date'] = datetime.date(2010, 3, 1)
+        data['to_date'] = datetime.date(2010, 3, 31)
+        results = view.handle_submit(data)
+        self.assertEquals([invoice1], results['invoices'])
+        data['from_date'] = datetime.date(2010, 3, 1)
+        data['to_date'] = datetime.date(2010, 4, 30)
+        results = view.handle_submit(data)
+        self.assertEquals([invoice2, invoice1], results['invoices'])
+        data['from_date'] = datetime.date(2010, 4, 25)
+        data['to_date'] = datetime.date(2010, 4, 25)
+        results = view.handle_submit(data)
+        self.assertEquals([invoice2], results['invoices'])
+    
+    def test_call(self):
+        from seantisinvoice.views.reports import ReportsController
+        request = testing.DummyRequest()
+        # No invoices yet
+        view = ReportsController(None, request)
+        result = view()
+        self.assertEquals([], result['invoices'])
+        # Add an invoice
+        invoice = self._add_invoice()
+        invoice.tax = 7.6
+        invoice.items[0].amount = 10000
+        view = ReportsController(None, request)
+        result = view()
+        self.assertEquals([invoice], result['invoices'])
+        self.assertEquals(10760, result['total_amount'])
+        self.assertEquals(760, result['total_tax'])
+        
         
 class TestUtilities(BaseTest):
     

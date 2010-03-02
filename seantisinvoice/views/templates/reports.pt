@@ -9,11 +9,9 @@
 	        
 	    <h1>Reports</h1>
 	    
-	    <!--
 	    <fieldset>
             <span tal:replace="structure request.form()"/>
         </fieldset>
-        -->
         
         <table>
             <thead>
@@ -31,14 +29,14 @@
                     <td><a href="${request.application_url}/customers/${invoice.contact.customer.id}">${invoice.contact.customer.name}</a></td>
                     <td align="right">${invoice.date.strftime('%d.%m.%Y')}</td>
                     <td align="right">${formatThousands('%.02f' % invoice.grand_total())}</td>
-                    <td align="right">400</td>
+                    <td align="right">${formatThousands('%.02f' % invoice.tax_amount())}</td>
                 </tr>
             </tbody>
             <tbody>
                 <tr>
-                    <th colspan="3" align="left">Total <span class="date">(01.01.2010-31.03.2010)</span></th>
-                    <th align="right">20'000</th>
-                    <th align="right">1'000</th>
+                    <th colspan="3" align="left">Total <span class="date">(${from_date.strftime('%d.%m.%Y')}-${to_date.strftime('%d.%m.%Y')})</span></th>
+                    <th align="right">${formatThousands('%.02f' % total_amount)}</th>
+                    <th align="right">${formatThousands('%.02f' % total_tax)}</th>
                 </tr>
             </tbody>
         </table>        

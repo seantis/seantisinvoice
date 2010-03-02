@@ -72,12 +72,9 @@
     name="company"
     />
     
-  <route 
+  <route
     path="/reports"
     name="reports"
-    view=".reports.view_reports"
-    view_renderer="templates/reports.pt"
-    permission="view"
     />
     
   <!-- Forms -->
@@ -178,6 +175,20 @@
       name="cancel"
       title="Cancel"
       validate="false"
+      />
+
+  </formish:form>
+
+  <formish:form
+    name=""
+    route_name="reports"
+    renderer="templates/reports.pt"
+    permission="view"
+    controller=".reports.ReportsController">
+
+    <formish:action
+      name="submit"
+      title="Submit"
       />
 
   </formish:form>
