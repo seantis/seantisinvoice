@@ -39,7 +39,7 @@
         <blockTable style="address" colWidths="55% 45%" rowHeights="0.6cm 0.6cm 0.6cm 0.6cm 0.6cm">
             <tr>
                 <td>${invoice.company.name}</td>
-                <td>${invoice.contact.customer.name}</td>
+                <td><tal:block tal:condition="not hide_company">${invoice.contact.customer.name}</tal:block></td>
             </tr>
             <tr>
                 <td>${invoice.company.address1}</td>
