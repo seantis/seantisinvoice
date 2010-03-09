@@ -7,3 +7,7 @@ Nice to have:
 - Company: invoice_template options in configuration file?
 - Company: provide a vocabulary with countries including country codes. This way country codes can be used in addresses.
 - Batches for lists
+
+BUGS:
+
+- Catch the exception if an invoice number entered manually on the invoice form is not unique but already in use.
