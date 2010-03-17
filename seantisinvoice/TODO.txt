@@ -1,5 +1,7 @@
 Please delete from the list below when implemented:
 
+- Service description for invoice items should have a text area widget: http://test.ish.io/TextAreaSimple
+
 Nice to have:
 
 - Move "uploads" folder out from templates: comment in INSTALL.txt about write access on this folder. 
