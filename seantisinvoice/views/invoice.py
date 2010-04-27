@@ -130,6 +130,7 @@ class InvoiceController(object):
         widgets['customer_contact_id'] = formish.SelectChoice(options=options)
         widgets['item_list'] = formish.SequenceDefault(min_start_fields=1)
         widgets['item_list.*.item_id'] = formish.Hidden()
+        widgets['item_list.*.service_description'] = formish.TextArea()
         
         return widgets
         
