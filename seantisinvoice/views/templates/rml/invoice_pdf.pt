@@ -100,8 +100,8 @@
             </tr>
             <tr tal:repeat="item invoice.items">
                 <td vAlign="top"><para style="normal">${item.service_title}</para></td>
-                <td><para style="small" tal:repeat="line python: item.service_description.split('\n')">${line}</para></td>
-                <td>${item.hours} ${item.days} ${item.unit()}</td>
+                <td vAlign="top"><para style="small" tal:repeat="line python: item.service_description.split('\n')">${line}</para></td>
+                <td vAlign="top">${item.hours} ${item.days} ${item.unit()}</td>
                 <td vAlign="top" align="right">${formatThousands('%.02f' % item.total())}</td>
             </tr>
             <tr>
