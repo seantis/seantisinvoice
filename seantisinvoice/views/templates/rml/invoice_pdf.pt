@@ -118,7 +118,7 @@
             </tr>
             <tr>
                 <td></td>
-                <td vAlign="bottom">MWST (7.6%)</td>
+                <td vAlign="bottom">MWST (${invoice.company.tax}%)</td>
                 <td></td>
                 <td align="right">${formatThousands('%.02f' % invoice.tax_amount())}</td>
             </tr>
