@@ -1,2 +1,2 @@
-include *.txt *.ini
+include *.txt
 recursive-include seantisinvoice *.txt *.py *.pt *.png *.gif *.css *.js *.zcml
