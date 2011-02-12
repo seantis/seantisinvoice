@@ -20,7 +20,7 @@ requires = [
     'qc.statusmessage',
     'TGScheduler',
     'nose',
-    'coverage',
+    'nosexcover',
     ]
 
 if sys.version_info[:3] < (2,5,0):
