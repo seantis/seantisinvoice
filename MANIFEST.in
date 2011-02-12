@@ -1,0 +1,2 @@
+include *.rst *.txt
+recursive-include seantisinvoice *.rst *.py *.xml *.zpt *.png *.zcml
