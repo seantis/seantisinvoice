@@ -1,2 +1,2 @@
 include *.txt
-recursive-include seantisinvoice *.txt *.py *.pt *.png *.gif *.css *.js *.zcml
+recursive-include seantisinvoice *.txt *.py *.pt *.jpg *.png *.gif *.css *.js *.zcml
