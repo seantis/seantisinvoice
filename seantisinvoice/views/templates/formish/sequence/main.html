@@ -9,7 +9,7 @@
   <legend tal:condition="field.title">${field.title}</legend>
   <div tal:condition="hasattr(field.errors, 'message')">${unicode(field.error)}</div>
   <span tal:repeat="f field.fields" tal:replace="structure f()"/>
-  <div tal:condition="str(field.description) != ''" 
+  <div tal:condition="field.description" 
        class="description">${field.description}</div>
   <input tal:define="urlquote import:urllib.quote"
          tal:condition="field.type is 'sequence' and field.widget.addremove is True"
