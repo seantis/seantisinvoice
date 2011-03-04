@@ -8,8 +8,9 @@ README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
-    'repoze.bfg',
+    'repoze.bfg<=1.2a11',
     'repoze.bfg.formish',
+    'Chameleon<=1.0.8',
     'SQLAlchemy',
     'transaction',
     'repoze.tm2',
