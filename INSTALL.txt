@@ -21,10 +21,6 @@ Install seantis.invoice
 
 % python setup.py develop
 
-Install repoze.bfg.formish (not on pypi yet):
-
-% easy_install -i http://dist.repoze.org/karl/1/simple repoze.bfg.formish
-
 Start seantisinvoice:
 
 % cd seantisinvoice
