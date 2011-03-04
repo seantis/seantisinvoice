@@ -11,16 +11,14 @@ requires = [
     'repoze.bfg<=1.2a11',
     'repoze.bfg.formish',
     'Chameleon<=1.0.8',
+    'WebOb<=0.9.8',
     'SQLAlchemy',
-    'transaction',
     'repoze.tm2',
     'zope.sqlalchemy',
     'z3c.rml',
-    'repoze.who',
-    'repoze.who-friendlyform',
+    'repoze.who-friendlyform<=1.0.8',
     'qc.statusmessage',
     'TGScheduler',
-    'nose',
     'nosexcover',
     ]
 
