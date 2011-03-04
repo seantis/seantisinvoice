@@ -14,7 +14,6 @@ def copy_recurring():
     query = query.filter(Invoice.recurring_date <= today)
     query = query.filter(or_(Invoice.recurring_stop == None, Invoice.recurring_stop > today))
     for invoice in query.all():
-        session = DBSession()
         # Clone invoice and invoice items
         invoice_clone = Invoice()
         invoice_clone.company = invoice.company
