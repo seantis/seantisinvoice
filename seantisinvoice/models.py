@@ -152,5 +152,7 @@ def next_invoice_number():
     session = DBSession()
     company = session.query(Company).with_lockmode("update").first()
     number = company.invoice_start_number
-    company.invoice_start_number += 1
-    return number
+    while session.query(Invoice).filter(Invoice.invoice_number == number).first():
+        number += 1
+    company.invoice_start_number = number
+    return number - 1
