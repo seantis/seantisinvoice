@@ -15,7 +15,6 @@ from seantisinvoice.models import DBSession
 from seantisinvoice.models import Customer, CustomerContact
 
 class CustomerContactSchema(schemaish.Structure):
-    
     contact_id = schemaish.Integer()
     first_name = schemaish.String(validator=validator.Required())
     last_name = schemaish.String(validator=validator.Required())
@@ -33,6 +32,8 @@ class CustomerSchema(schemaish.Structure):
     postal_code = schemaish.String(validator=validator.Required())
     city = schemaish.String(validator=validator.Required())
     country = schemaish.String()
+    special_hourly_rate = schemaish.Float()
+    special_daily_rate = schemaish.Float() 
     contact_list = schemaish.Sequence(customer_contact_schmema)
     
 customer_schema = CustomerSchema()

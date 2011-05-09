@@ -61,6 +61,8 @@ class Customer(Base):
     city = Column(Unicode(255))
     postal_code = Column(Unicode(255))
     country = Column(Unicode(255))
+    special_hourly_rate = Column(Float)
+    special_daily_rate = Column(Float)
     
 class CustomerContact(Base):
     __tablename__ = 'customer_contact'
@@ -125,10 +127,17 @@ class InvoiceItem(Base):
     invoice = relation(Invoice, backref=backref('items', order_by=item_number, cascade="delete"))
     
     def total(self):
+        customer = self.invoice.contact.customer
         if self.hours:
-            return self.hours * self.invoice.company.hourly_rate
+            if customer.special_hourly_rate:
+                return self.hours * customer.special_hourly_rate
+            else:
+                return self.hours * self.invoice.company.hourly_rate
         if self.days:
-            return self.days * self.invoice.company.daily_rate
+            if customer.special_daily_rate:
+                return self.days * customer.special_daily_rate
+            else:
+                return self.days * self.invoice.company.daily_rate
         return self.amount
         
     def unit(self):
