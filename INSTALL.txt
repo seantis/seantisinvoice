@@ -6,7 +6,7 @@ Create and activate virtualenv:
 
 Install Reportlab:
 
-Download from http://www.reportlab.com/ftp/ReportLab_2_3.tar.gz
+Download from http://www.reportlab.com/ftp/reportlab-2.3.tar.gz
 % python setup.py install
 
 Install lxml (build statically on Mac):
