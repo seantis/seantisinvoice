@@ -23,16 +23,26 @@ class TestInvoiceItem(unittest.TestCase):
     
     def test_total(self):
         from seantisinvoice.models import Company
+        from seantisinvoice.models import Customer
+        from seantisinvoice.models import CustomerContact
         from seantisinvoice.models import Invoice
         from seantisinvoice.models import InvoiceItem
+        
+        company = Company()
+        # Customer
+        contact = CustomerContact()
+        contact.customer = Customer()
+        # Invoice
+        invoice = Invoice()
+        invoice.company = company
+        invoice.contact = contact
+        
         item = InvoiceItem()
+        item.invoice = invoice
         item.amount = 3000.0
         self.assertEquals(3000.0, item.total())
         # Hourly rate is defined on the company
-        company = Company()
         company.hourly_rate = 120.0
-        invoice = Invoice()
-        invoice.company = company
         item = InvoiceItem()
         item.invoice = invoice
         item.hours = 13
@@ -57,9 +67,16 @@ class TestInvoiceItem(unittest.TestCase):
 class TestInvoice(unittest.TestCase):
         
     def test_sub_total(self):
+        from seantisinvoice.models import Customer
+        from seantisinvoice.models import CustomerContact
         from seantisinvoice.models import Invoice
         from seantisinvoice.models import InvoiceItem
+        # Customer
+        contact = CustomerContact()
+        contact.customer = Customer()
+        # Invoice
         invoice = Invoice()
+        invoice.contact = contact
         item = InvoiceItem()
         item.amount = 1250.50
         invoice.items.append(item)
@@ -70,9 +87,17 @@ class TestInvoice(unittest.TestCase):
         self.assertEquals(1370.5, invoice.sub_total())
         
     def test_tax_amount(self):
+        from seantisinvoice.models import Customer
+        from seantisinvoice.models import CustomerContact
         from seantisinvoice.models import Invoice
         from seantisinvoice.models import InvoiceItem
+        # Customer
+        contact = CustomerContact()
+        contact.customer = Customer()
+        # Invoice
         invoice = Invoice()
+        invoice.contact = contact
+        
         self.assertEquals(0, invoice.tax_amount())
         invoice.tax = 7.6
         self.assertEquals(0, invoice.tax_amount())
@@ -82,9 +107,16 @@ class TestInvoice(unittest.TestCase):
         self.assertEquals(7.6, invoice.tax_amount())
         
     def test_grand_total(self):
+        from seantisinvoice.models import Customer
+        from seantisinvoice.models import CustomerContact
         from seantisinvoice.models import Invoice
         from seantisinvoice.models import InvoiceItem
+        # Customer
+        contact = CustomerContact()
+        contact.customer = Customer()
+        # Invoice
         invoice = Invoice()
+        invoice.contact = contact
         self.assertEquals(0, invoice.grand_total())
         item = InvoiceItem()
         item.amount = 100.0
