@@ -30,8 +30,9 @@ class TestInvoiceItem(unittest.TestCase):
         
         company = Company()
         # Customer
+        customer = Customer()
         contact = CustomerContact()
-        contact.customer = Customer()
+        contact.customer = customer
         # Invoice
         invoice = Invoice()
         invoice.company = company
@@ -53,6 +54,18 @@ class TestInvoiceItem(unittest.TestCase):
         item.invoice = invoice
         item.days = 2.5
         self.assertEquals(3250.0, item.total())
+        # Special daily rate on customer
+        customer.special_daily_rate = 1100.0
+        item = InvoiceItem()
+        item.invoice = invoice
+        item.days = 4.5
+        self.assertEquals(4950.0, item.total())
+        # Special hourly rate on customer
+        customer.special_hourly_rate = 100.0
+        item = InvoiceItem()
+        item.invoice = invoice
+        item.hours = 10
+        self.assertEquals(1000.0, item.total())
         
     def test_unit(self):
         from seantisinvoice.models import InvoiceItem
