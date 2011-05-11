@@ -826,6 +826,33 @@ class TestUtilities(BaseTest):
         self.assertEquals(item.service_description, cloned_item.service_description)
         self.assertEquals(item.service_title, cloned_item.service_title)
 
+class TestInvoiceNumber(BaseTest):
+    
+    def test_next_invoice_number(self):
+        from seantisinvoice.models import DBSession
+        from seantisinvoice.models import Company
+        from seantisinvoice.models import next_invoice_number
+        session = DBSession()
+        company = session.query(Company).one()
+        company.invoice_start_number = 20
+        result = next_invoice_number()
+        self.assertEqual(20, result)
+        self.assertEqual(21, company.invoice_start_number)
+        
+    def test_next_invoice_number_used(self):
+        from seantisinvoice.models import DBSession
+        from seantisinvoice.models import Company
+        from seantisinvoice.models import Invoice
+        from seantisinvoice.models import next_invoice_number
+        session = DBSession()
+        company = session.query(Company).one()
+        company.invoice_start_number = 20
+        invoice = Invoice(invoice_number=20)
+        session.add(invoice)
+        session.flush()
+        result = next_invoice_number()
+        self.assertEqual(21, result)
+        self.assertEqual(22, company.invoice_start_number)
 
 class ViewIntegrationTest(ViewTest):
     

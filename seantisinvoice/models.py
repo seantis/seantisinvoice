@@ -163,5 +163,5 @@ def next_invoice_number():
     number = company.invoice_start_number
     while session.query(Invoice).filter(Invoice.invoice_number == number).first():
         number += 1
-    company.invoice_start_number = number
-    return number - 1
+    company.invoice_start_number = number + 1
+    return number
