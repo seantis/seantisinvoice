@@ -9,6 +9,7 @@ from sqlalchemy import Unicode
 from sqlalchemy import Float
 from sqlalchemy import ForeignKey
 from sqlalchemy import Date
+from sqlalchemy import Boolean
 
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
@@ -63,6 +64,7 @@ class Customer(Base):
     country = Column(Unicode(255))
     special_hourly_rate = Column(Float)
     special_daily_rate = Column(Float)
+    hide_contact_name = Column(Boolean)
     
 class CustomerContact(Base):
     __tablename__ = 'customer_contact'

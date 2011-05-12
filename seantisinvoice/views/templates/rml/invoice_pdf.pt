@@ -36,14 +36,15 @@
 
     <story>
         
-        <blockTable style="address" colWidths="55% 45%" rowHeights="0.6cm 0.6cm 0.6cm 0.6cm 0.6cm">
+        <blockTable style="address" colWidths="55% 45%" rowHeights="0.6cm 0.6cm 0.6cm 0.6cm 0.6cm" tal:define="hide_contact invoice.contact.customer.hide_contact_name">
             <tr>
                 <td>${invoice.company.name}</td>
-                <td><tal:block tal:condition="not hide_company">${invoice.contact.customer.name}</tal:block></td>
+                <td><tal:block tal:condition="not hide_contact">${invoice.contact.customer.name}</tal:block></td>
             </tr>
             <tr>
                 <td>${invoice.company.address1}</td>
-                <td>${invoice.contact.title} ${invoice.contact.first_name} ${invoice.contact.last_name}</td>
+                <td tal:condition="not hide_contact">${invoice.contact.title} ${invoice.contact.first_name} ${invoice.contact.last_name}</td>
+                <td tal:condition="hide_contact">${invoice.contact.customer.name}</td>
             </tr>
             <tr>
                 <td>${invoice.company.postal_code} ${invoice.company.city}</td>
