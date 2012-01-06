@@ -39,6 +39,10 @@
         
         <blockTable style="address" colWidths="55% 45%" tal:define="hide_contact invoice.contact.customer.hide_contact_name">
             <tr>
+                <td></td>
+                <td><para style="small">${invoice.company.name} :: ${invoice.company.address1} :: ${invoice.company.country}-${invoice.company.postal_code} ${invoice.company.city}</para></td>
+            </tr>
+            <tr>
                 <td>${invoice.company.name}</td>
                 <td><tal:block tal:condition="not hide_contact">${invoice.contact.customer.name}</tal:block></td>
             </tr>
