@@ -21,7 +21,8 @@ requires = [
     'repoze.who-friendlyform<=1.0.8',
     'qc.statusmessage',
     'TGScheduler',
-    'nosexcover',
+    'nose<=1.0.0',
+    'nosexcover<=1.0.4',
     ]
 
 if sys.version_info[:3] < (2,5,0):
