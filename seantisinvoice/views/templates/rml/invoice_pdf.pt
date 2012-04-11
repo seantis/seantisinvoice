@@ -5,7 +5,7 @@
 
     <template pageSize="A4" author="www.seantis.ch" title="Rechnung :: ${invoice.invoice_number}">
         <pageTemplate id="main">
-           <frame id="first" x1="72" y1="12" width="451" height="698"/>           
+           <frame id="first" x1="72" y1="52" width="451" height="678"/>           
             <pageGraphics>
                 <image file="${logo_path}" x="12mm" y="275mm" width="70mm" height="11mm" />
                 <place x="72" y="0.5cm" width="451" height="1cm">
@@ -31,23 +31,37 @@
             <blockFont name="Helvetica" size="11" />
             <blockLeftPadding length="1mm" />
             <blockRightPadding length="1mm" />
+            <blockTopPadding length="0mm" />
         </blockTableStyle>
     </stylesheet>
 
     <story>
         
-        <blockTable style="address" colWidths="55% 45%" rowHeights="0.6cm 0.6cm 0.6cm 0.6cm 0.6cm">
+        <blockTable style="address" colWidths="55% 45%" tal:define="hide_contact invoice.contact.customer.hide_contact_name">
+            <tr>
+                <td></td>
+                <td><para style="small">${invoice.company.name} :: ${invoice.company.address1} :: ${invoice.company.country}-${invoice.company.postal_code} ${invoice.company.city}</para></td>
+            </tr>
             <tr>
                 <td>${invoice.company.name}</td>
-                <td><tal:block tal:condition="not hide_company">${invoice.contact.customer.name}</tal:block></td>
+                <td><tal:block tal:condition="not hide_contact">${invoice.contact.customer.name}</tal:block></td>
             </tr>
             <tr>
                 <td>${invoice.company.address1}</td>
-                <td>${invoice.contact.title} ${invoice.contact.first_name} ${invoice.contact.last_name}</td>
+                <td tal:condition="not hide_contact">${invoice.contact.title} ${invoice.contact.first_name} ${invoice.contact.last_name}</td>
+                <td tal:condition="hide_contact">${invoice.contact.customer.name}</td>
             </tr>
             <tr>
                 <td>${invoice.company.postal_code} ${invoice.company.city}</td>
                 <td>${invoice.contact.customer.address1}</td>
+            </tr>
+            <tr tal:condition="invoice.contact.customer.address2">
+                <td></td>
+                <td>${invoice.contact.customer.address2}</td>
+            </tr>
+            <tr tal:condition="invoice.contact.customer.address3">
+                <td></td>
+                <td>${invoice.contact.customer.address3}</td>
             </tr>
             <tr>
                 <td>${invoice.company.phone}</td>

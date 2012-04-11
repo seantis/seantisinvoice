@@ -228,16 +228,18 @@ class InvoiceController(object):
 def view_invoices(request):
     session = DBSession()
     query = session.query(Invoice)
+    today = datetime.date.today()
     
     if 'recurring' in request.params:
         if request.params['recurring'] == '1':
             query = query.filter(Invoice.recurring_date != None)
+            # We don't show the recurring invoices that have stop date in the past
+            query = query.filter(Invoice.recurring_stop >= today or Invoice.recurring_stop == None) 
             title = u'Recurring Invoices'
         elif request.params['recurring'] == '0':
             query = query.filter(Invoice.recurring_date == None)
             title = u'Non-recurring Invoices'
     elif 'due' in request.params and request.params['due'] == '1':
-        today = datetime.date.today()
         query = query.filter(Invoice.due_date <= today)
         query = query.filter(Invoice.payment_date == None)
         title = u'Invoices due'

@@ -33,7 +33,8 @@ class CustomerSchema(schemaish.Structure):
     city = schemaish.String(validator=validator.Required())
     country = schemaish.String()
     special_hourly_rate = schemaish.Float()
-    special_daily_rate = schemaish.Float() 
+    special_daily_rate = schemaish.Float()
+    hide_contact_name = schemaish.Boolean(description="If this is set, then the contact name will be hidden on the PDF invoice.") 
     contact_list = schemaish.Sequence(customer_contact_schmema)
     
 customer_schema = CustomerSchema()
