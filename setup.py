@@ -21,7 +21,7 @@ requires = [
     'repoze.who-friendlyform<=1.0.8',
     'qc.statusmessage',
     'TGScheduler',
-    'nose<=1.0.0',
+    'nose<=0.11.1',
     'nosexcover<=1.0.4',
     ]
 
